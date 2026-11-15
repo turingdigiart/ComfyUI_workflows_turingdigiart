@@ -41,9 +41,26 @@ else {
       const def = info[node.class_type];
       if (!def) { problems.push(`节点 ${id} 类型不存在: ${node.class_type}`); continue; }
       const required = Object.keys(def.input?.required || {});
-      for (const r of required) if (!(r in (node.inputs || {}))) problems.push(`节点 ${id}(${node.class_type}) 缺必填输入: ${r}`);
-      for (const k of Object.keys(node.inputs || {})) {
-        if (!(k in (def.input?.required || {})) && !(k in (def.input?.optional || {}))) problems.push(`节点 ${id}(${node.class_type}) 未知输入: ${k}`);
+      const optional = Object.keys(def.input?.optional || {});
+      const inputs = node.inputs || {};
+      // AUTOGROW 类输入（Qwen 的 images 等）在 prompt 里展开成 `images.image_1` 这种子插槽，
+      // 而 object_info 只声明容器名 `images`。所以：
+      //   · 有 `images.xxx` 就等于满足了必填 `images`
+      //   · `images.xxx` 的基名要在声明列表里，才判定为"已知输入"
+      const baseName = k => (k.includes('.') ? k.split('.')[0] : k);
+      const satisfied = name => (name in inputs) || Object.keys(inputs).some(k => k.startsWith(name + '.'));
+      // AUTOGROW 容器（Qwen 的 images）允许为空：文生图时一个图片插槽都没有，
+      // 但 object_info 仍把它标成 required。实测 ComfyUI 接受这种 prompt（返回 200、
+      // node_errors 为空），所以校验时把它当可选，只校验"若有子插槽则基名合法"。
+      const isAutogrow = name => {
+        const spec = def.input?.required?.[name] || def.input?.optional?.[name];
+        const t0 = spec?.[0];
+        return typeof t0 === 'string' && t0.includes('AUTOGROW');
+      };
+      for (const r of required) if (!satisfied(r) && !isAutogrow(r)) problems.push(`节点 ${id}(${node.class_type}) 缺必填输入: ${r}`);
+      for (const k of Object.keys(inputs)) {
+        const base = baseName(k);
+        if (!required.includes(base) && !optional.includes(base)) problems.push(`节点 ${id}(${node.class_type}) 未知输入: ${k}`);
       }
     }
     if (problems.length) { for (const p of problems) console.log('[FAIL] ' + p); console.log('校验失败，未执行。'); process.exitCode = 1; }
