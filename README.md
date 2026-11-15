@@ -42,11 +42,14 @@ node scripts/verify.mjs
 # 3) 派生新版本（不覆盖旧版，版本号自动递增）
 node scripts/bump.mjs --workflow workflows/image/sdxl/01_SDXL_文生图.json --label 高清
 
-# 4) 跑一条工作流（先 dry-run 校验，再真跑）
+# 4) UI 格式 → API 格式（省掉手工导出；有局限，见下）
+node scripts/ui2api.mjs --workflow workflows/image/sdxl/01_SDXL_文生图.json
+
+# 5) 跑一条工作流（先 dry-run 校验，再真跑）
 node scripts/run.mjs --prompt <api.json> --dry-run
 node scripts/run.mjs --prompt <api.json> --set 6.text="一只猫" --wait
 
-# 5) 换机后把 ComfyUI 接到本仓库（先预演，确认后 -Apply）
+# 6) 换机后把 ComfyUI 接到本仓库（先预演，确认后 -Apply）
 powershell -File scripts/setup.ps1
 ```
 
@@ -67,3 +70,15 @@ ComfyUI 保存的工作流是 **UI 格式**（`nodes` + `links`），而 `/promp
 | 通过 | 现在就能跑 | — |
 
 `verify.mjs` 连不上 8188 时直接失败——**"没检查"不等于"通过"**。只查文件用 `--offline`，但要明白那时不校验节点。
+
+### `ui2api.mjs` 的局限（重要）
+
+自动转换在 2026-11-16 实测 **18/28 通过**。剩下 10 条不是脚本 bug，是**工作流本身过期**：
+
+| 现象 | 原因 | 处理 |
+|---|---|---|
+| `SaveVideo` 缺 `format`（4 条） | 节点定义后来新增了必填字段，老工作流保存时没有 | 在界面里重新保存一次即可补上 |
+| `TextEncodeQwenImage21` 缺 `images`（3 条） | 多图输入是结构化控件，不是普通 widget | 手工「导出(API)」 |
+| `LTXVEmptyLatentAudio` 缺 `frame_rate` | 同上，节点已更新 | 重新保存或手工导出 |
+
+**结论**：转换器优先用；它报错时，错误本身就是"这条工作流该更新了"的信号。真跑不通就用界面「导出(API)」兜底。
