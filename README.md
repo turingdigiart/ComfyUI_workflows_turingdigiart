@@ -36,9 +36,24 @@ node scripts/catalog.mjs
 # 2) 提交前校验（JSON 可解析 + 节点存在 + 模型在位）
 node scripts/verify.mjs
 
-# 3) 换机后把 ComfyUI 接到本仓库（先预演，确认后 -Apply）
+# 3) 派生新版本（不覆盖旧版，版本号自动递增）
+node scripts/bump.mjs --workflow workflows/image/sdxl/01_SDXL_文生图.json --label 高清
+
+# 4) 跑一条工作流（先 dry-run 校验，再真跑）
+node scripts/run.mjs --prompt <api.json> --dry-run
+node scripts/run.mjs --prompt <api.json> --set 6.text="一只猫" --wait
+
+# 5) 换机后把 ComfyUI 接到本仓库（先预演，确认后 -Apply）
 powershell -File scripts/setup.ps1
 ```
+
+### 关于 `run.mjs` 的输入格式
+
+ComfyUI 保存的工作流是 **UI 格式**（`nodes` + `links`），而 `/prompt` 接口要 **API 格式**（节点字典）。
+所以执行前需在 ComfyUI 界面里「导出（API）」得到 `*api.json`，再交给 `run.mjs`。
+
+`run.mjs` 会先用 `/object_info` 校验每个节点的**必填输入是否齐全、有没有写错输入名**，
+校验不过直接退出、不排队——避免把坏图塞进队列才发现。
 
 ## 校验的三种结果
 
