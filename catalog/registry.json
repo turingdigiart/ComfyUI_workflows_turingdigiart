@@ -1,15 +1,20 @@
 {
-  "schema": 1,
-  "generated_at": "2026-11-15T20:42:22.818Z",
-  "source": "E:\\RAE_DevRoot\\TECH-COMFY-001_comfyui-workflows\\workflows",
-  "comfyui_version": null,
+  "schema": 2,
+  "generated_at": "2026-11-15T20:43:45.735Z",
+  "source": "E:\\RAE_ToolRoot\\comfyui\\ComfyUI_windows_portable\\ComfyUI\\user\\default\\workflows",
   "count": 28,
+  "missing_model_count": 1,
+  "undocumented_count": 10,
   "workflows": [
     {
       "workflow_id": "identity-tt-ip-写实版-01_写实版_基准脸",
       "path": "identity/tt-ip-写实版/01_写实版_基准脸.json",
       "category": "identity",
+      "subcategory": "tt-ip-写实版",
       "name": "01_写实版_基准脸",
+      "title": "01_写实版_基准脸",
+      "description": "",
+      "has_description": false,
       "version": null,
       "sha256": "28530eb4e489e9c2f25cd5b19b2ba7e88ceb4763ad6746bcc7b3b5b73a6185a4",
       "bytes": 8377,
@@ -25,6 +30,15 @@
       "models": [
         "RealVisXL_V5.0_fp16.safetensors"
       ],
+      "missing_models": [],
+      "params": {
+        "model": "RealVisXL_V5.0_fp16.safetensors",
+        "resolution": "896x1152",
+        "steps": 30,
+        "sampler": "dpmpp_2m_sde",
+        "frames": null,
+        "fps": null
+      },
       "parse_error": null,
       "status": "Candidate"
     },
@@ -32,7 +46,11 @@
       "workflow_id": "identity-tt-ip-写实版-02_写实版_apose全身",
       "path": "identity/tt-ip-写实版/02_写实版_Apose全身.json",
       "category": "identity",
+      "subcategory": "tt-ip-写实版",
       "name": "02_写实版_Apose全身",
+      "title": "02_写实版_Apose全身",
+      "description": "",
+      "has_description": false,
       "version": null,
       "sha256": "39a649b780a595280d2e419fa8859672f26812e9bcea5be4c80a95abf42884c6",
       "bytes": 11876,
@@ -52,6 +70,15 @@
         "RealVisXL_V5.0_fp16.safetensors",
         "controlnet-openpose-sdxl-1.0.safetensors"
       ],
+      "missing_models": [],
+      "params": {
+        "model": "RealVisXL_V5.0_fp16.safetensors",
+        "resolution": "832x1216",
+        "steps": 30,
+        "sampler": "dpmpp_2m_sde",
+        "frames": null,
+        "fps": null
+      },
       "parse_error": null,
       "status": "Candidate"
     },
@@ -59,7 +86,11 @@
       "workflow_id": "identity-tt-ip-写实版-03_写实版_apose三套穿搭",
       "path": "identity/tt-ip-写实版/03_写实版_Apose三套穿搭.json",
       "category": "identity",
+      "subcategory": "tt-ip-写实版",
       "name": "03_写实版_Apose三套穿搭",
+      "title": "03_写实版_Apose三套穿搭",
+      "description": "",
+      "has_description": false,
       "version": null,
       "sha256": "5ab8447e4ac28c69c28800c6888286f04f3aa0d5bd1189727b4096e1a0343f6a",
       "bytes": 61589,
@@ -79,6 +110,15 @@
         "RealVisXL_V5.0_fp16.safetensors",
         "controlnet-openpose-sdxl-1.0.safetensors"
       ],
+      "missing_models": [],
+      "params": {
+        "model": "RealVisXL_V5.0_fp16.safetensors",
+        "resolution": "832x1216",
+        "steps": 30,
+        "sampler": "dpmpp_2m_sde",
+        "frames": null,
+        "fps": null
+      },
       "parse_error": null,
       "status": "Candidate"
     },
@@ -86,7 +126,11 @@
       "workflow_id": "identity-tt-ip-写实版-04_写实版_封面构图",
       "path": "identity/tt-ip-写实版/04_写实版_封面构图.json",
       "category": "identity",
+      "subcategory": "tt-ip-写实版",
       "name": "04_写实版_封面构图",
+      "title": "04_写实版_封面构图",
+      "description": "",
+      "has_description": false,
       "version": null,
       "sha256": "a11e2a07976625ac4e1cd6828dff032024657fd8e5491ba50de3aa50c8488636",
       "bytes": 13306,
@@ -102,6 +146,15 @@
       "models": [
         "RealVisXL_V5.0_fp16.safetensors"
       ],
+      "missing_models": [],
+      "params": {
+        "model": "RealVisXL_V5.0_fp16.safetensors",
+        "resolution": "896x1152",
+        "steps": 30,
+        "sampler": "dpmpp_2m_sde",
+        "frames": null,
+        "fps": null
+      },
       "parse_error": null,
       "status": "Candidate"
     },
@@ -109,7 +162,11 @@
       "workflow_id": "identity-tt-ip-写实版-05_写实版_放大修图",
       "path": "identity/tt-ip-写实版/05_写实版_放大修图.json",
       "category": "identity",
+      "subcategory": "tt-ip-写实版",
       "name": "05_写实版_放大修图",
+      "title": "05_写实版_放大修图",
+      "description": "",
+      "has_description": false,
       "version": null,
       "sha256": "e607eef72990d15579d95e29a11983074d0d405b363fdd69bcfc465ee71d0f8b",
       "bytes": 4428,
@@ -124,6 +181,15 @@
       "models": [
         "4x-UltraSharp.pth"
       ],
+      "missing_models": [],
+      "params": {
+        "model": null,
+        "resolution": null,
+        "steps": null,
+        "sampler": null,
+        "frames": null,
+        "fps": null
+      },
       "parse_error": null,
       "status": "Candidate"
     },
@@ -131,7 +197,11 @@
       "workflow_id": "identity-tt-ip-写实版-06_写实版_照片一致性",
       "path": "identity/tt-ip-写实版/06_写实版_照片一致性.json",
       "category": "identity",
+      "subcategory": "tt-ip-写实版",
       "name": "06_写实版_照片一致性",
+      "title": "06_写实版_照片一致性",
+      "description": "",
+      "has_description": false,
       "version": null,
       "sha256": "58d8c428ea23a0dc9cd14f16976954ceca8a600f2167befbc35251d39b87314f",
       "bytes": 12253,
@@ -153,6 +223,15 @@
         "RealVisXL_V5.0_fp16.safetensors",
         "ip-adapter-plus_sdxl_vit-h.safetensors"
       ],
+      "missing_models": [],
+      "params": {
+        "model": "RealVisXL_V5.0_fp16.safetensors",
+        "resolution": "896x1152",
+        "steps": 30,
+        "sampler": "dpmpp_2m_sde",
+        "frames": null,
+        "fps": null
+      },
       "parse_error": null,
       "status": "Candidate"
     },
@@ -160,7 +239,11 @@
       "workflow_id": "identity-tt-ip-写实版-07_flux_四套穿搭",
       "path": "identity/tt-ip-写实版/07_Flux_四套穿搭.json",
       "category": "identity",
+      "subcategory": "tt-ip-写实版",
       "name": "07_Flux_四套穿搭",
+      "title": "07_Flux_四套穿搭",
+      "description": "",
+      "has_description": false,
       "version": null,
       "sha256": "5b754635dd9d332ecad9f314f6d1864f9d023a5435fe7fd5cd443ec99842b685",
       "bytes": 52606,
@@ -177,6 +260,17 @@
       "models": [
         "flux1-dev-fp8.safetensors"
       ],
+      "missing_models": [
+        "flux1-dev-fp8.safetensors"
+      ],
+      "params": {
+        "model": "flux1-dev-fp8.safetensors",
+        "resolution": "832x1216",
+        "steps": 24,
+        "sampler": "euler",
+        "frames": null,
+        "fps": null
+      },
       "parse_error": null,
       "status": "Candidate"
     },
@@ -184,7 +278,11 @@
       "workflow_id": "image-api-14_通用api提示词_预览",
       "path": "image/api/14_通用API提示词_预览.json",
       "category": "image",
+      "subcategory": "api",
       "name": "14_通用API提示词_预览",
+      "title": "14_通用API提示词_预览",
+      "description": "",
+      "has_description": false,
       "version": null,
       "sha256": "10ff18876e62fe55fb2fe7e3d650c102a36170169fde1db8f8fec71bb7e2c3e8",
       "bytes": 2185,
@@ -194,6 +292,15 @@
         "PreviewAny"
       ],
       "models": [],
+      "missing_models": [],
+      "params": {
+        "model": null,
+        "resolution": null,
+        "steps": null,
+        "sampler": null,
+        "frames": null,
+        "fps": null
+      },
       "parse_error": null,
       "status": "Candidate"
     },
@@ -201,7 +308,11 @@
       "workflow_id": "image-api-15_通用api提示词_zimage文生图",
       "path": "image/api/15_通用API提示词_ZImage文生图.json",
       "category": "image",
+      "subcategory": "api",
       "name": "15_通用API提示词_ZImage文生图",
+      "title": "通用 API 提示词 → Z-Image。默认 manual，无 API 费用。先在 14 预览流程调试平台，再切换 api。调整 refresh_id 可重新生成提示词；可将预览文本粘贴至 manual_prompt 后手动编辑。平台密钥",
+      "description": "通用 API 提示词 → Z-Image。默认 manual，无 API 费用。先在 14 预览流程调试平台，再切换 api。调整 refresh_id 可重新生成提示词；可将预览文本粘贴至 manual_prompt 后手动编辑。平台密钥只放 providers.local.json。",
+      "has_description": true,
       "version": null,
       "sha256": "169ecb42d6d8e272202c2c44c12f5443d63d931437cba428cdb5604d5a29d109",
       "bytes": 11330,
@@ -226,6 +337,15 @@
         "qwen_3_4b.safetensors",
         "z_image_turbo_bf16.safetensors"
       ],
+      "missing_models": [],
+      "params": {
+        "model": "z_image_turbo_bf16.safetensors",
+        "resolution": "1024x1024",
+        "steps": 8,
+        "sampler": "res_multistep",
+        "frames": null,
+        "fps": null
+      },
       "parse_error": null,
       "status": "Candidate"
     },
@@ -233,7 +353,11 @@
       "workflow_id": "image-ark-18_方舟seedream_机器人改图",
       "path": "image/ark/18_方舟Seedream_机器人改图.json",
       "category": "image",
+      "subcategory": "ark",
       "name": "18_方舟Seedream_机器人改图",
+      "title": "配置部署插件目录中的 ark.local.json，填API Key并在方舟开通模型；模型留空使用配置。确认后打开 enable_api。密钥不要填进画布。参考图会上传到火山方舟，调用使用方舟账户额度。",
+      "description": "配置部署插件目录中的 ark.local.json，填API Key并在方舟开通模型；模型留空使用配置。确认后打开 enable_api。密钥不要填进画布。参考图会上传到火山方舟，调用使用方舟账户额度。\n\n默认单图2K。移除参考图连接可文生图。相同请求复用本地记录；需要新结果才增加refresh_id。结果在output/Ark。",
+      "has_description": true,
       "version": null,
       "sha256": "a639b705dce6c0702199c8f8cca7cd3ba6b23e796988c273a2af7fdb5ec0f0a1",
       "bytes": 4540,
@@ -246,6 +370,15 @@
         "MarkdownNote"
       ],
       "models": [],
+      "missing_models": [],
+      "params": {
+        "model": null,
+        "resolution": null,
+        "steps": null,
+        "sampler": null,
+        "frames": null,
+        "fps": null
+      },
       "parse_error": null,
       "status": "Candidate"
     },
@@ -253,7 +386,11 @@
       "workflow_id": "image-flux-09_flux2klein_快速文生图",
       "path": "image/flux/09_Flux2Klein_快速文生图.json",
       "category": "image",
+      "subcategory": "flux",
       "name": "09_Flux2Klein_快速文生图",
+      "title": "FLUX.2 Klein 4B FP8：4步生成，默认1024×1024。图生图使用参考潜空间，直接描述修改要求。",
+      "description": "FLUX.2 Klein 4B FP8：4步生成，默认1024×1024。图生图使用参考潜空间，直接描述修改要求。",
+      "has_description": true,
       "version": null,
       "sha256": "87168de11e74948db10327b67189d72c999201982e2c17b1016512c9f77d275f",
       "bytes": 11457,
@@ -279,6 +416,15 @@
         "flux2-vae.safetensors",
         "qwen_3_4b.safetensors"
       ],
+      "missing_models": [],
+      "params": {
+        "model": "flux-2-klein-4b-fp8.safetensors",
+        "resolution": null,
+        "steps": null,
+        "sampler": null,
+        "frames": null,
+        "fps": null
+      },
       "parse_error": null,
       "status": "Candidate"
     },
@@ -286,7 +432,11 @@
       "workflow_id": "image-flux-10_flux2klein_指令改图",
       "path": "image/flux/10_Flux2Klein_指令改图.json",
       "category": "image",
+      "subcategory": "flux",
       "name": "10_Flux2Klein_指令改图",
+      "title": "FLUX.2 Klein 4B FP8：4步生成，默认1024×1024。图生图使用参考潜空间，直接描述修改要求。",
+      "description": "FLUX.2 Klein 4B FP8：4步生成，默认1024×1024。图生图使用参考潜空间，直接描述修改要求。",
+      "has_description": true,
       "version": null,
       "sha256": "d113e98b676bc0493945f542120230f23f939770d31886759780e8a624e97f6d",
       "bytes": 16000,
@@ -316,6 +466,15 @@
         "flux2-vae.safetensors",
         "qwen_3_4b.safetensors"
       ],
+      "missing_models": [],
+      "params": {
+        "model": "flux-2-klein-4b-fp8.safetensors",
+        "resolution": null,
+        "steps": null,
+        "sampler": null,
+        "frames": null,
+        "fps": null
+      },
       "parse_error": null,
       "status": "Candidate"
     },
@@ -323,7 +482,11 @@
       "workflow_id": "image-qwen-06_qwen21_turbo_文生图",
       "path": "image/qwen/06_Qwen21_Turbo_文生图.json",
       "category": "image",
+      "subcategory": "qwen",
       "name": "06_Qwen21_Turbo_文生图",
+      "title": "Qwen Image 2.1：默认1024像素；Turbo使用官方8步时间表，标准版使用40步。图生图上传参考图后，用文字描述要修改的内容。标准版与Turbo共享编码器和VAE。提示词增强器未启用，无需额外语言模型。",
+      "description": "Qwen Image 2.1：默认1024像素；Turbo使用官方8步时间表，标准版使用40步。图生图上传参考图后，用文字描述要修改的内容。标准版与Turbo共享编码器和VAE。提示词增强器未启用，无需额外语言模型。",
+      "has_description": true,
       "version": null,
       "sha256": "2fb57a0a27ca535da277b52bb0f732cb4c28375ccbfc05090ac9d6dabf16d747",
       "bytes": 11702,
@@ -348,6 +511,15 @@
         "qwen_image_2.1_turbo_int8_convrot.safetensors",
         "qwen_image_2.1_vae_bf16.safetensors"
       ],
+      "missing_models": [],
+      "params": {
+        "model": "qwen_image_2.1_turbo_int8_convrot.safetensors",
+        "resolution": null,
+        "steps": null,
+        "sampler": null,
+        "frames": null,
+        "fps": null
+      },
       "parse_error": null,
       "status": "Candidate"
     },
@@ -355,7 +527,11 @@
       "workflow_id": "image-qwen-07_qwen21_turbo_指令改图",
       "path": "image/qwen/07_Qwen21_Turbo_指令改图.json",
       "category": "image",
+      "subcategory": "qwen",
       "name": "07_Qwen21_Turbo_指令改图",
+      "title": "Qwen Image 2.1：默认1024像素；Turbo使用官方8步时间表，标准版使用40步。图生图上传参考图后，用文字描述要修改的内容。标准版与Turbo共享编码器和VAE。提示词增强器未启用，无需额外语言模型。",
+      "description": "Qwen Image 2.1：默认1024像素；Turbo使用官方8步时间表，标准版使用40步。图生图上传参考图后，用文字描述要修改的内容。标准版与Turbo共享编码器和VAE。提示词增强器未启用，无需额外语言模型。",
+      "has_description": true,
       "version": null,
       "sha256": "3a268e967d148da6276b1b4c0a469182683881e0a4ee04b43def4d4f0a1ebc32",
       "bytes": 12528,
@@ -381,6 +557,15 @@
         "qwen_image_2.1_turbo_int8_convrot.safetensors",
         "qwen_image_2.1_vae_bf16.safetensors"
       ],
+      "missing_models": [],
+      "params": {
+        "model": "qwen_image_2.1_turbo_int8_convrot.safetensors",
+        "resolution": null,
+        "steps": null,
+        "sampler": null,
+        "frames": null,
+        "fps": null
+      },
       "parse_error": null,
       "status": "Candidate"
     },
@@ -388,7 +573,11 @@
       "workflow_id": "image-qwen-08_qwen21_标准版_文生图",
       "path": "image/qwen/08_Qwen21_标准版_文生图.json",
       "category": "image",
+      "subcategory": "qwen",
       "name": "08_Qwen21_标准版_文生图",
+      "title": "Qwen Image 2.1：默认1024像素；Turbo使用官方8步时间表，标准版使用40步。图生图上传参考图后，用文字描述要修改的内容。标准版与Turbo共享编码器和VAE。提示词增强器未启用，无需额外语言模型。",
+      "description": "Qwen Image 2.1：默认1024像素；Turbo使用官方8步时间表，标准版使用40步。图生图上传参考图后，用文字描述要修改的内容。标准版与Turbo共享编码器和VAE。提示词增强器未启用，无需额外语言模型。",
+      "has_description": true,
       "version": null,
       "sha256": "2b3a8119b5475a821dd482d5eff4d4acb79ae467583cf934109184ca8209d05e",
       "bytes": 8410,
@@ -409,6 +598,15 @@
         "qwen_image_2.1_int8_convrot.safetensors",
         "qwen_image_2.1_vae_bf16.safetensors"
       ],
+      "missing_models": [],
+      "params": {
+        "model": "qwen_image_2.1_int8_convrot.safetensors",
+        "resolution": null,
+        "steps": 40,
+        "sampler": "euler",
+        "frames": null,
+        "fps": null
+      },
       "parse_error": null,
       "status": "Candidate"
     },
@@ -416,7 +614,11 @@
       "workflow_id": "image-sdxl-01_sdxl_文生图",
       "path": "image/sdxl/01_SDXL_文生图.json",
       "category": "image",
+      "subcategory": "sdxl",
       "name": "01_SDXL_文生图",
+      "title": "01_SDXL_文生图",
+      "description": "",
+      "has_description": false,
       "version": null,
       "sha256": "b316d5804bfe610421271bda6b9bc7c864b8eb6e58e52a9933f1db06f6c729b5",
       "bytes": 6575,
@@ -432,6 +634,15 @@
       "models": [
         "sd_xl_base_1.0.safetensors"
       ],
+      "missing_models": [],
+      "params": {
+        "model": "sd_xl_base_1.0.safetensors",
+        "resolution": "1024x1024",
+        "steps": 25,
+        "sampler": "dpmpp_2m",
+        "frames": null,
+        "fps": null
+      },
       "parse_error": null,
       "status": "Candidate"
     },
@@ -439,7 +650,11 @@
       "workflow_id": "image-sdxl-02_sdxl_图生图",
       "path": "image/sdxl/02_SDXL_图生图.json",
       "category": "image",
+      "subcategory": "sdxl",
       "name": "02_SDXL_图生图",
+      "title": "02_SDXL_图生图",
+      "description": "",
+      "has_description": false,
       "version": null,
       "sha256": "219bbea6ca621e5411760b440683d95e4ed62c67acf175c67328d4356b08fe66",
       "bytes": 8407,
@@ -457,6 +672,15 @@
       "models": [
         "sd_xl_base_1.0.safetensors"
       ],
+      "missing_models": [],
+      "params": {
+        "model": "sd_xl_base_1.0.safetensors",
+        "resolution": null,
+        "steps": 25,
+        "sampler": "dpmpp_2m",
+        "frames": null,
+        "fps": null
+      },
       "parse_error": null,
       "status": "Candidate"
     },
@@ -464,7 +688,11 @@
       "workflow_id": "image-sdxl-16_sdxl_我的人物形象_参考照片",
       "path": "image/sdxl/16_SDXL_我的人物形象_参考照片.json",
       "category": "image",
+      "subcategory": "sdxl",
       "name": "16_SDXL_我的人物形象_参考照片",
+      "title": "我的人物形象图 / SDXL 图生图",
+      "description": "# 我的人物形象图 / SDXL 图生图\n\n① 在左侧「上传你的人物照片」选择自己的照片（必须先上传，默认文件名只是提示）。\n② 修改绿色正向提示词：保留人物描述，调整衣服、背景、光线或风格。\n③ 点击运行。默认约100万像素、保持照片比例、28步、CFG 5、denoise 0.28、固定种子42。\n\ndenoise 建议起点：0.15～0.25轻微润色；0.25～0.35尝试形象照；0.40以上变化更明显，脸也更容易改变。\n先固定种子比较参数，满意后可改种子挑选不同结果。\n\n这是基础图生图，不含 FaceID、InstantID 或人物LoRA，不能保证身份一致；低重绘也不保证完全保留五官。适合同构图的小幅调整，不适合从半身照强行变全身/多视角角色。\n人物真实效果须用你的照片验证。所有生成在本地完成，不调用付费API。\n输出：output/Persona/SDXL。左下预览为送入模型的参考图，右侧为结果。",
+      "has_description": true,
       "version": null,
       "sha256": "21189e0ae3ae7f62933e11790e6b4b3e38400161ca10c62e6536cde993514630",
       "bytes": 10165,
@@ -484,6 +712,15 @@
       "models": [
         "sd_xl_base_1.0.safetensors"
       ],
+      "missing_models": [],
+      "params": {
+        "model": "sd_xl_base_1.0.safetensors",
+        "resolution": null,
+        "steps": 56,
+        "sampler": "dpmpp_2m",
+        "frames": null,
+        "fps": null
+      },
       "parse_error": null,
       "status": "Candidate"
     },
@@ -491,7 +728,11 @@
       "workflow_id": "image-sdxl-17_sdxl_机器人重新设计_双强度对比",
       "path": "image/sdxl/17_SDXL_机器人重新设计_双强度对比.json",
       "category": "image",
+      "subcategory": "sdxl",
       "name": "17_SDXL_机器人重新设计_双强度对比",
+      "title": "机器人重新设计 / 双强度对比",
+      "description": "# 机器人重新设计 / 双强度对比\n\n之前工作流16是人像轻微润色，denoise 0.28，不适合机器人重新设计。\n\n本流程一次生成两张：A=0.50中等改版；B=0.70明显改版。两路使用相同参考图、提示词和种子，只改变重绘强度。\n\n默认目标：钴蓝色装甲、橙色肩甲与靴子、发光眼睛、胸口能量核心。改绿色提示词可换设计方向。\n\n左下是原图预览，不是生成结果；右侧A/B为结果。强度更高也可能改变头身比例，不能保证严格保留原角色结构。\n\n全部本地SDXL，不需要API或新模型。保持工作流16，另存为17。",
+      "has_description": true,
       "version": null,
       "sha256": "014140cb00a66833da5e7da1f1dd50deb992b807fb6000fea59faff310e3cb4f",
       "bytes": 13793,
@@ -511,6 +752,15 @@
       "models": [
         "sd_xl_base_1.0.safetensors"
       ],
+      "missing_models": [],
+      "params": {
+        "model": "sd_xl_base_1.0.safetensors",
+        "resolution": null,
+        "steps": 30,
+        "sampler": "dpmpp_2m",
+        "frames": null,
+        "fps": null
+      },
       "parse_error": null,
       "status": "Candidate"
     },
@@ -518,7 +768,11 @@
       "workflow_id": "image-zimage-05_zimageturbo_快速文生图",
       "path": "image/zimage/05_ZImageTurbo_快速文生图.json",
       "category": "image",
+      "subcategory": "zimage",
       "name": "05_ZImageTurbo_快速文生图",
+      "title": "8步快速出图；默认1024×1024。修改提示词后运行。支持中文与英文提示词。原生节点，无需额外插件。",
+      "description": "8步快速出图；默认1024×1024。修改提示词后运行。支持中文与英文提示词。原生节点，无需额外插件。",
+      "has_description": true,
       "version": null,
       "sha256": "14c017661c204861e85b44b952897e5f5c98fb1ef040be5dd2eed691246682b8",
       "bytes": 9051,
@@ -541,6 +795,15 @@
         "qwen_3_4b.safetensors",
         "z_image_turbo_bf16.safetensors"
       ],
+      "missing_models": [],
+      "params": {
+        "model": "z_image_turbo_bf16.safetensors",
+        "resolution": "1024x1024",
+        "steps": 8,
+        "sampler": "res_multistep",
+        "frames": null,
+        "fps": null
+      },
       "parse_error": null,
       "status": "Candidate"
     },
@@ -548,7 +811,11 @@
       "workflow_id": "model3d-hunyuan-13_hunyuan3d21_图片生成3d模型",
       "path": "model3d/hunyuan/13_Hunyuan3D21_图片生成3D模型.json",
       "category": "model3d",
+      "subcategory": "hunyuan",
       "name": "13_Hunyuan3D21_图片生成3D模型",
+      "title": "3D可行性验证：单张参考图生成无贴图GLB网格。默认官方示例图、30步、4096潜变量、256网格解码分辨率。输出不是已绑定角色：仍需要拓扑整理、UV/材质、骨骼和蒙皮。可将GLB导入Blender继续制作。",
+      "description": "3D可行性验证：单张参考图生成无贴图GLB网格。默认官方示例图、30步、4096潜变量、256网格解码分辨率。输出不是已绑定角色：仍需要拓扑整理、UV/材质、骨骼和蒙皮。可将GLB导入Blender继续制作。",
+      "has_description": true,
       "version": null,
       "sha256": "332d92894fb3464b37ba451bd00910c589b51cd3b4897dbc217c7184a0c7b3d9",
       "bytes": 10140,
@@ -569,6 +836,15 @@
       "models": [
         "hunyuan_3d_v2.1.safetensors"
       ],
+      "missing_models": [],
+      "params": {
+        "model": null,
+        "resolution": null,
+        "steps": 30,
+        "sampler": "euler",
+        "frames": null,
+        "fps": null
+      },
       "parse_error": null,
       "status": "Candidate"
     },
@@ -576,7 +852,11 @@
       "workflow_id": "video-ark-19_方舟seedance_机器人图生视频",
       "path": "video/ark/19_方舟Seedance_机器人图生视频.json",
       "category": "video",
+      "subcategory": "ark",
       "name": "19_方舟Seedance_机器人图生视频",
+      "title": "配置部署插件目录中的 ark.local.json，填API Key并在方舟开通模型；模型留空使用配置。确认后打开 enable_api。密钥不要填进画布。参考图会上传到火山方舟，调用使用方舟账户额度。",
+      "description": "配置部署插件目录中的 ark.local.json，填API Key并在方舟开通模型；模型留空使用配置。确认后打开 enable_api。密钥不要填进画布。参考图会上传到火山方舟，调用使用方舟账户额度。\n\n默认5秒720p有声。首帧模式自动使用adaptive比例。提交任务后保留ID；超时重跑会查询原任务。不要随意增加refresh_id，否则会创建新付费任务。停止本地等待不等于取消云端。",
+      "has_description": true,
       "version": null,
       "sha256": "175766587ae3627f42c6cad67a748e433f71b07638fbcb54fe80c5227187e33d",
       "bytes": 5817,
@@ -590,6 +870,15 @@
         "MarkdownNote"
       ],
       "models": [],
+      "missing_models": [],
+      "params": {
+        "model": null,
+        "resolution": null,
+        "steps": null,
+        "sampler": null,
+        "frames": null,
+        "fps": null
+      },
       "parse_error": null,
       "status": "Candidate"
     },
@@ -597,7 +886,11 @@
       "workflow_id": "video-ark-20_方舟seedance_已有任务取回",
       "path": "video/ark/20_方舟Seedance_已有任务取回.json",
       "category": "video",
+      "subcategory": "ark",
       "name": "20_方舟Seedance_已有任务取回",
+      "title": "填写已有任务ID，使用同一方舟账户的配置。此工作流只查询和下载，不创建新生成任务。可用于恢复超时任务；任务和下载地址存在有效期，完成后尽快保存。",
+      "description": "填写已有任务ID，使用同一方舟账户的配置。此工作流只查询和下载，不创建新生成任务。可用于恢复超时任务；任务和下载地址存在有效期，完成后尽快保存。",
+      "has_description": true,
       "version": null,
       "sha256": "bc19ee539491b2d80fa5ba84baf061cbc6d637c2a2ead3361bd0535497e053b6",
       "bytes": 3201,
@@ -609,6 +902,15 @@
         "MarkdownNote"
       ],
       "models": [],
+      "missing_models": [],
+      "params": {
+        "model": null,
+        "resolution": null,
+        "steps": null,
+        "sampler": null,
+        "frames": null,
+        "fps": null
+      },
       "parse_error": null,
       "status": "Candidate"
     },
@@ -616,7 +918,11 @@
       "workflow_id": "video-ark-21_方舟seedance_文生视频",
       "path": "video/ark/21_方舟Seedance_文生视频.json",
       "category": "video",
+      "subcategory": "ark",
       "name": "21_方舟Seedance_文生视频",
+      "title": "配置部署插件目录中的 ark.local.json，填API Key并在方舟开通模型；模型留空使用配置。确认后打开 enable_api。密钥不要填进画布。参考图会上传到火山方舟，调用使用方舟账户额度。",
+      "description": "配置部署插件目录中的 ark.local.json，填API Key并在方舟开通模型；模型留空使用配置。确认后打开 enable_api。密钥不要填进画布。参考图会上传到火山方舟，调用使用方舟账户额度。\n\n纯文字生成5秒720p有声视频。任务取回、超时恢复规则与19相同。",
+      "has_description": true,
       "version": null,
       "sha256": "58fbdc26c601c49dbdd205b19ca591dbe08afdfc4be3a6d732c6cacec334b0cc",
       "bytes": 4842,
@@ -629,6 +935,15 @@
         "MarkdownNote"
       ],
       "models": [],
+      "missing_models": [],
+      "params": {
+        "model": null,
+        "resolution": null,
+        "steps": null,
+        "sampler": null,
+        "frames": null,
+        "fps": null
+      },
       "parse_error": null,
       "status": "Candidate"
     },
@@ -636,7 +951,11 @@
       "workflow_id": "video-ltx-12_ltx23_有声视频",
       "path": "video/ltx/12_LTX23_有声视频.json",
       "category": "video",
+      "subcategory": "ltx",
       "name": "12_LTX23_有声视频",
+      "title": "LTX 2.3 FP8 + 蒸馏LoRA：默认640×384、49帧、24fps，约2秒，联合生成画面与声音。提示词同时描述动作、镜头和声音。先320×192生成，再通过潜空间放大与3步细化得到640×384，以控制显存。不要直接设置长片或",
+      "description": "LTX 2.3 FP8 + 蒸馏LoRA：默认640×384、49帧、24fps，约2秒，联合生成画面与声音。提示词同时描述动作、镜头和声音。先320×192生成，再通过潜空间放大与3步细化得到640×384，以控制显存。不要直接设置长片或高分辨率。",
+      "has_description": true,
       "version": null,
       "sha256": "9177f72091cfa721c05d6df816a6a31440abd88bae244a999e3395a1a70fc36f",
       "bytes": 28016,
@@ -671,6 +990,15 @@
         "ltx-2.3-spatial-upscaler-x2-1.1.safetensors",
         "ltx_2.3_22b_distilled_1.1_lora_dynamic_fro09_avg_rank_111_bf16.safetensors"
       ],
+      "missing_models": [],
+      "params": {
+        "model": "ltx-2.3-22b-dev-fp8.safetensors",
+        "resolution": null,
+        "steps": null,
+        "sampler": null,
+        "frames": 320,
+        "fps": null
+      },
       "parse_error": null,
       "status": "Candidate"
     },
@@ -678,7 +1006,11 @@
       "workflow_id": "video-wan-03_wan22_文生视频",
       "path": "video/wan/03_Wan22_文生视频.json",
       "category": "video",
+      "subcategory": "wan",
       "name": "03_Wan22_文生视频",
+      "title": "本机视频工作流",
+      "description": "# 本机视频工作流\n\nRTX 4090 24GB：默认 832×480、49帧、24fps，约2秒。\n\n先用默认参数预览。更长视频将 length 改为 121（约5秒）；高画质可尝试 1280×704，耗时及显存增加。帧数使用 4n+1。\n\n图生视频：上传自己的图片。文生视频：LoadImage 已旁路，无需上传。\n\n输出自动保存到 output/Wan22。\n\n基于 Comfy-Org 官方 Wan 2.2 5B 模板。",
+      "has_description": true,
       "version": null,
       "sha256": "7824238380a126169a8faf729195c942c13b6098b70e2aa55e6a1b99aa22aeef",
       "bytes": 14684,
@@ -702,6 +1034,15 @@
         "wan2.2_ti2v_5B_fp16.safetensors",
         "wan2.2_vae.safetensors"
       ],
+      "missing_models": [],
+      "params": {
+        "model": "wan2.2_ti2v_5B_fp16.safetensors",
+        "resolution": null,
+        "steps": 20,
+        "sampler": "uni_pc",
+        "frames": null,
+        "fps": null
+      },
       "parse_error": null,
       "status": "Candidate"
     },
@@ -709,7 +1050,11 @@
       "workflow_id": "video-wan-04_wan22_图生视频",
       "path": "video/wan/04_Wan22_图生视频.json",
       "category": "video",
+      "subcategory": "wan",
       "name": "04_Wan22_图生视频",
+      "title": "本机视频工作流",
+      "description": "# 本机视频工作流\n\nRTX 4090 24GB：默认 832×480、49帧、24fps，约2秒。\n\n先用默认参数预览。更长视频将 length 改为 121（约5秒）；高画质可尝试 1280×704，耗时及显存增加。帧数使用 4n+1。\n\n图生视频：上传自己的图片。文生视频：LoadImage 已旁路，无需上传。\n\n输出自动保存到 output/Wan22。\n\n基于 Comfy-Org 官方 Wan 2.2 5B 模板。",
+      "has_description": true,
       "version": null,
       "sha256": "1eafcf8ec34b8aba6d8205745a22f9c9329a4adaea32d62c35798781e593f377",
       "bytes": 14684,
@@ -733,6 +1078,15 @@
         "wan2.2_ti2v_5B_fp16.safetensors",
         "wan2.2_vae.safetensors"
       ],
+      "missing_models": [],
+      "params": {
+        "model": "wan2.2_ti2v_5B_fp16.safetensors",
+        "resolution": null,
+        "steps": 20,
+        "sampler": "uni_pc",
+        "frames": null,
+        "fps": null
+      },
       "parse_error": null,
       "status": "Candidate"
     },
@@ -740,7 +1094,11 @@
       "workflow_id": "video-wan-11_wan22_14b_图生视频",
       "path": "video/wan/11_Wan22_14B_图生视频.json",
       "category": "video",
+      "subcategory": "wan",
       "name": "11_Wan22_14B_图生视频",
+      "title": "Wan 2.2 14B FP8高低噪声模型 + LightX2V 4步LoRA。默认640×384、49帧、16fps，约3秒无声短片。上传参考图并描述动作；尺寸、时长提高会增加显存和耗时。",
+      "description": "Wan 2.2 14B FP8高低噪声模型 + LightX2V 4步LoRA。默认640×384、49帧、16fps，约3秒无声短片。上传参考图并描述动作；尺寸、时长提高会增加显存和耗时。",
+      "has_description": true,
       "version": null,
       "sha256": "b8110663c811efe066032763c20e55aa1fcbc3aa719246f8fbc85d5a2eaed973",
       "bytes": 17386,
@@ -768,6 +1126,15 @@
         "wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors",
         "wan_2.1_vae.safetensors"
       ],
+      "missing_models": [],
+      "params": {
+        "model": "wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors",
+        "resolution": null,
+        "steps": null,
+        "sampler": null,
+        "frames": null,
+        "fps": null
+      },
       "parse_error": null,
       "status": "Candidate"
     }
