@@ -12,11 +12,18 @@
 [CmdletBinding()]
 param(
   [string]$ComfyUIRoot = 'E:\RAE_ToolRoot\comfyui\ComfyUI_windows_portable\ComfyUI',
-  [string]$RepoRoot = (Split-Path $PSScriptRoot -Parent),
+  # 注意：参数默认值里取不到 $PSScriptRoot（PS 5.1 行为），先留空，下面再补
+  [string]$RepoRoot = '',
   [switch]$Apply
 )
 
 $ErrorActionPreference = 'Stop'
+
+if (-not $RepoRoot) {
+  $here = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
+  if (-not $here) { throw '无法确定脚本目录，请用 -RepoRoot 显式指定仓库根' }
+  $RepoRoot = Split-Path -Parent $here
+}
 $repoWorkflows = Join-Path $RepoRoot 'workflows'
 $comfyWorkflows = Join-Path $ComfyUIRoot 'user\default\workflows'
 

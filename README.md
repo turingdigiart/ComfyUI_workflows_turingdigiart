@@ -49,7 +49,7 @@ node scripts/ui2api.mjs --workflow workflows/image/sdxl/01_SDXL_文生图.json
 node scripts/run.mjs --prompt <api.json> --dry-run
 node scripts/run.mjs --prompt <api.json> --set 6.text="一只猫" --wait
 
-# 6) 换机后把 ComfyUI 接到本仓库（先预演，确认后 -Apply）
+# 6) 换机后把 ComfyUI 接到本仓库（先预演，确认后 -Apply；本机 2026-11-16 已完成）
 powershell -File scripts/setup.ps1
 ```
 
@@ -111,3 +111,17 @@ ComfyUI 保存的工作流是 **UI 格式**（`nodes` + `links`），而 `/promp
 - 保留目录本身（带 `.gitkeep` 和说明），**内容全部忽略**
 - `SaveImage`/`SaveVideo` 的 `filename_prefix` 指到这里，出图立刻能在仓库里找到
 - 可随时清空，不构成资产
+
+## 接线状态（2026-11-16 已接）
+
+```
+E:\RAE_ToolRoot\comfyui\...\user\default\workflows
+    → Junction →
+E:\RAE_DevRoot\TECH-COMFY-001_comfyui-workflows\workflows
+```
+
+**真实文件只有一份，在仓库里。** 验证过往返：经 ComfyUI 路径写入 → 仓库立刻出现；从仓库删除 → ComfyUI 路径同时消失。
+
+影响：ComfyUI 界面里的工作流现在是**按类别分文件夹**显示（`image/`、`video/`、`model3d/`、`identity/`），不再是原来的平铺列表。
+
+原目录备份在 `user/default/workflows_backup_20261116_044215`（28 个文件），需要还原时把链接删掉、备份改回原名即可。

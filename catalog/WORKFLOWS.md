@@ -1,7 +1,7 @@
 # 工作流台账
 
 > 由 `scripts/catalog.mjs` 生成，**不要手改**。改工作流后重跑脚本。
-> 生成时间：2026-11-15T20:19:35.845Z
+> 生成时间：2026-11-15T20:42:22.818Z
 > 来源目录：`E:\RAE_DevRoot\TECH-COMFY-001_comfyui-workflows\workflows`
 > 工作流总数：28
 
