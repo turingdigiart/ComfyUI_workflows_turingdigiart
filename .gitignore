@@ -1,8 +1,12 @@
 # 运行产物
-output/
+output/*
 temp/
 *.log
 # 本地覆盖
 .env
 *.local.json
 # 台账是生成物，但必须入库（便于跨机比对）；不要忽略 catalog/
+# 测试与日常产出：目录保留（方便找图），内容不入库
+output/*
+!output/.gitkeep
+!output/README.md
