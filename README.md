@@ -30,6 +30,9 @@ docs/DEV_EXPERIENCE.md          踩坑记录（DEC-ORG-075）
 ## 日常用法
 
 ```powershell
+# 0) 开工前环境自检：真跑一次最小 SDXL 链路，确认能出图（约 2~30 秒）
+node scripts/smoke.mjs
+
 # 1) 改了工作流之后，重建台账
 node scripts/catalog.mjs
 
