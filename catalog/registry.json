@@ -1,0 +1,775 @@
+{
+  "schema": 1,
+  "generated_at": "2026-11-15T20:19:35.845Z",
+  "source": "E:\\RAE_DevRoot\\TECH-COMFY-001_comfyui-workflows\\workflows",
+  "comfyui_version": "0.43.0",
+  "count": 28,
+  "workflows": [
+    {
+      "workflow_id": "identity-tt-ip-写实版-01_写实版_基准脸",
+      "path": "identity/tt-ip-写实版/01_写实版_基准脸.json",
+      "category": "identity",
+      "name": "01_写实版_基准脸",
+      "version": null,
+      "sha256": "28530eb4e489e9c2f25cd5b19b2ba7e88ceb4763ad6746bcc7b3b5b73a6185a4",
+      "bytes": 8377,
+      "node_count": 7,
+      "node_types": [
+        "CheckpointLoaderSimple",
+        "CLIPTextEncode",
+        "EmptyLatentImage",
+        "KSampler",
+        "VAEDecode",
+        "SaveImage"
+      ],
+      "models": [
+        "RealVisXL_V5.0_fp16.safetensors"
+      ],
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "identity-tt-ip-写实版-02_写实版_apose全身",
+      "path": "identity/tt-ip-写实版/02_写实版_Apose全身.json",
+      "category": "identity",
+      "name": "02_写实版_Apose全身",
+      "version": null,
+      "sha256": "39a649b780a595280d2e419fa8859672f26812e9bcea5be4c80a95abf42884c6",
+      "bytes": 11876,
+      "node_count": 10,
+      "node_types": [
+        "CheckpointLoaderSimple",
+        "CLIPTextEncode",
+        "EmptyLatentImage",
+        "LoadImage",
+        "ControlNetLoader",
+        "ControlNetApplyAdvanced",
+        "KSampler",
+        "VAEDecode",
+        "SaveImage"
+      ],
+      "models": [
+        "RealVisXL_V5.0_fp16.safetensors",
+        "controlnet-openpose-sdxl-1.0.safetensors"
+      ],
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "identity-tt-ip-写实版-03_写实版_apose三套穿搭",
+      "path": "identity/tt-ip-写实版/03_写实版_Apose三套穿搭.json",
+      "category": "identity",
+      "name": "03_写实版_Apose三套穿搭",
+      "version": null,
+      "sha256": "5ab8447e4ac28c69c28800c6888286f04f3aa0d5bd1189727b4096e1a0343f6a",
+      "bytes": 61589,
+      "node_count": 45,
+      "node_types": [
+        "CheckpointLoaderSimple",
+        "EmptyLatentImage",
+        "LoadImage",
+        "ControlNetLoader",
+        "CLIPTextEncode",
+        "ControlNetApplyAdvanced",
+        "KSampler",
+        "VAEDecode",
+        "SaveImage"
+      ],
+      "models": [
+        "RealVisXL_V5.0_fp16.safetensors",
+        "controlnet-openpose-sdxl-1.0.safetensors"
+      ],
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "identity-tt-ip-写实版-04_写实版_封面构图",
+      "path": "identity/tt-ip-写实版/04_写实版_封面构图.json",
+      "category": "identity",
+      "name": "04_写实版_封面构图",
+      "version": null,
+      "sha256": "a11e2a07976625ac4e1cd6828dff032024657fd8e5491ba50de3aa50c8488636",
+      "bytes": 13306,
+      "node_count": 12,
+      "node_types": [
+        "CheckpointLoaderSimple",
+        "CLIPTextEncode",
+        "EmptyLatentImage",
+        "KSampler",
+        "VAEDecode",
+        "SaveImage"
+      ],
+      "models": [
+        "RealVisXL_V5.0_fp16.safetensors"
+      ],
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "identity-tt-ip-写实版-05_写实版_放大修图",
+      "path": "identity/tt-ip-写实版/05_写实版_放大修图.json",
+      "category": "identity",
+      "name": "05_写实版_放大修图",
+      "version": null,
+      "sha256": "e607eef72990d15579d95e29a11983074d0d405b363fdd69bcfc465ee71d0f8b",
+      "bytes": 4428,
+      "node_count": 5,
+      "node_types": [
+        "LoadImage",
+        "UpscaleModelLoader",
+        "ImageUpscaleWithModel",
+        "ImageScale",
+        "SaveImage"
+      ],
+      "models": [
+        "4x-UltraSharp.pth"
+      ],
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "identity-tt-ip-写实版-06_写实版_照片一致性",
+      "path": "identity/tt-ip-写实版/06_写实版_照片一致性.json",
+      "category": "identity",
+      "name": "06_写实版_照片一致性",
+      "version": null,
+      "sha256": "58d8c428ea23a0dc9cd14f16976954ceca8a600f2167befbc35251d39b87314f",
+      "bytes": 12253,
+      "node_count": 11,
+      "node_types": [
+        "CheckpointLoaderSimple",
+        "CLIPVisionLoader",
+        "IPAdapterModelLoader",
+        "LoadImage",
+        "IPAdapterAdvanced",
+        "CLIPTextEncode",
+        "EmptyLatentImage",
+        "KSampler",
+        "VAEDecode",
+        "SaveImage"
+      ],
+      "models": [
+        "CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors",
+        "RealVisXL_V5.0_fp16.safetensors",
+        "ip-adapter-plus_sdxl_vit-h.safetensors"
+      ],
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "identity-tt-ip-写实版-07_flux_四套穿搭",
+      "path": "identity/tt-ip-写实版/07_Flux_四套穿搭.json",
+      "category": "identity",
+      "name": "07_Flux_四套穿搭",
+      "version": null,
+      "sha256": "5b754635dd9d332ecad9f314f6d1864f9d023a5435fe7fd5cd443ec99842b685",
+      "bytes": 52606,
+      "node_count": 43,
+      "node_types": [
+        "CheckpointLoaderSimple",
+        "CLIPTextEncode",
+        "EmptyLatentImage",
+        "FluxGuidance",
+        "KSampler",
+        "VAEDecode",
+        "SaveImage"
+      ],
+      "models": [
+        "flux1-dev-fp8.safetensors"
+      ],
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "image-api-14_通用api提示词_预览",
+      "path": "image/api/14_通用API提示词_预览.json",
+      "category": "image",
+      "name": "14_通用API提示词_预览",
+      "version": null,
+      "sha256": "10ff18876e62fe55fb2fe7e3d650c102a36170169fde1db8f8fec71bb7e2c3e8",
+      "bytes": 2185,
+      "node_count": 2,
+      "node_types": [
+        "UniversalPrompter",
+        "PreviewAny"
+      ],
+      "models": [],
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "image-api-15_通用api提示词_zimage文生图",
+      "path": "image/api/15_通用API提示词_ZImage文生图.json",
+      "category": "image",
+      "name": "15_通用API提示词_ZImage文生图",
+      "version": null,
+      "sha256": "169ecb42d6d8e272202c2c44c12f5443d63d931437cba428cdb5604d5a29d109",
+      "bytes": 11330,
+      "node_count": 13,
+      "node_types": [
+        "UNETLoader",
+        "CLIPLoader",
+        "VAELoader",
+        "CLIPTextEncode",
+        "ConditioningZeroOut",
+        "EmptySD3LatentImage",
+        "ModelSamplingAuraFlow",
+        "KSampler",
+        "VAEDecode",
+        "SaveImage",
+        "MarkdownNote",
+        "UniversalPrompter",
+        "PreviewAny"
+      ],
+      "models": [
+        "ae.safetensors",
+        "qwen_3_4b.safetensors",
+        "z_image_turbo_bf16.safetensors"
+      ],
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "image-ark-18_方舟seedream_机器人改图",
+      "path": "image/ark/18_方舟Seedream_机器人改图.json",
+      "category": "image",
+      "name": "18_方舟Seedream_机器人改图",
+      "version": null,
+      "sha256": "a639b705dce6c0702199c8f8cca7cd3ba6b23e796988c273a2af7fdb5ec0f0a1",
+      "bytes": 4540,
+      "node_count": 5,
+      "node_types": [
+        "LoadImage",
+        "ArkSeedream",
+        "SaveImage",
+        "PreviewAny",
+        "MarkdownNote"
+      ],
+      "models": [],
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "image-flux-09_flux2klein_快速文生图",
+      "path": "image/flux/09_Flux2Klein_快速文生图.json",
+      "category": "image",
+      "name": "09_Flux2Klein_快速文生图",
+      "version": null,
+      "sha256": "87168de11e74948db10327b67189d72c999201982e2c17b1016512c9f77d275f",
+      "bytes": 11457,
+      "node_count": 14,
+      "node_types": [
+        "UNETLoader",
+        "CLIPLoader",
+        "VAELoader",
+        "CLIPTextEncode",
+        "ConditioningZeroOut",
+        "EmptyFlux2LatentImage",
+        "Flux2Scheduler",
+        "RandomNoise",
+        "KSamplerSelect",
+        "CFGGuider",
+        "SamplerCustomAdvanced",
+        "VAEDecode",
+        "SaveImage",
+        "MarkdownNote"
+      ],
+      "models": [
+        "flux-2-klein-4b-fp8.safetensors",
+        "flux2-vae.safetensors",
+        "qwen_3_4b.safetensors"
+      ],
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "image-flux-10_flux2klein_指令改图",
+      "path": "image/flux/10_Flux2Klein_指令改图.json",
+      "category": "image",
+      "name": "10_Flux2Klein_指令改图",
+      "version": null,
+      "sha256": "d113e98b676bc0493945f542120230f23f939770d31886759780e8a624e97f6d",
+      "bytes": 16000,
+      "node_count": 19,
+      "node_types": [
+        "UNETLoader",
+        "CLIPLoader",
+        "VAELoader",
+        "CLIPTextEncode",
+        "ConditioningZeroOut",
+        "LoadImage",
+        "ImageScale",
+        "VAEEncode",
+        "ReferenceLatent",
+        "EmptyFlux2LatentImage",
+        "Flux2Scheduler",
+        "RandomNoise",
+        "KSamplerSelect",
+        "CFGGuider",
+        "SamplerCustomAdvanced",
+        "VAEDecode",
+        "SaveImage",
+        "MarkdownNote"
+      ],
+      "models": [
+        "flux-2-klein-4b-fp8.safetensors",
+        "flux2-vae.safetensors",
+        "qwen_3_4b.safetensors"
+      ],
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "image-qwen-06_qwen21_turbo_文生图",
+      "path": "image/qwen/06_Qwen21_Turbo_文生图.json",
+      "category": "image",
+      "name": "06_Qwen21_Turbo_文生图",
+      "version": null,
+      "sha256": "2fb57a0a27ca535da277b52bb0f732cb4c28375ccbfc05090ac9d6dabf16d747",
+      "bytes": 11702,
+      "node_count": 13,
+      "node_types": [
+        "UNETLoader",
+        "CLIPLoader",
+        "VAELoader",
+        "TextEncodeQwenImage21",
+        "QwenImage21Cache",
+        "ManualSigmas",
+        "RandomNoise",
+        "KSamplerSelect",
+        "CFGGuider",
+        "SamplerCustomAdvanced",
+        "VAEDecode",
+        "SaveImage",
+        "MarkdownNote"
+      ],
+      "models": [
+        "qwen3vl_8b_int8_convrot.safetensors",
+        "qwen_image_2.1_turbo_int8_convrot.safetensors",
+        "qwen_image_2.1_vae_bf16.safetensors"
+      ],
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "image-qwen-07_qwen21_turbo_指令改图",
+      "path": "image/qwen/07_Qwen21_Turbo_指令改图.json",
+      "category": "image",
+      "name": "07_Qwen21_Turbo_指令改图",
+      "version": null,
+      "sha256": "3a268e967d148da6276b1b4c0a469182683881e0a4ee04b43def4d4f0a1ebc32",
+      "bytes": 12528,
+      "node_count": 14,
+      "node_types": [
+        "UNETLoader",
+        "CLIPLoader",
+        "VAELoader",
+        "LoadImage",
+        "TextEncodeQwenImage21",
+        "QwenImage21Cache",
+        "ManualSigmas",
+        "RandomNoise",
+        "KSamplerSelect",
+        "CFGGuider",
+        "SamplerCustomAdvanced",
+        "VAEDecode",
+        "SaveImage",
+        "MarkdownNote"
+      ],
+      "models": [
+        "qwen3vl_8b_int8_convrot.safetensors",
+        "qwen_image_2.1_turbo_int8_convrot.safetensors",
+        "qwen_image_2.1_vae_bf16.safetensors"
+      ],
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "image-qwen-08_qwen21_标准版_文生图",
+      "path": "image/qwen/08_Qwen21_标准版_文生图.json",
+      "category": "image",
+      "name": "08_Qwen21_标准版_文生图",
+      "version": null,
+      "sha256": "2b3a8119b5475a821dd482d5eff4d4acb79ae467583cf934109184ca8209d05e",
+      "bytes": 8410,
+      "node_count": 9,
+      "node_types": [
+        "UNETLoader",
+        "CLIPLoader",
+        "VAELoader",
+        "TextEncodeQwenImage21",
+        "QwenImage21Cache",
+        "KSampler",
+        "VAEDecode",
+        "SaveImage",
+        "MarkdownNote"
+      ],
+      "models": [
+        "qwen3vl_8b_int8_convrot.safetensors",
+        "qwen_image_2.1_int8_convrot.safetensors",
+        "qwen_image_2.1_vae_bf16.safetensors"
+      ],
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "image-sdxl-01_sdxl_文生图",
+      "path": "image/sdxl/01_SDXL_文生图.json",
+      "category": "image",
+      "name": "01_SDXL_文生图",
+      "version": null,
+      "sha256": "b316d5804bfe610421271bda6b9bc7c864b8eb6e58e52a9933f1db06f6c729b5",
+      "bytes": 6575,
+      "node_count": 7,
+      "node_types": [
+        "CheckpointLoaderSimple",
+        "CLIPTextEncode",
+        "EmptyLatentImage",
+        "KSampler",
+        "VAEDecode",
+        "SaveImage"
+      ],
+      "models": [
+        "sd_xl_base_1.0.safetensors"
+      ],
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "image-sdxl-02_sdxl_图生图",
+      "path": "image/sdxl/02_SDXL_图生图.json",
+      "category": "image",
+      "name": "02_SDXL_图生图",
+      "version": null,
+      "sha256": "219bbea6ca621e5411760b440683d95e4ed62c67acf175c67328d4356b08fe66",
+      "bytes": 8407,
+      "node_count": 9,
+      "node_types": [
+        "CheckpointLoaderSimple",
+        "CLIPTextEncode",
+        "KSampler",
+        "VAEDecode",
+        "SaveImage",
+        "LoadImage",
+        "ImageScale",
+        "VAEEncode"
+      ],
+      "models": [
+        "sd_xl_base_1.0.safetensors"
+      ],
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "image-sdxl-16_sdxl_我的人物形象_参考照片",
+      "path": "image/sdxl/16_SDXL_我的人物形象_参考照片.json",
+      "category": "image",
+      "name": "16_SDXL_我的人物形象_参考照片",
+      "version": null,
+      "sha256": "21189e0ae3ae7f62933e11790e6b4b3e38400161ca10c62e6536cde993514630",
+      "bytes": 10165,
+      "node_count": 11,
+      "node_types": [
+        "CheckpointLoaderSimple",
+        "CLIPTextEncode",
+        "KSampler",
+        "VAEDecode",
+        "SaveImage",
+        "LoadImage",
+        "ImageScaleToTotalPixels",
+        "VAEEncode",
+        "MarkdownNote",
+        "PreviewImage"
+      ],
+      "models": [
+        "sd_xl_base_1.0.safetensors"
+      ],
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "image-sdxl-17_sdxl_机器人重新设计_双强度对比",
+      "path": "image/sdxl/17_SDXL_机器人重新设计_双强度对比.json",
+      "category": "image",
+      "name": "17_SDXL_机器人重新设计_双强度对比",
+      "version": null,
+      "sha256": "014140cb00a66833da5e7da1f1dd50deb992b807fb6000fea59faff310e3cb4f",
+      "bytes": 13793,
+      "node_count": 14,
+      "node_types": [
+        "CheckpointLoaderSimple",
+        "CLIPTextEncode",
+        "KSampler",
+        "VAEDecode",
+        "SaveImage",
+        "LoadImage",
+        "ImageScaleToTotalPixels",
+        "VAEEncode",
+        "MarkdownNote",
+        "PreviewImage"
+      ],
+      "models": [
+        "sd_xl_base_1.0.safetensors"
+      ],
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "image-zimage-05_zimageturbo_快速文生图",
+      "path": "image/zimage/05_ZImageTurbo_快速文生图.json",
+      "category": "image",
+      "name": "05_ZImageTurbo_快速文生图",
+      "version": null,
+      "sha256": "14c017661c204861e85b44b952897e5f5c98fb1ef040be5dd2eed691246682b8",
+      "bytes": 9051,
+      "node_count": 11,
+      "node_types": [
+        "UNETLoader",
+        "CLIPLoader",
+        "VAELoader",
+        "CLIPTextEncode",
+        "ConditioningZeroOut",
+        "EmptySD3LatentImage",
+        "ModelSamplingAuraFlow",
+        "KSampler",
+        "VAEDecode",
+        "SaveImage",
+        "MarkdownNote"
+      ],
+      "models": [
+        "ae.safetensors",
+        "qwen_3_4b.safetensors",
+        "z_image_turbo_bf16.safetensors"
+      ],
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "model3d-hunyuan-13_hunyuan3d21_图片生成3d模型",
+      "path": "model3d/hunyuan/13_Hunyuan3D21_图片生成3D模型.json",
+      "category": "model3d",
+      "name": "13_Hunyuan3D21_图片生成3D模型",
+      "version": null,
+      "sha256": "332d92894fb3464b37ba451bd00910c589b51cd3b4897dbc217c7184a0c7b3d9",
+      "bytes": 10140,
+      "node_count": 11,
+      "node_types": [
+        "ImageOnlyCheckpointLoader",
+        "LoadImage",
+        "CLIPVisionEncode",
+        "Hunyuan3Dv2Conditioning",
+        "ModelSamplingAuraFlow",
+        "EmptyLatentHunyuan3Dv2",
+        "KSampler",
+        "VAEDecodeHunyuan3D",
+        "VoxelToMesh",
+        "SaveGLB",
+        "MarkdownNote"
+      ],
+      "models": [
+        "hunyuan_3d_v2.1.safetensors"
+      ],
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "video-ark-19_方舟seedance_机器人图生视频",
+      "path": "video/ark/19_方舟Seedance_机器人图生视频.json",
+      "category": "video",
+      "name": "19_方舟Seedance_机器人图生视频",
+      "version": null,
+      "sha256": "175766587ae3627f42c6cad67a748e433f71b07638fbcb54fe80c5227187e33d",
+      "bytes": 5817,
+      "node_count": 6,
+      "node_types": [
+        "LoadImage",
+        "ArkSeedanceSubmit",
+        "PreviewAny",
+        "ArkSeedanceFetch",
+        "SaveVideo",
+        "MarkdownNote"
+      ],
+      "models": [],
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "video-ark-20_方舟seedance_已有任务取回",
+      "path": "video/ark/20_方舟Seedance_已有任务取回.json",
+      "category": "video",
+      "name": "20_方舟Seedance_已有任务取回",
+      "version": null,
+      "sha256": "bc19ee539491b2d80fa5ba84baf061cbc6d637c2a2ead3361bd0535497e053b6",
+      "bytes": 3201,
+      "node_count": 4,
+      "node_types": [
+        "ArkSeedanceFetch",
+        "SaveVideo",
+        "PreviewAny",
+        "MarkdownNote"
+      ],
+      "models": [],
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "video-ark-21_方舟seedance_文生视频",
+      "path": "video/ark/21_方舟Seedance_文生视频.json",
+      "category": "video",
+      "name": "21_方舟Seedance_文生视频",
+      "version": null,
+      "sha256": "58fbdc26c601c49dbdd205b19ca591dbe08afdfc4be3a6d732c6cacec334b0cc",
+      "bytes": 4842,
+      "node_count": 5,
+      "node_types": [
+        "ArkSeedanceSubmit",
+        "PreviewAny",
+        "ArkSeedanceFetch",
+        "SaveVideo",
+        "MarkdownNote"
+      ],
+      "models": [],
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "video-ltx-12_ltx23_有声视频",
+      "path": "video/ltx/12_LTX23_有声视频.json",
+      "category": "video",
+      "name": "12_LTX23_有声视频",
+      "version": null,
+      "sha256": "9177f72091cfa721c05d6df816a6a31440abd88bae244a999e3395a1a70fc36f",
+      "bytes": 28016,
+      "node_count": 30,
+      "node_types": [
+        "CheckpointLoaderSimple",
+        "LoraLoaderModelOnly",
+        "LTXAVTextEncoderLoader",
+        "LTXVAudioVAELoader",
+        "CLIPTextEncode",
+        "LTXVConditioning",
+        "EmptyLTXVLatentVideo",
+        "LTXVEmptyLatentAudio",
+        "LTXVConcatAVLatent",
+        "ManualSigmas",
+        "RandomNoise",
+        "KSamplerSelect",
+        "CFGGuider",
+        "SamplerCustomAdvanced",
+        "LTXVSeparateAVLatent",
+        "LatentUpscaleModelLoader",
+        "LTXVLatentUpsampler",
+        "VAEDecodeTiled",
+        "LTXVAudioVAEDecode",
+        "CreateVideo",
+        "SaveVideo",
+        "MarkdownNote"
+      ],
+      "models": [
+        "gemma_3_12B_it_fp4_mixed.safetensors",
+        "ltx-2.3-22b-dev-fp8.safetensors",
+        "ltx-2.3-spatial-upscaler-x2-1.1.safetensors",
+        "ltx_2.3_22b_distilled_1.1_lora_dynamic_fro09_avg_rank_111_bf16.safetensors"
+      ],
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "video-wan-03_wan22_文生视频",
+      "path": "video/wan/03_Wan22_文生视频.json",
+      "category": "video",
+      "name": "03_Wan22_文生视频",
+      "version": null,
+      "sha256": "7824238380a126169a8faf729195c942c13b6098b70e2aa55e6a1b99aa22aeef",
+      "bytes": 14684,
+      "node_count": 13,
+      "node_types": [
+        "UNETLoader",
+        "CLIPLoader",
+        "VAELoader",
+        "VAEDecode",
+        "CreateVideo",
+        "SaveVideo",
+        "Wan22ImageToVideoLatent",
+        "LoadImage",
+        "CLIPTextEncode",
+        "KSampler",
+        "ModelSamplingSD3",
+        "MarkdownNote"
+      ],
+      "models": [
+        "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+        "wan2.2_ti2v_5B_fp16.safetensors",
+        "wan2.2_vae.safetensors"
+      ],
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "video-wan-04_wan22_图生视频",
+      "path": "video/wan/04_Wan22_图生视频.json",
+      "category": "video",
+      "name": "04_Wan22_图生视频",
+      "version": null,
+      "sha256": "1eafcf8ec34b8aba6d8205745a22f9c9329a4adaea32d62c35798781e593f377",
+      "bytes": 14684,
+      "node_count": 13,
+      "node_types": [
+        "UNETLoader",
+        "CLIPLoader",
+        "VAELoader",
+        "VAEDecode",
+        "CreateVideo",
+        "SaveVideo",
+        "Wan22ImageToVideoLatent",
+        "LoadImage",
+        "CLIPTextEncode",
+        "KSampler",
+        "ModelSamplingSD3",
+        "MarkdownNote"
+      ],
+      "models": [
+        "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+        "wan2.2_ti2v_5B_fp16.safetensors",
+        "wan2.2_vae.safetensors"
+      ],
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "video-wan-11_wan22_14b_图生视频",
+      "path": "video/wan/11_Wan22_14B_图生视频.json",
+      "category": "video",
+      "name": "11_Wan22_14B_图生视频",
+      "version": null,
+      "sha256": "b8110663c811efe066032763c20e55aa1fcbc3aa719246f8fbc85d5a2eaed973",
+      "bytes": 17386,
+      "node_count": 18,
+      "node_types": [
+        "CLIPLoader",
+        "VAELoader",
+        "CLIPTextEncode",
+        "LoadImage",
+        "WanImageToVideo",
+        "UNETLoader",
+        "LoraLoaderModelOnly",
+        "ModelSamplingSD3",
+        "KSamplerAdvanced",
+        "VAEDecodeTiled",
+        "CreateVideo",
+        "SaveVideo",
+        "MarkdownNote"
+      ],
+      "models": [
+        "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+        "wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors",
+        "wan2.2_i2v_lightx2v_4steps_lora_v1_high_noise.safetensors",
+        "wan2.2_i2v_lightx2v_4steps_lora_v1_low_noise.safetensors",
+        "wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors",
+        "wan_2.1_vae.safetensors"
+      ],
+      "parse_error": null,
+      "status": "Candidate"
+    }
+  ]
+}

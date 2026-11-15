@@ -1,0 +1,230 @@
+{
+  "id": "90db2de2-bcf6-43dd-8958-145a35d38b50",
+  "revision": 0,
+  "last_node_id": 5,
+  "last_link_id": 3,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "LoadImage",
+      "title": "Load Image",
+      "pos": [
+        0,
+        0
+      ],
+      "size": [
+        450,
+        540
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            1
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "3d_evaluation.png",
+        "image"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "ArkSeedream",
+      "title": "火山方舟 Seedream 图片",
+      "pos": [
+        520,
+        0
+      ],
+      "size": [
+        450,
+        540
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "reference_images",
+          "type": "IMAGE",
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "name": "图片",
+          "type": "IMAGE",
+          "links": [
+            2
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "调用信息",
+          "type": "STRING",
+          "links": [
+            3
+          ],
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ArkSeedream"
+      },
+      "widgets_values": [
+        false,
+        "参考图片重新设计机器人：保持可爱的大头短身比例和完整全身，使用钴蓝色装甲、橙色配件、发光眼睛及胸口能量核心，干净的浅灰背景，精致3D角色设定图。",
+        "",
+        "2K",
+        true,
+        0
+      ]
+    },
+    {
+      "id": 3,
+      "type": "SaveImage",
+      "title": "Save Image",
+      "pos": [
+        1040,
+        0
+      ],
+      "size": [
+        450,
+        540
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "links": [],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SaveImage"
+      },
+      "widgets_values": [
+        "Ark/Seedream"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "PreviewAny",
+      "title": "Preview as Text",
+      "pos": [
+        1040,
+        620
+      ],
+      "size": [
+        450,
+        540
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "source",
+          "type": "*",
+          "link": 3
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PreviewAny"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 5,
+      "type": "MarkdownNote",
+      "title": "开始前先读 / 云端付费接口",
+      "pos": [
+        0,
+        -430
+      ],
+      "size": [
+        950,
+        380
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "properties": {},
+      "widgets_values": [
+        "配置部署插件目录中的 ark.local.json，填API Key并在方舟开通模型；模型留空使用配置。确认后打开 enable_api。密钥不要填进画布。参考图会上传到火山方舟，调用使用方舟账户额度。\n\n默认单图2K。移除参考图连接可文生图。相同请求复用本地记录；需要新结果才增加refresh_id。结果在output/Ark。"
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      2,
+      0,
+      "IMAGE"
+    ],
+    [
+      2,
+      2,
+      0,
+      3,
+      0,
+      "IMAGE"
+    ],
+    [
+      3,
+      2,
+      1,
+      4,
+      0,
+      "STRING"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.65,
+      "offset": [
+        30,
+        460
+      ]
+    }
+  },
+  "version": 0.4
+}

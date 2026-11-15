@@ -1,0 +1,115 @@
+{
+  "id": "85096381-321a-49e6-a138-823b2954597b",
+  "revision": 0,
+  "last_node_id": 2,
+  "last_link_id": 1,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "UniversalPrompter",
+      "title": "通用提示词：先手动试用，配置密钥后切换 api",
+      "pos": [
+        -700,
+        60
+      ],
+      "size": [
+        490,
+        700
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "提示词",
+          "type": "STRING",
+          "links": [
+            1
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "调用信息",
+          "type": "STRING",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "UniversalPrompter"
+      },
+      "widgets_values": [
+        "manual",
+        "DeepSeek",
+        "一只小狐狸站在清晨的森林里，柔和的阳光。",
+        "image",
+        "English",
+        "A red fox in a peaceful forest, soft morning sunlight, cinematic photography.",
+        "",
+        "",
+        0.7,
+        2048,
+        120,
+        0
+      ]
+    },
+    {
+      "id": 2,
+      "type": "PreviewAny",
+      "title": "生成的提示词 / 可复制后手动修改",
+      "pos": [
+        -130,
+        -400
+      ],
+      "size": [
+        490,
+        340
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "source",
+          "type": "*",
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PreviewAny"
+      },
+      "widgets_values": []
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      2,
+      0,
+      "STRING"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.8,
+      "offset": [
+        780,
+        480
+      ]
+    }
+  },
+  "version": 0.4
+}

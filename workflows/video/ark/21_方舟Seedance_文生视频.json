@@ -1,0 +1,249 @@
+{
+  "id": "de1fd5ff-32b5-46f8-bdc7-0492d2f93a3e",
+  "revision": 0,
+  "last_node_id": 5,
+  "last_link_id": 3,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "ArkSeedanceSubmit",
+      "title": "火山方舟 Seedance 提交任务",
+      "pos": [
+        0,
+        0
+      ],
+      "size": [
+        450,
+        540
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "reference_images",
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "last_frame",
+          "type": "IMAGE",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "任务ID",
+          "type": "STRING",
+          "links": [
+            1,
+            2
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "调用信息",
+          "type": "STRING",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ArkSeedanceSubmit"
+      },
+      "widgets_values": [
+        false,
+        "可爱机器人缓慢抬起右手向镜头挥手，眼睛轻轻闪烁，固定镜头，保持角色造型一致，轻微机械运转音，无对白。",
+        "",
+        "text",
+        "720p",
+        "16:9",
+        5,
+        true,
+        true,
+        0
+      ]
+    },
+    {
+      "id": 2,
+      "type": "PreviewAny",
+      "title": "Preview as Text",
+      "pos": [
+        520,
+        0
+      ],
+      "size": [
+        450,
+        540
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "source",
+          "type": "*",
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PreviewAny"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 3,
+      "type": "ArkSeedanceFetch",
+      "title": "火山方舟 Seedance 获取视频",
+      "pos": [
+        520,
+        620
+      ],
+      "size": [
+        450,
+        540
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "task_id",
+          "type": "STRING",
+          "link": 2,
+          "widget": {
+            "name": "task_id"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "视频",
+          "type": "VIDEO",
+          "links": [
+            3
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "任务信息",
+          "type": "STRING",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ArkSeedanceFetch"
+      },
+      "widgets_values": [
+        "",
+        600
+      ]
+    },
+    {
+      "id": 4,
+      "type": "SaveVideo",
+      "title": "Save Video",
+      "pos": [
+        1040,
+        0
+      ],
+      "size": [
+        450,
+        540
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "link": 3
+        }
+      ],
+      "outputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "links": [],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SaveVideo"
+      },
+      "widgets_values": [
+        "Ark/TextToVideo",
+        "mp4",
+        "auto"
+      ]
+    },
+    {
+      "id": 5,
+      "type": "MarkdownNote",
+      "title": "开始前先读 / 云端付费接口",
+      "pos": [
+        0,
+        -430
+      ],
+      "size": [
+        950,
+        380
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "properties": {},
+      "widgets_values": [
+        "配置部署插件目录中的 ark.local.json，填API Key并在方舟开通模型；模型留空使用配置。确认后打开 enable_api。密钥不要填进画布。参考图会上传到火山方舟，调用使用方舟账户额度。\n\n纯文字生成5秒720p有声视频。任务取回、超时恢复规则与19相同。"
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      2,
+      0,
+      "STRING"
+    ],
+    [
+      2,
+      1,
+      0,
+      3,
+      0,
+      "STRING"
+    ],
+    [
+      3,
+      3,
+      0,
+      4,
+      0,
+      "VIDEO"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.65,
+      "offset": [
+        30,
+        460
+      ]
+    }
+  },
+  "version": 0.4
+}

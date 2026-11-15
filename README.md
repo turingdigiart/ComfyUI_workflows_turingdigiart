@@ -1,0 +1,51 @@
+# TECH-COMFY-001｜ComfyUI 工作流与节点开发
+
+机构 ComfyUI 生产环境的**版本化工作流仓库**。运行时（ComfyUI 本体、模型权重）不在本仓库，
+由 `TOOL-ORG-COMFYUI-001` 与 `WEIGHTS_REGISTRY` 管理；这里只管"怎么连、怎么用、改过什么"。
+
+## 为什么存在
+
+工作流只存在 ComfyUI 的 `user/default/workflows/` 里时，改了就没了、换机就丢了、
+没人知道 v002 比 v001 改了什么。本仓库把它变成可 diff、可回滚、可交接的代码资产。
+
+## 结构
+
+```
+workflows/<类别>/<名称>.json    工作流本体（原样 ComfyUI JSON，不做任何封装）
+catalog/registry.json           机器读台账（由脚本生成，勿手改）
+catalog/WORKFLOWS.md            人读台账（由脚本生成，勿手改）
+lib/comfy-api.mjs               本地 API 客户端
+scripts/catalog.mjs             扫工作流 → 重建台账
+scripts/verify.mjs              JSON + 节点 + 模型三重校验
+scripts/setup.ps1               把 ComfyUI 工作流目录接到本仓库（junction）
+docs/DEV_EXPERIENCE.md          踩坑记录（DEC-ORG-075）
+```
+
+## 三条硬约束（保证手工开发兼容）
+
+1. **工作流就是原样 ComfyUI JSON**，不加私有字段——UI 保存不会丢掉我们的元数据，因为元数据不在 JSON 里。
+2. **元数据放台账**（`registry.json`），不塞进工作流。
+3. **文件名带 `_vNNN_` 永不覆盖**：新版本另存，旧版本留着。
+
+## 日常用法
+
+```powershell
+# 1) 改了工作流之后，重建台账
+node scripts/catalog.mjs
+
+# 2) 提交前校验（JSON 可解析 + 节点存在 + 模型在位）
+node scripts/verify.mjs
+
+# 3) 换机后把 ComfyUI 接到本仓库（先预演，确认后 -Apply）
+powershell -File scripts/setup.ps1
+```
+
+## 校验的三种结果
+
+| 结果 | 含义 | 处理 |
+|---|---|---|
+| `[FAIL] 缺节点` | ComfyUI 升级或删了自定义节点包，工作流跑不了 | 装回节点包，或改工作流 |
+| `[WARN] 缺模型` | 权重不在本机 | 按 `WEIGHTS_REGISTRY` 补齐，或把工作流标 Blocked |
+| 通过 | 现在就能跑 | — |
+
+`verify.mjs` 连不上 8188 时直接失败——**"没检查"不等于"通过"**。只查文件用 `--offline`，但要明白那时不校验节点。
