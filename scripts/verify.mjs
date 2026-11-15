@@ -4,6 +4,7 @@
 // 退出码: 0 全通过（可含警告）; 1 有失败
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 
 const args = process.argv.slice(2);
 const has = k => args.includes(k);
@@ -12,6 +13,7 @@ const offline = has('--offline');
 const registryPath = path.resolve(argOf('--catalog', 'catalog/registry.json'));
 const modelsRoot = path.resolve(process.env.COMFY_MODELS || 'E:/RAE_ToolRoot/comfyui/ComfyUI_windows_portable/ComfyUI/models');
 const base = process.env.COMFYUI_BASE || 'http://127.0.0.1:8188';
+const workflowsRoot = path.resolve(argOf('--workflows', 'workflows'));
 const MODEL_EXT = /\.(safetensors|ckpt|pt|pth|gguf|bin|onnx|sft)$/i;
 const FRONTEND_ONLY = new Set(['MarkdownNote', 'Note', 'Reroute', 'PrimitiveNode', 'PreviewAny']);
 
@@ -62,6 +64,19 @@ if (!fs.existsSync(registryPath)) {
       if (missModels.length) warns.push(w.path + ': 缺模型 ' + missModels.join(', '));
     }
 
+    // 台账新鲜度：工作流改了却没重跑 catalog.mjs，台账就开始说谎。
+    if (fs.existsSync(workflowsRoot)) {
+      const seen = new Set();
+      for (const w of registry.workflows) {
+        const abs = path.join(workflowsRoot, w.path);
+        seen.add(path.resolve(abs));
+        if (!fs.existsSync(abs)) { fails.push(w.path + ': 台账里有、磁盘上没有（文件被删或改名）'); continue; }
+        const sha = crypto.createHash('sha256').update(fs.readFileSync(abs)).digest('hex');
+        if (sha !== w.sha256) fails.push(w.path + ': 内容与台账不一致（重跑 scripts/catalog.mjs）');
+      }
+      const walk = d => { for (const e of fs.readdirSync(d, { withFileTypes: true })) { const q = path.join(d, e.name); if (e.isDirectory()) walk(q); else if (e.name.endsWith('.json')) if (!seen.has(path.resolve(q))) fails.push(path.relative(workflowsRoot, q).replace(/\\/g, '/') + ': 磁盘上有、台账里没有（重跑 scripts/catalog.mjs）'); } };
+      walk(workflowsRoot);
+    }
     console.log('台账 ' + registry.workflows.length + ' 个工作流 | 模型目录 ' + onDisk.size + ' 个文件 | 节点库 ' + (avail ? avail.size + ' 个类型' : '未检查(offline)'));
     for (const f of fails) console.log('  [FAIL] ' + f);
     for (const w of warns) console.log('  [WARN] ' + w);
