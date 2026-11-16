@@ -67,8 +67,16 @@ nodes/<插件名>/          ← 源码母版，进 Git
 ```
 
 与运行时的关系：ComfyUI 只从 `custom_nodes/` 加载，所以 `nodes/<插件>` 需要**链接或复制**进
-`custom_nodes/`。**当前状态：`comfyui-ark-media` 已随运行时安装；自研 `tt-tripo` 尚未接入**，
-因此 `model3d/tripo/26_Tripo_文生3D.json` 校验报「缺节点 TTTripoSubmit / TTTripoFetch」。
+`custom_nodes/`。**当前状态（2026-11-16 收口）：`comfyui-ark-media` 随运行时安装；
+自研 `tt-tripo` 已建 junction 接入并重启生效**，`/object_info` 节点库 1059 → **1061**，
+`TTTripoSubmit` / `TTTripoFetch` 可查，`model3d/tripo/26_Tripo_文生3D.json` 校验转为通过。
+
+接线命令（换机时照做）：
+
+```powershell
+mklink /J "<runtime>\ComfyUI\custom_nodes\tt-tripo" "<repo>\nodes\tt-tripo"
+# 重启 ComfyUI 后在 /object_info 里确认 TTTripoSubmit 出现
+```
 
 命名：目录小写短横线（`tt-tripo`），节点类前缀 `TT`（在 ComfyUI 搜索框输 `TT` 就知道哪些是自研）。
 
@@ -108,12 +116,14 @@ nodes/<插件名>/          ← 源码母版，进 Git
 
 ```
 工作流 43 条：image 16 / identity 16 / video 8 / model3d 2 / audio 1
-插件 2 个：comfyui-ark-media（已装）、tt-tripo（未接入 custom_nodes）
+        其中 UI 格式 42 条、API 格式 1 条（image/poster/POSTER_LAYERED_v001_api.json）
+插件 2 个：comfyui-ark-media（随运行时）、tt-tripo（junction 已接，重启后生效）
 台账：registry.json / WORKFLOWS.md / INDEX.md
-校验：FAIL 1（tripo 缺节点）、WARN 6（缺模型）、缺说明 22 条
+校验：**通过**（FAIL 0 / WARN 6 缺模型）；缺说明 0；节点库 1061
 ```
 
-**待办三件**：① 接入 `tt-tripo` 并重启运行时；② 补 6 条缺模型（或标 Blocked）；③ 给 22 条补画布说明。
+**待办一件**：6 条缺模型（`flux1-dev-fp8` ×3、`flux-union-pro-2.0`、`turingteacher_v002_quick`、
+`v1-5-pruned-emaonly-fp16`、`wan2.1_t2v_1.3B_fp16`）——补权重或标 `Blocked`，待负责人定。
 
 ## 十一、两种文件格式（2026-11-16 补）
 
