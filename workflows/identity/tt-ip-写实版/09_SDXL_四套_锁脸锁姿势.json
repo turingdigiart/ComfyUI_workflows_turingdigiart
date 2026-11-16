@@ -1,7 +1,7 @@
 {
   "id": "71d4ad90-930a-5f26-9201-e088197dc1b5",
   "revision": 0,
-  "last_node_id": 29,
+  "last_node_id": 30,
   "last_link_id": 57,
   "nodes": [
     {
@@ -238,7 +238,7 @@
         0.35,
         "ease in",
         "concat",
-        0.0,
+        0,
         0.8,
         "V only"
       ],
@@ -509,9 +509,9 @@
         "Node name for S&R": "ControlNetApplyAdvanced"
       },
       "widgets_values": [
-        1.0,
-        0.0,
-        1.0
+        1,
+        0,
+        1
       ],
       "title": "锁姿势／A牛仔夹克／正式"
     },
@@ -569,10 +569,10 @@
         2026103060,
         "randomize",
         30,
-        5.0,
+        5,
         "dpmpp_2m_sde",
         "karras",
-        1.0
+        1
       ],
       "title": "采样／A牛仔夹克／正式"
     },
@@ -760,9 +760,9 @@
         "Node name for S&R": "ControlNetApplyAdvanced"
       },
       "widgets_values": [
-        1.0,
-        0.0,
-        1.0
+        1,
+        0,
+        1
       ],
       "title": "锁姿势／B棕色绒面夹克／正式"
     },
@@ -820,10 +820,10 @@
         2026103061,
         "randomize",
         30,
-        5.0,
+        5,
         "dpmpp_2m_sde",
         "karras",
-        1.0
+        1
       ],
       "title": "采样／B棕色绒面夹克／正式"
     },
@@ -1011,9 +1011,9 @@
         "Node name for S&R": "ControlNetApplyAdvanced"
       },
       "widgets_values": [
-        1.0,
-        0.0,
-        1.0
+        1,
+        0,
+        1
       ],
       "title": "锁姿势／C卡其飞行员夹克／正式"
     },
@@ -1071,10 +1071,10 @@
         2026103062,
         "randomize",
         30,
-        5.0,
+        5,
         "dpmpp_2m_sde",
         "karras",
-        1.0
+        1
       ],
       "title": "采样／C卡其飞行员夹克／正式"
     },
@@ -1262,9 +1262,9 @@
         "Node name for S&R": "ControlNetApplyAdvanced"
       },
       "widgets_values": [
-        1.0,
-        0.0,
-        1.0
+        1,
+        0,
+        1
       ],
       "title": "锁姿势／D黑皮夹克／正式"
     },
@@ -1322,10 +1322,10 @@
         2026103063,
         "randomize",
         30,
-        5.0,
+        5,
         "dpmpp_2m_sde",
         "karras",
-        1.0
+        1
       ],
       "title": "采样／D黑皮夹克／正式"
     },
@@ -1409,6 +1409,26 @@
         "SDXL锁脸锁姿势_D_黑皮夹克_正式"
       ],
       "title": "保存／D黑皮夹克／正式"
+    },
+    {
+      "id": 30,
+      "type": "MarkdownNote",
+      "title": "使用说明（自动补）",
+      "pos": [
+        0,
+        -340
+      ],
+      "size": [
+        700,
+        330
+      ],
+      "flags": {},
+      "order": 30,
+      "mode": 0,
+      "properties": {},
+      "widgets_values": [
+        "# 09_SDXL_四套_锁脸锁姿势\n\n- 归类：identity / tt-ip-写实版\n- 参数：底模 RealVisXL_V5.0_fp16.safetensors · 832x1216 · 30 步 · dpmpp_2m_sde\n- 说明：本条为 2026-11-16 迁入的既有工作流，画布原先没有说明。\n  上面的参数由节点连线自动读取；用途请看文件名，实际用法以连线为准。\n  需要补充准确用法时，直接改这条说明并重跑 catalog。"
+      ]
     }
   ],
   "links": [

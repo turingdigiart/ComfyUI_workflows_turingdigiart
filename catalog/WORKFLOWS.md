@@ -1,9 +1,9 @@
 # 工作流台账
 
 > 由 `scripts/catalog.mjs` 生成，**不要手改**。改工作流后重跑脚本。
-> 生成时间：2026-11-16T15:08:20.141Z
+> 生成时间：2026-11-16T15:26:06.628Z
 > 来源目录：`E:\RAE_ToolRoot\comfyui\ComfyUI_windows_portable\ComfyUI\user\default\workflows`
-> 共 43 条｜缺模型 6 条｜缺说明 22 条
+> 共 43 条｜缺模型 6 条｜缺说明 0 条
 
 ## 分类分布
 
@@ -52,7 +52,7 @@
 | `image/ark/25_方舟Seedream_写实IP三视图_表情_细节.json` | 三视图/表情集/细节均为方向探索与角度占位，按 REALISTIC_IP_BRIEF_v002 逐张核对身份后再晋级，多视图生成不构成身份一致性保证；参考图上传方舟，仅限本人授权素材；enable_api 确认参数后再开；换新结果才增大 r | — | 0 | ✅ |
 | `image/flux/09_Flux2Klein_快速文生图.json` | FLUX.2 Klein 4B FP8：4步生成，默认1024×1024。图生图使用参考潜空间，直接描述修改要求。 | flux-2-klein-4b-fp8 | 3 | ✅ |
 | `image/flux/10_Flux2Klein_指令改图.json` | FLUX.2 Klein 4B FP8：4步生成，默认1024×1024。图生图使用参考潜空间，直接描述修改要求。 | flux-2-klein-4b-fp8 | 3 | ✅ |
-| `image/poster/POSTER_LAYERED_v001_api.json` | POSTER_LAYERED_v001_api | — | 0 | ✅ |
+| `image/poster/POSTER_LAYERED_v001_api.json` | POSTER_LAYERED_v001｜分层生成 + 单工作流合成 | RealVisXL_V5.0_fp16 · 1152x1536 · 30 步 · dpmpp_2m | 1 | ✅ |
 | `image/qwen/06_Qwen21_Turbo_文生图.json` | Qwen Image 2.1：默认1024像素；Turbo使用官方8步时间表，标准版使用40步。图生图上传参考图后，用文字描述要修改的内容。标准版与Turbo共享编码器和VAE。提示词增强器未启用，无需额外语言模型。 | qwen_image_2.1_turbo_int8_convrot | 3 | ✅ |
 | `image/qwen/07_Qwen21_Turbo_指令改图.json` | Qwen Image 2.1：默认1024像素；Turbo使用官方8步时间表，标准版使用40步。图生图上传参考图后，用文字描述要修改的内容。标准版与Turbo共享编码器和VAE。提示词增强器未启用，无需额外语言模型。 | qwen_image_2.1_turbo_int8_convrot | 3 | ✅ |
 | `image/qwen/08_Qwen21_标准版_文生图.json` | Qwen Image 2.1：默认1024像素；Turbo使用官方8步时间表，标准版使用40步。图生图上传参考图后，用文字描述要修改的内容。标准版与Turbo共享编码器和VAE。提示词增强器未启用，无需额外语言模型。 | qwen_image_2.1_int8_convrot · 40 步 · euler | 3 | ✅ |

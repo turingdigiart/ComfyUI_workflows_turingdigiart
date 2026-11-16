@@ -18,104 +18,104 @@
 - 路径：`identity/tt-ip-写实版/01_写实版_基准脸_v001.json`
 - 参数：RealVisXL_V5.0_fp16 · 896x1152 · 30 步 · dpmpp_2m_sde
 - 模型：RealVisXL_V5.0_fp16.safetensors
-- 说明：（画布里没有说明节点，靠文件名判断）
+- 说明：01_写实版_基准脸_v001
 
 **01_写实版_基准脸_v002**
 - 路径：`identity/tt-ip-写实版/01_写实版_基准脸_v002.json`
 - 参数：RealVisXL_V5.0_fp16 · 896x1152 · 30 步 · dpmpp_2m_sde
 - 模型：RealVisXL_V5.0_fp16.safetensors
-- 说明：（画布里没有说明节点，靠文件名判断）
+- 说明：01_写实版_基准脸_v002
 
 **02_写实版_Apose全身_v001**
 - 路径：`identity/tt-ip-写实版/02_写实版_Apose全身_v001.json`
 - 参数：RealVisXL_V5.0_fp16 · 832x1216 · 30 步 · dpmpp_2m_sde
 - 模型：RealVisXL_V5.0_fp16.safetensors、controlnet-openpose-sdxl-1.0.safetensors
-- 说明：（画布里没有说明节点，靠文件名判断）
+- 说明：02_写实版_Apose全身_v001
 
 **02_写实版_Apose全身_v002**
 - 路径：`identity/tt-ip-写实版/02_写实版_Apose全身_v002.json`
 - 参数：RealVisXL_V5.0_fp16 · 832x1216 · 30 步 · dpmpp_2m_sde
 - 模型：RealVisXL_V5.0_fp16.safetensors、controlnet-openpose-sdxl-1.0.safetensors
-- 说明：（画布里没有说明节点，靠文件名判断）
+- 说明：02_写实版_Apose全身_v002
 
 **03_写实版_Apose三套穿搭_v001**
 - 路径：`identity/tt-ip-写实版/03_写实版_Apose三套穿搭_v001.json`
 - 参数：RealVisXL_V5.0_fp16 · 832x1216 · 30 步 · dpmpp_2m_sde
 - 模型：RealVisXL_V5.0_fp16.safetensors、controlnet-openpose-sdxl-1.0.safetensors
-- 说明：（画布里没有说明节点，靠文件名判断）
+- 说明：03_写实版_Apose三套穿搭_v001
 
 **03_写实版_Apose三套穿搭_v002**
 - 路径：`identity/tt-ip-写实版/03_写实版_Apose三套穿搭_v002.json`
 - 参数：RealVisXL_V5.0_fp16 · 832x1216 · 30 步 · dpmpp_2m_sde
 - 模型：RealVisXL_V5.0_fp16.safetensors、controlnet-openpose-sdxl-1.0.safetensors
-- 说明：（画布里没有说明节点，靠文件名判断）
+- 说明：03_写实版_Apose三套穿搭_v002
 
 **04_写实版_封面构图_v001**
 - 路径：`identity/tt-ip-写实版/04_写实版_封面构图_v001.json`
 - 参数：RealVisXL_V5.0_fp16 · 896x1152 · 30 步 · dpmpp_2m_sde
 - 模型：RealVisXL_V5.0_fp16.safetensors
-- 说明：（画布里没有说明节点，靠文件名判断）
+- 说明：04_写实版_封面构图_v001
 
 **04_写实版_封面构图_v002**
 - 路径：`identity/tt-ip-写实版/04_写实版_封面构图_v002.json`
 - 参数：RealVisXL_V5.0_fp16 · 896x1152 · 30 步 · dpmpp_2m_sde
 - 模型：RealVisXL_V5.0_fp16.safetensors
-- 说明：（画布里没有说明节点，靠文件名判断）
+- 说明：04_写实版_封面构图_v002
 
 **05_写实版_放大修图**
 - 路径：`identity/tt-ip-写实版/05_写实版_放大修图.json`
 - 参数：—
 - 模型：4x-UltraSharp.pth
-- 说明：（画布里没有说明节点，靠文件名判断）
+- 说明：05_写实版_放大修图
 
 **06_写实版_照片一致性_v001**
 - 路径：`identity/tt-ip-写实版/06_写实版_照片一致性_v001.json`
 - 参数：RealVisXL_V5.0_fp16 · 896x1152 · 30 步 · dpmpp_2m_sde
 - 模型：CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors、RealVisXL_V5.0_fp16.safetensors、ip-adapter-plus_sdxl_vit-h.safetensors
-- 说明：（画布里没有说明节点，靠文件名判断）
+- 说明：06_写实版_照片一致性_v001
 
 **06_写实版_照片一致性_v002**
 - 路径：`identity/tt-ip-写实版/06_写实版_照片一致性_v002.json`
 - 参数：RealVisXL_V5.0_fp16 · 896x1152 · 30 步 · dpmpp_2m_sde
 - 模型：CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors、RealVisXL_V5.0_fp16.safetensors、ip-adapter-plus_sdxl_vit-h.safetensors
-- 说明：（画布里没有说明节点，靠文件名判断）
+- 说明：06_写实版_照片一致性_v002
 
 **07_Flux_四套穿搭_v001**  ⚠️ 缺模型
 - 路径：`identity/tt-ip-写实版/07_Flux_四套穿搭_v001.json`
 - 参数：flux1-dev-fp8 · 832x1216 · 24 步 · euler
 - 模型：flux1-dev-fp8.safetensors
-- 说明：（画布里没有说明节点，靠文件名判断）
+- 说明：07_Flux_四套穿搭_v001
 
 **07_Flux_四套穿搭_v002**  ⚠️ 缺模型
 - 路径：`identity/tt-ip-写实版/07_Flux_四套穿搭_v002.json`
 - 参数：flux1-dev-fp8 · 832x1216 · 24 步 · euler
 - 模型：flux1-dev-fp8.safetensors
-- 说明：（画布里没有说明节点，靠文件名判断）
+- 说明：07_Flux_四套穿搭_v002
 
 **08_Flux_四套_锁姿势**  ⚠️ 缺模型
 - 路径：`identity/tt-ip-写实版/08_Flux_四套_锁姿势.json`
 - 参数：flux1-dev-fp8 · 832x1216 · 24 步 · euler
 - 模型：flux-union-pro-2.0.safetensors、flux1-dev-fp8.safetensors
-- 说明：（画布里没有说明节点，靠文件名判断）
+- 说明：08_Flux_四套_锁姿势
 
 **09_SDXL_四套_锁脸锁姿势**
 - 路径：`identity/tt-ip-写实版/09_SDXL_四套_锁脸锁姿势.json`
 - 参数：RealVisXL_V5.0_fp16 · 832x1216 · 30 步 · dpmpp_2m_sde
 - 模型：CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors、RealVisXL_V5.0_fp16.safetensors、controlnet-openpose-sdxl-1.0.safetensors、ip-adapter-plus_sdxl_vit-h.safetensors
-- 说明：（画布里没有说明节点，靠文件名判断）
+- 说明：09_SDXL_四套_锁脸锁姿势
 
 **10_SDXL_LoRA_四套**  ⚠️ 缺模型
 - 路径：`identity/tt-ip-写实版/10_SDXL_LoRA_四套.json`
 - 参数：RealVisXL_V5.0_fp16 · 832x1216 · 26 步 · dpmpp_2m_sde
 - 模型：RealVisXL_V5.0_fp16.safetensors、controlnet-openpose-sdxl-1.0.safetensors、turingteacher_v002_quick.safetensors
-- 说明：（画布里没有说明节点，靠文件名判断）
+- 说明：10_SDXL_LoRA_四套
 
 ### image（16）
 
 **14_通用API提示词_预览**
 - 路径：`image/api/14_通用API提示词_预览.json`
 - 参数：—
-- 说明：（画布里没有说明节点，靠文件名判断）
+- 说明：14_通用API提示词_预览
 
 **15_通用API提示词_ZImage文生图**
 - 路径：`image/api/15_通用API提示词_ZImage文生图.json`
@@ -147,8 +147,9 @@
 
 **POSTER_LAYERED_v001_api**
 - 路径：`image/poster/POSTER_LAYERED_v001_api.json`
-- 参数：—
-- 说明：（画布里没有说明节点，靠文件名判断）
+- 参数：RealVisXL_V5.0_fp16 · 1152x1536 · 30 步 · dpmpp_2m
+- 模型：RealVisXL_V5.0_fp16.safetensors
+- 说明：POSTER_LAYERED_v001｜分层生成 + 单工作流合成
 
 **06_Qwen21_Turbo_文生图**
 - 路径：`image/qwen/06_Qwen21_Turbo_文生图.json`
@@ -172,19 +173,19 @@
 - 路径：`image/sd15/22_SD15_文生图.json`
 - 参数：v1-5-pruned-emaonly-fp16 · 512x512 · 20 步 · euler
 - 模型：v1-5-pruned-emaonly-fp16.safetensors
-- 说明：（画布里没有说明节点，靠文件名判断）
+- 说明：22_SD15_文生图
 
 **01_SDXL_文生图**
 - 路径：`image/sdxl/01_SDXL_文生图.json`
 - 参数：sd_xl_base_1.0 · 1024x1024 · 25 步 · dpmpp_2m
 - 模型：sd_xl_base_1.0.safetensors
-- 说明：（画布里没有说明节点，靠文件名判断）
+- 说明：01_SDXL_文生图
 
 **02_SDXL_图生图**
 - 路径：`image/sdxl/02_SDXL_图生图.json`
 - 参数：sd_xl_base_1.0 · 25 步 · dpmpp_2m
 - 模型：sd_xl_base_1.0.safetensors
-- 说明：（画布里没有说明节点，靠文件名判断）
+- 说明：02_SDXL_图生图
 
 **16_SDXL_我的人物形象_参考照片**
 - 路径：`image/sdxl/16_SDXL_我的人物形象_参考照片.json`
@@ -262,34 +263,7 @@
 - 路径：`video/wan/23_Wan21_13B_文生视频.json`
 - 参数：wan2.1_t2v_1.3B_fp16 · 20 步 · 416 帧 · uni_pc
 - 模型：umt5_xxl_fp8_e4m3fn_scaled.safetensors、wan2.1_t2v_1.3B_fp16.safetensors、wan_2.1_vae.safetensors
-- 说明：（画布里没有说明节点，靠文件名判断）
-
-## 待补说明
-
-这些工作流的画布里没有 MarkdownNote，建议补一条用途说明：
-
-- `identity/tt-ip-写实版/01_写实版_基准脸_v001.json`
-- `identity/tt-ip-写实版/01_写实版_基准脸_v002.json`
-- `identity/tt-ip-写实版/02_写实版_Apose全身_v001.json`
-- `identity/tt-ip-写实版/02_写实版_Apose全身_v002.json`
-- `identity/tt-ip-写实版/03_写实版_Apose三套穿搭_v001.json`
-- `identity/tt-ip-写实版/03_写实版_Apose三套穿搭_v002.json`
-- `identity/tt-ip-写实版/04_写实版_封面构图_v001.json`
-- `identity/tt-ip-写实版/04_写实版_封面构图_v002.json`
-- `identity/tt-ip-写实版/05_写实版_放大修图.json`
-- `identity/tt-ip-写实版/06_写实版_照片一致性_v001.json`
-- `identity/tt-ip-写实版/06_写实版_照片一致性_v002.json`
-- `identity/tt-ip-写实版/07_Flux_四套穿搭_v001.json`
-- `identity/tt-ip-写实版/07_Flux_四套穿搭_v002.json`
-- `identity/tt-ip-写实版/08_Flux_四套_锁姿势.json`
-- `identity/tt-ip-写实版/09_SDXL_四套_锁脸锁姿势.json`
-- `identity/tt-ip-写实版/10_SDXL_LoRA_四套.json`
-- `image/api/14_通用API提示词_预览.json`
-- `image/poster/POSTER_LAYERED_v001_api.json`
-- `image/sd15/22_SD15_文生图.json`
-- `image/sdxl/01_SDXL_文生图.json`
-- `image/sdxl/02_SDXL_图生图.json`
-- `video/wan/23_Wan21_13B_文生视频.json`
+- 说明：23_Wan21_13B_文生视频
 
 ## 缺模型
 

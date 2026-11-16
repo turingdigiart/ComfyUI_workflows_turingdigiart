@@ -1,7 +1,7 @@
 {
   "id": "ac3bc1c8-9c32-5815-a8e6-dfc5de6ecf70",
   "revision": 0,
-  "last_node_id": 12,
+  "last_node_id": 13,
   "last_link_id": 17,
   "nodes": [
     {
@@ -227,10 +227,10 @@
         2026103010,
         "randomize",
         30,
-        5.0,
+        5,
         "dpmpp_2m_sde",
         "karras",
-        1.0
+        1
       ],
       "title": "采样／896x1152"
     },
@@ -445,10 +445,10 @@
         2026103011,
         "randomize",
         30,
-        5.0,
+        5,
         "dpmpp_2m_sde",
         "karras",
-        1.0
+        1
       ],
       "title": "采样／1344x768"
     },
@@ -532,6 +532,26 @@
         "写实版_自媒体封面_16x9"
       ],
       "title": "保存／1344x768"
+    },
+    {
+      "id": 13,
+      "type": "MarkdownNote",
+      "title": "使用说明（自动补）",
+      "pos": [
+        0,
+        -340
+      ],
+      "size": [
+        700,
+        330
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "properties": {},
+      "widgets_values": [
+        "# 04_写实版_封面构图_v002\n\n- 归类：identity / tt-ip-写实版\n- 参数：底模 RealVisXL_V5.0_fp16.safetensors · 896x1152 · 30 步 · dpmpp_2m_sde\n- 说明：本条为 2026-11-16 迁入的既有工作流，画布原先没有说明。\n  上面的参数由节点连线自动读取；用途请看文件名，实际用法以连线为准。\n  需要补充准确用法时，直接改这条说明并重跑 catalog。"
+      ]
     }
   ],
   "links": [

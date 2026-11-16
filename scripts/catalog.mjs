@@ -48,7 +48,14 @@ for (const file of files) {
   let json = null, parseError = null;
   try { json = JSON.parse(raw.toString('utf8')); } catch (e) { parseError = e.message; }
 
-  const nodes = json?.nodes || [];
+  // 两种格式并存：
+  //   UI 格式：{ nodes:[...], links:[...] }        —— ComfyUI 界面保存的
+  //   API 格式：{ "<id>":{class_type,inputs}, ... } —— /prompt 直接提交的
+  // 两者都要登记与校验，否则 API 格式文件会被误判成"坏工作流"。
+  const isApi = json && !Array.isArray(json.nodes) && Object.values(json || {}).every(v => v && typeof v === 'object' && 'class_type' in v);
+  const apiNodes = isApi ? Object.entries(json).map(([id, v]) => ({ id, type: v.class_type, widgets_values: Object.values(v.inputs || {}), inputs: [], outputs: [] })) : [];
+  const nodes = isApi ? apiNodes : (json?.nodes || []);
+  const format = isApi ? 'api' : 'ui';
   const modelRefs = new Set();
   let description = '', noteTitle = '';
   const p = { model: null, resolution: null, steps: null, sampler: null, frames: null, fps: null };
@@ -68,6 +75,14 @@ for (const file of files) {
     if (n.type === 'KSampler') { if (p.steps == null) p.steps = v[2]; if (!p.sampler) p.sampler = v[4]; }
   }
 
+  if (!description) {
+    const readme = path.join(path.dirname(file), 'README.md');
+    if (fs.existsSync(readme)) {
+      const line = fs.readFileSync(readme, 'utf8').split('\n').map(s => s.trim()).find(s => s.startsWith('#'));
+      if (line) description = line.replace(/^#+\s*/, '');
+    }
+  }
+
   const list = [...modelRefs];
   const missing = list.filter(m => !onDisk.has(m.toLowerCase()));
   const name = path.basename(file, '.json');
@@ -82,6 +97,7 @@ for (const file of files) {
     category,
     subcategory,
     name,
+    format,
     title: firstLine(description) || noteTitle || name,
     description: description.slice(0, 600),
     has_description: Boolean(description),

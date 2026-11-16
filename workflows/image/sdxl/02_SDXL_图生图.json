@@ -1,7 +1,7 @@
 {
   "id": "c6ab8ef7-1e94-45c6-95af-df12dc8b3a09",
   "revision": 0,
-  "last_node_id": 10,
+  "last_node_id": 11,
   "last_link_id": 12,
   "nodes": [
     {
@@ -377,6 +377,26 @@
         "Node name for S&R": "VAEEncode"
       },
       "widgets_values": []
+    },
+    {
+      "id": 11,
+      "type": "MarkdownNote",
+      "title": "使用说明（自动补）",
+      "pos": [
+        0,
+        -340
+      ],
+      "size": [
+        700,
+        330
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "properties": {},
+      "widgets_values": [
+        "# 02_SDXL_图生图\n\n- 归类：image / sdxl\n- 参数：底模 sd_xl_base_1.0.safetensors · 25 步 · dpmpp_2m\n- 说明：本条为 2026-11-16 迁入的既有工作流，画布原先没有说明。\n  上面的参数由节点连线自动读取；用途请看文件名，实际用法以连线为准。\n  需要补充准确用法时，直接改这条说明并重跑 catalog。"
+      ]
     }
   ],
   "links": [

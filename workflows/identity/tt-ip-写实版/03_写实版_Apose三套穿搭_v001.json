@@ -1,7 +1,7 @@
 {
   "id": "bb2d598d-9604-56d8-8869-2f2b869d6cc3",
   "revision": 0,
-  "last_node_id": 45,
+  "last_node_id": 46,
   "last_link_id": 97,
   "nodes": [
     {
@@ -350,9 +350,9 @@
         "Node name for S&R": "ControlNetApplyAdvanced"
       },
       "widgets_values": [
-        1.0,
-        0.0,
-        1.0
+        1,
+        0,
+        1
       ],
       "title": "ControlNet／A牛仔夹克／正式"
     },
@@ -410,10 +410,10 @@
         2026103030,
         "randomize",
         30,
-        5.0,
+        5,
         "dpmpp_2m_sde",
         "karras",
-        1.0
+        1
       ],
       "title": "采样／A牛仔夹克／正式"
     },
@@ -596,9 +596,9 @@
         "Node name for S&R": "ControlNetApplyAdvanced"
       },
       "widgets_values": [
-        1.0,
-        0.0,
-        1.0
+        1,
+        0,
+        1
       ],
       "title": "ControlNet／B棕色绒面夹克／正式"
     },
@@ -656,10 +656,10 @@
         2026103031,
         "randomize",
         30,
-        5.0,
+        5,
         "dpmpp_2m_sde",
         "karras",
-        1.0
+        1
       ],
       "title": "采样／B棕色绒面夹克／正式"
     },
@@ -842,9 +842,9 @@
         "Node name for S&R": "ControlNetApplyAdvanced"
       },
       "widgets_values": [
-        1.0,
-        0.0,
-        1.0
+        1,
+        0,
+        1
       ],
       "title": "ControlNet／C卡其飞行员夹克／正式"
     },
@@ -902,10 +902,10 @@
         2026103032,
         "randomize",
         30,
-        5.0,
+        5,
         "dpmpp_2m_sde",
         "karras",
-        1.0
+        1
       ],
       "title": "采样／C卡其飞行员夹克／正式"
     },
@@ -1088,9 +1088,9 @@
         "Node name for S&R": "ControlNetApplyAdvanced"
       },
       "widgets_values": [
-        1.0,
-        0.0,
-        1.0
+        1,
+        0,
+        1
       ],
       "title": "ControlNet／D黑皮夹克／正式"
     },
@@ -1148,10 +1148,10 @@
         2026103033,
         "randomize",
         30,
-        5.0,
+        5,
         "dpmpp_2m_sde",
         "karras",
-        1.0
+        1
       ],
       "title": "采样／D黑皮夹克／正式"
     },
@@ -1334,9 +1334,9 @@
         "Node name for S&R": "ControlNetApplyAdvanced"
       },
       "widgets_values": [
-        1.0,
-        0.0,
-        1.0
+        1,
+        0,
+        1
       ],
       "title": "ControlNet／A牛仔夹克／自媒体"
     },
@@ -1394,10 +1394,10 @@
         2026103034,
         "randomize",
         30,
-        5.0,
+        5,
         "dpmpp_2m_sde",
         "karras",
-        1.0
+        1
       ],
       "title": "采样／A牛仔夹克／自媒体"
     },
@@ -1580,9 +1580,9 @@
         "Node name for S&R": "ControlNetApplyAdvanced"
       },
       "widgets_values": [
-        1.0,
-        0.0,
-        1.0
+        1,
+        0,
+        1
       ],
       "title": "ControlNet／B棕色绒面夹克／自媒体"
     },
@@ -1640,10 +1640,10 @@
         2026103035,
         "randomize",
         30,
-        5.0,
+        5,
         "dpmpp_2m_sde",
         "karras",
-        1.0
+        1
       ],
       "title": "采样／B棕色绒面夹克／自媒体"
     },
@@ -1826,9 +1826,9 @@
         "Node name for S&R": "ControlNetApplyAdvanced"
       },
       "widgets_values": [
-        1.0,
-        0.0,
-        1.0
+        1,
+        0,
+        1
       ],
       "title": "ControlNet／C卡其飞行员夹克／自媒体"
     },
@@ -1886,10 +1886,10 @@
         2026103036,
         "randomize",
         30,
-        5.0,
+        5,
         "dpmpp_2m_sde",
         "karras",
-        1.0
+        1
       ],
       "title": "采样／C卡其飞行员夹克／自媒体"
     },
@@ -2072,9 +2072,9 @@
         "Node name for S&R": "ControlNetApplyAdvanced"
       },
       "widgets_values": [
-        1.0,
-        0.0,
-        1.0
+        1,
+        0,
+        1
       ],
       "title": "ControlNet／D黑皮夹克／自媒体"
     },
@@ -2132,10 +2132,10 @@
         2026103037,
         "randomize",
         30,
-        5.0,
+        5,
         "dpmpp_2m_sde",
         "karras",
-        1.0
+        1
       ],
       "title": "采样／D黑皮夹克／自媒体"
     },
@@ -2219,6 +2219,26 @@
         "写实版_D_黑皮夹克_自媒体"
       ],
       "title": "保存／D黑皮夹克／自媒体"
+    },
+    {
+      "id": 46,
+      "type": "MarkdownNote",
+      "title": "使用说明（自动补）",
+      "pos": [
+        0,
+        -340
+      ],
+      "size": [
+        700,
+        330
+      ],
+      "flags": {},
+      "order": 46,
+      "mode": 0,
+      "properties": {},
+      "widgets_values": [
+        "# 03_写实版_Apose三套穿搭_v001\n\n- 归类：identity / tt-ip-写实版\n- 参数：底模 RealVisXL_V5.0_fp16.safetensors · 832x1216 · 30 步 · dpmpp_2m_sde\n- 说明：本条为 2026-11-16 迁入的既有工作流，画布原先没有说明。\n  上面的参数由节点连线自动读取；用途请看文件名，实际用法以连线为准。\n  需要补充准确用法时，直接改这条说明并重跑 catalog。"
+      ]
     }
   ],
   "links": [

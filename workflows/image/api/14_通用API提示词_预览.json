@@ -1,7 +1,7 @@
 {
   "id": "85096381-321a-49e6-a138-823b2954597b",
   "revision": 0,
-  "last_node_id": 2,
+  "last_node_id": 3,
   "last_link_id": 1,
   "nodes": [
     {
@@ -88,6 +88,26 @@
         "Node name for S&R": "PreviewAny"
       },
       "widgets_values": []
+    },
+    {
+      "id": 3,
+      "type": "MarkdownNote",
+      "title": "使用说明（自动补）",
+      "pos": [
+        0,
+        -340
+      ],
+      "size": [
+        700,
+        330
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "properties": {},
+      "widgets_values": [
+        "# 14_通用API提示词_预览\n\n- 归类：image / api\n- 参数：未从连线读到关键参数\n- 说明：本条为 2026-11-16 迁入的既有工作流，画布原先没有说明。\n  上面的参数由节点连线自动读取；用途请看文件名，实际用法以连线为准。\n  需要补充准确用法时，直接改这条说明并重跑 catalog。"
+      ]
     }
   ],
   "links": [
