@@ -5,6 +5,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import { buildModelIndex } from '../lib/model-index.mjs';
 
 const args = process.argv.slice(2);
 const has = k => args.includes(k);
@@ -43,15 +44,10 @@ if (!fs.existsSync(registryPath)) {
   }
 
   if (avail || offline) {
-    const onDisk = new Set();
-    if (fs.existsSync(modelsRoot)) {
-      (function walk(d) {
-        for (const e of fs.readdirSync(d, { withFileTypes: true })) {
-          const p = path.join(d, e.name);
-          if (e.isDirectory()) walk(p); else if (MODEL_EXT.test(e.name)) onDisk.add(e.name.toLowerCase());
-        }
-      })(modelsRoot);
-    }
+    // 模型索引包含运行时 models/ 与 extra_model_paths.yaml 追加的权重根，
+    // 否则"挂在权重根里"的模型会被误报为缺失。
+    const extraPathsFile = argOf('--extra-paths', process.env.COMFY_EXTRA_PATHS || path.join(path.dirname(modelsRoot), 'extra_model_paths.yaml'));
+    const { names: onDisk, extraRoots } = buildModelIndex({ modelsRoot, extraPathsFile });
 
     const fails = [], warns = [];
     for (const w of registry.workflows) {
@@ -77,7 +73,7 @@ if (!fs.existsSync(registryPath)) {
       const walk = d => { for (const e of fs.readdirSync(d, { withFileTypes: true })) { const q = path.join(d, e.name); if (e.isDirectory()) walk(q); else if (e.name.endsWith('.json')) if (!seen.has(path.resolve(q))) fails.push(path.relative(workflowsRoot, q).replace(/\\/g, '/') + ': 磁盘上有、台账里没有（重跑 scripts/catalog.mjs）'); } };
       walk(workflowsRoot);
     }
-    console.log('台账 ' + registry.workflows.length + ' 个工作流 | 模型目录 ' + onDisk.size + ' 个文件 | 节点库 ' + (avail ? avail.size + ' 个类型' : '未检查(offline)'));
+    console.log('台账 ' + registry.workflows.length + ' 个工作流 | 模型 ' + onDisk.size + ' 个（额外权重根 ' + extraRoots.length + ' 个） | 节点库 ' + (avail ? avail.size + ' 个类型' : '未检查(offline)'));
     for (const f of fails) console.log('  [FAIL] ' + f);
     for (const w of warns) console.log('  [WARN] ' + w);
     console.log('结果: ' + (fails.length ? '失败' : '通过') + '（失败 ' + fails.length + ' / 警告 ' + warns.length + '）');

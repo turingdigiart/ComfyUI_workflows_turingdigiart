@@ -139,3 +139,56 @@ mklink /J "<runtime>\ComfyUI\custom_nodes\tt-tripo" "<repo>\nodes\tt-tripo"
 - 两种格式都进台账、都被 `verify` 校验节点类型与模型；API 格式的节点从 `class_type` 读取
 - 说明文字优先取画布里的 MarkdownNote；API 格式没有画布，取同级 `README.md` 的首行标题
 - 同一份工作流的两种格式并存时，**UI 格式是母版**，API 格式是导出物；改完 UI 要重新导出
+
+## 十二、权重怎么进运行时（不复制、不搬动）
+
+三类资产用**三种不同**的接线方式，别混：
+
+| 资产 | 接线方式 | 为什么 |
+|---|---|---|
+| `workflows/`（UI 工作流） | **Junction** 替换 ComfyUI 的 `user/default/workflows` | 要的是"同一份文件"，界面保存即 Git 改动 |
+| `nodes/<插件>` | **Junction** 到 `custom_nodes/<插件>` | 插件是目录，ComfyUI 按目录加载 |
+| 权重（LoRA/底模/ControlNet） | **`extra_model_paths.yaml`** 追加路径 | **不能**替换 `models/loras`——那会把已有 32 个模型藏起来 |
+
+### extra_model_paths 的实际配置
+
+`ComfyUI/extra_model_paths.yaml`（本机 2026-11-16 建立）：
+
+```yaml
+tt_ip_realistic:
+  base_path: J:/BaiduSyncdisk/TuringDigiArt/运营内容/常用人物/写实版/权重
+  is_default: false
+  loras: loras
+  checkpoints: checkpoints
+  vae: vae
+  controlnet: controlnet
+  clip_vision: clip_vision
+  upscale_models: upscale_models
+```
+
+对应登记：`WEIGHTS_REGISTRY` 的 `W-IP-REALISTIC-001`（`comfyui_layout: true`）。
+效果：`LoraLoader` 的候选从 32 → **37**，`turingteacher_v002_quick` 可直接选用。
+
+**改这个文件必须重启 ComfyUI 才生效**，且重启会丢未保存的画布改动。
+
+### 为什么不用 junction 挂 loras
+
+`models/loras` 现有 32 个模型。用 junction 替换该目录 = 那 32 个当场消失。
+`extra_model_paths` 是**追加**，两边都在，文件名冲突时 ComfyUI 自己处理。
+
+### 生效时机（容易记错）
+
+| 改动 | 需要重启 ComfyUI 吗 |
+|---|---|
+| 往 `models/` 里放新模型文件 | **不需要**（实测 ControlNet 下完立刻出现在候选列表） |
+| 改 `extra_model_paths.yaml` | **需要** |
+| 改 `custom_nodes/`（装/删插件） | **需要** |
+
+### 校验器如何判断"模型在不在"
+
+`scripts/verify.mjs` 与 `scripts/catalog.mjs` 共用 `lib/model-index.mjs`，索引来源两处：
+- 运行时 `models/` 目录（递归）
+- `extra_model_paths.yaml` 声明的权重根
+
+2026-11-16 之前只扫前者，导致挂在权重根的 `turingteacher_v002_quick` 被误报缺失。
+现在模型索引 73 个（`models/` 67 + 权重根 6），**台账与你实际能用的一致**。

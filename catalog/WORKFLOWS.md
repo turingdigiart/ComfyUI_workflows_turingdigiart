@@ -1,9 +1,9 @@
 # 工作流台账
 
 > 由 `scripts/catalog.mjs` 生成，**不要手改**。改工作流后重跑脚本。
-> 生成时间：2026-11-16T15:26:06.628Z
+> 生成时间：2026-11-16T16:57:14.037Z
 > 来源目录：`E:\RAE_ToolRoot\comfyui\ComfyUI_windows_portable\ComfyUI\user\default\workflows`
-> 共 43 条｜缺模型 6 条｜缺说明 0 条
+> 共 43 条｜缺模型 0 条｜缺说明 0 条
 
 ## 分类分布
 
@@ -36,11 +36,11 @@
 | `identity/tt-ip-写实版/05_写实版_放大修图.json` | 05_写实版_放大修图 | — | 1 | ✅ |
 | `identity/tt-ip-写实版/06_写实版_照片一致性_v001.json` | 06_写实版_照片一致性_v001 | RealVisXL_V5.0_fp16 · 896x1152 · 30 步 · dpmpp_2m_sde | 3 | ✅ |
 | `identity/tt-ip-写实版/06_写实版_照片一致性_v002.json` | 06_写实版_照片一致性_v002 | RealVisXL_V5.0_fp16 · 896x1152 · 30 步 · dpmpp_2m_sde | 3 | ✅ |
-| `identity/tt-ip-写实版/07_Flux_四套穿搭_v001.json` | 07_Flux_四套穿搭_v001 | flux1-dev-fp8 · 832x1216 · 24 步 · euler | 1 | ⚠️缺模型 |
-| `identity/tt-ip-写实版/07_Flux_四套穿搭_v002.json` | 07_Flux_四套穿搭_v002 | flux1-dev-fp8 · 832x1216 · 24 步 · euler | 1 | ⚠️缺模型 |
-| `identity/tt-ip-写实版/08_Flux_四套_锁姿势.json` | 08_Flux_四套_锁姿势 | flux1-dev-fp8 · 832x1216 · 24 步 · euler | 2 | ⚠️缺模型 |
+| `identity/tt-ip-写实版/07_Flux_四套穿搭_v001.json` | 07_Flux_四套穿搭_v001 | flux1-dev-fp8 · 832x1216 · 24 步 · euler | 1 | ✅ |
+| `identity/tt-ip-写实版/07_Flux_四套穿搭_v002.json` | 07_Flux_四套穿搭_v002 | flux1-dev-fp8 · 832x1216 · 24 步 · euler | 1 | ✅ |
+| `identity/tt-ip-写实版/08_Flux_四套_锁姿势.json` | 08_Flux_四套_锁姿势 | flux1-dev-fp8 · 832x1216 · 24 步 · euler | 2 | ✅ |
 | `identity/tt-ip-写实版/09_SDXL_四套_锁脸锁姿势.json` | 09_SDXL_四套_锁脸锁姿势 | RealVisXL_V5.0_fp16 · 832x1216 · 30 步 · dpmpp_2m_sde | 4 | ✅ |
-| `identity/tt-ip-写实版/10_SDXL_LoRA_四套.json` | 10_SDXL_LoRA_四套 | RealVisXL_V5.0_fp16 · 832x1216 · 26 步 · dpmpp_2m_sde | 3 | ⚠️缺模型 |
+| `identity/tt-ip-写实版/10_SDXL_LoRA_四套.json` | 10_SDXL_LoRA_四套 | RealVisXL_V5.0_fp16 · 832x1216 · 26 步 · dpmpp_2m_sde | 3 | ✅ |
 
 ## image
 
@@ -56,7 +56,7 @@
 | `image/qwen/06_Qwen21_Turbo_文生图.json` | Qwen Image 2.1：默认1024像素；Turbo使用官方8步时间表，标准版使用40步。图生图上传参考图后，用文字描述要修改的内容。标准版与Turbo共享编码器和VAE。提示词增强器未启用，无需额外语言模型。 | qwen_image_2.1_turbo_int8_convrot | 3 | ✅ |
 | `image/qwen/07_Qwen21_Turbo_指令改图.json` | Qwen Image 2.1：默认1024像素；Turbo使用官方8步时间表，标准版使用40步。图生图上传参考图后，用文字描述要修改的内容。标准版与Turbo共享编码器和VAE。提示词增强器未启用，无需额外语言模型。 | qwen_image_2.1_turbo_int8_convrot | 3 | ✅ |
 | `image/qwen/08_Qwen21_标准版_文生图.json` | Qwen Image 2.1：默认1024像素；Turbo使用官方8步时间表，标准版使用40步。图生图上传参考图后，用文字描述要修改的内容。标准版与Turbo共享编码器和VAE。提示词增强器未启用，无需额外语言模型。 | qwen_image_2.1_int8_convrot · 40 步 · euler | 3 | ✅ |
-| `image/sd15/22_SD15_文生图.json` | 22_SD15_文生图 | v1-5-pruned-emaonly-fp16 · 512x512 · 20 步 · euler | 1 | ⚠️缺模型 |
+| `image/sd15/22_SD15_文生图.json` | 22_SD15_文生图 | v1-5-pruned-emaonly-fp16 · 512x512 · 20 步 · euler | 1 | ✅ |
 | `image/sdxl/01_SDXL_文生图.json` | 01_SDXL_文生图 | sd_xl_base_1.0 · 1024x1024 · 25 步 · dpmpp_2m | 1 | ✅ |
 | `image/sdxl/02_SDXL_图生图.json` | 02_SDXL_图生图 | sd_xl_base_1.0 · 25 步 · dpmpp_2m | 1 | ✅ |
 | `image/sdxl/16_SDXL_我的人物形象_参考照片.json` | 我的人物形象图 / SDXL 图生图 | sd_xl_base_1.0 · 56 步 · dpmpp_2m | 1 | ✅ |
@@ -81,4 +81,4 @@
 | `video/wan/03_Wan22_文生视频.json` | 本机视频工作流 | wan2.2_ti2v_5B_fp16 · 20 步 · uni_pc | 3 | ✅ |
 | `video/wan/04_Wan22_图生视频.json` | 本机视频工作流 | wan2.2_ti2v_5B_fp16 · 20 步 · uni_pc | 3 | ✅ |
 | `video/wan/11_Wan22_14B_图生视频.json` | Wan 2.2 14B FP8高低噪声模型 + LightX2V 4步LoRA。默认640×384、49帧、16fps，约3秒无声短片。上传参考图并描述动作；尺寸、时长提高会增加显存和耗时。 | wan2.2_i2v_high_noise_14B_fp8_scaled | 6 | ✅ |
-| `video/wan/23_Wan21_13B_文生视频.json` | 23_Wan21_13B_文生视频 | wan2.1_t2v_1.3B_fp16 · 20 步 · 416 帧 · uni_pc | 3 | ⚠️缺模型 |
+| `video/wan/23_Wan21_13B_文生视频.json` | 23_Wan21_13B_文生视频 | wan2.1_t2v_1.3B_fp16 · 20 步 · 416 帧 · uni_pc | 3 | ✅ |

@@ -80,19 +80,19 @@
 - 模型：CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors、RealVisXL_V5.0_fp16.safetensors、ip-adapter-plus_sdxl_vit-h.safetensors
 - 说明：06_写实版_照片一致性_v002
 
-**07_Flux_四套穿搭_v001**  ⚠️ 缺模型
+**07_Flux_四套穿搭_v001**
 - 路径：`identity/tt-ip-写实版/07_Flux_四套穿搭_v001.json`
 - 参数：flux1-dev-fp8 · 832x1216 · 24 步 · euler
 - 模型：flux1-dev-fp8.safetensors
 - 说明：07_Flux_四套穿搭_v001
 
-**07_Flux_四套穿搭_v002**  ⚠️ 缺模型
+**07_Flux_四套穿搭_v002**
 - 路径：`identity/tt-ip-写实版/07_Flux_四套穿搭_v002.json`
 - 参数：flux1-dev-fp8 · 832x1216 · 24 步 · euler
 - 模型：flux1-dev-fp8.safetensors
 - 说明：07_Flux_四套穿搭_v002
 
-**08_Flux_四套_锁姿势**  ⚠️ 缺模型
+**08_Flux_四套_锁姿势**
 - 路径：`identity/tt-ip-写实版/08_Flux_四套_锁姿势.json`
 - 参数：flux1-dev-fp8 · 832x1216 · 24 步 · euler
 - 模型：flux-union-pro-2.0.safetensors、flux1-dev-fp8.safetensors
@@ -104,7 +104,7 @@
 - 模型：CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors、RealVisXL_V5.0_fp16.safetensors、controlnet-openpose-sdxl-1.0.safetensors、ip-adapter-plus_sdxl_vit-h.safetensors
 - 说明：09_SDXL_四套_锁脸锁姿势
 
-**10_SDXL_LoRA_四套**  ⚠️ 缺模型
+**10_SDXL_LoRA_四套**
 - 路径：`identity/tt-ip-写实版/10_SDXL_LoRA_四套.json`
 - 参数：RealVisXL_V5.0_fp16 · 832x1216 · 26 步 · dpmpp_2m_sde
 - 模型：RealVisXL_V5.0_fp16.safetensors、controlnet-openpose-sdxl-1.0.safetensors、turingteacher_v002_quick.safetensors
@@ -169,7 +169,7 @@
 - 模型：qwen3vl_8b_int8_convrot.safetensors、qwen_image_2.1_int8_convrot.safetensors、qwen_image_2.1_vae_bf16.safetensors
 - 说明：Qwen Image 2.1：默认1024像素；Turbo使用官方8步时间表，标准版使用40步。图生图上传参考图后，用文字描述要修改的内容。标准版与Turbo共享编码器和VAE。提示词增强器未启用，无需额外语言模型。
 
-**22_SD15_文生图**  ⚠️ 缺模型
+**22_SD15_文生图**
 - 路径：`image/sd15/22_SD15_文生图.json`
 - 参数：v1-5-pruned-emaonly-fp16 · 512x512 · 20 步 · euler
 - 模型：v1-5-pruned-emaonly-fp16.safetensors
@@ -259,19 +259,8 @@
 - 模型：umt5_xxl_fp8_e4m3fn_scaled.safetensors、wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors、wan2.2_i2v_lightx2v_4steps_lora_v1_high_noise.safetensors、wan2.2_i2v_lightx2v_4steps_lora_v1_low_noise.safetensors、wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors、wan_2.1_vae.safetensors
 - 说明：Wan 2.2 14B FP8高低噪声模型 + LightX2V 4步LoRA。默认640×384、49帧、16fps，约3秒无声短片。上传参考图并描述动作；尺寸、时长提高会增加显存和耗时。
 
-**23_Wan21_13B_文生视频**  ⚠️ 缺模型
+**23_Wan21_13B_文生视频**
 - 路径：`video/wan/23_Wan21_13B_文生视频.json`
 - 参数：wan2.1_t2v_1.3B_fp16 · 20 步 · 416 帧 · uni_pc
 - 模型：umt5_xxl_fp8_e4m3fn_scaled.safetensors、wan2.1_t2v_1.3B_fp16.safetensors、wan_2.1_vae.safetensors
 - 说明：23_Wan21_13B_文生视频
-
-## 缺模型
-
-| 工作流 | 缺的模型 |
-|---|---|
-| `identity/tt-ip-写实版/07_Flux_四套穿搭_v001.json` | flux1-dev-fp8.safetensors |
-| `identity/tt-ip-写实版/07_Flux_四套穿搭_v002.json` | flux1-dev-fp8.safetensors |
-| `identity/tt-ip-写实版/08_Flux_四套_锁姿势.json` | flux1-dev-fp8.safetensors、flux-union-pro-2.0.safetensors |
-| `identity/tt-ip-写实版/10_SDXL_LoRA_四套.json` | turingteacher_v002_quick.safetensors |
-| `image/sd15/22_SD15_文生图.json` | v1-5-pruned-emaonly-fp16.safetensors |
-| `video/wan/23_Wan21_13B_文生视频.json` | wan2.1_t2v_1.3B_fp16.safetensors |

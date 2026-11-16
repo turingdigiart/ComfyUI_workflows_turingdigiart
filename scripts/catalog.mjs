@@ -8,13 +8,13 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import { buildModelIndex, MODEL_EXT } from '../lib/model-index.mjs';
 
 const args = process.argv.slice(2);
 const argOf = (k, d) => { const i = args.indexOf(k); return i >= 0 && args[i + 1] ? args[i + 1] : d; };
 const source = path.resolve(argOf('--source', process.env.COMFY_WORKFLOWS || 'E:/RAE_ToolRoot/comfyui/ComfyUI_windows_portable/ComfyUI/user/default/workflows'));
 const outDir = path.resolve(argOf('--out', path.join(process.cwd(), 'catalog')));
 const modelsRoot = path.resolve(argOf('--models', 'E:/RAE_ToolRoot/comfyui/ComfyUI_windows_portable/ComfyUI/models'));
-const MODEL_EXT = /\.(safetensors|ckpt|pt|pth|gguf|bin|onnx|sft)$/i;
 const NOTE_TYPE = /^(MarkdownNote|Note)$/i;
 
 function walk(dir, acc = []) {
@@ -26,16 +26,10 @@ function walk(dir, acc = []) {
   return acc;
 }
 
-// 模型索引（只按文件名，避免每次扫全盘）
-const onDisk = new Set();
-if (fs.existsSync(modelsRoot)) {
-  (function scan(d) {
-    for (const e of fs.readdirSync(d, { withFileTypes: true })) {
-      const p = path.join(d, e.name);
-      if (e.isDirectory()) scan(p); else if (MODEL_EXT.test(e.name)) onDisk.add(e.name.toLowerCase());
-    }
-  })(modelsRoot);
-}
+// 模型索引：运行时 models/ + extra_model_paths.yaml 追加的权重根
+// （挂在权重根里的模型同样可用，不扫会误报缺失）
+const extraPathsFile = path.resolve(process.env.COMFY_EXTRA_PATHS || path.join(path.dirname(modelsRoot), 'extra_model_paths.yaml'));
+const { names: onDisk, extraRoots } = buildModelIndex({ modelsRoot, extraPathsFile });
 
 const clean = s => String(s || '').replace(/\r/g, '').replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n').trim();
 const firstLine = s => (clean(s).split('\n').find(l => l.trim()) || '').replace(/^#+\s*/, '').slice(0, 120);

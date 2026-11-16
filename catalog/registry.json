@@ -1,9 +1,9 @@
 {
   "schema": 2,
-  "generated_at": "2026-11-16T15:26:06.628Z",
+  "generated_at": "2026-11-16T16:57:14.037Z",
   "source": "E:\\RAE_ToolRoot\\comfyui\\ComfyUI_windows_portable\\ComfyUI\\user\\default\\workflows",
   "count": 43,
-  "missing_model_count": 6,
+  "missing_model_count": 0,
   "undocumented_count": 0,
   "workflows": [
     {
@@ -521,9 +521,7 @@
       "models": [
         "flux1-dev-fp8.safetensors"
       ],
-      "missing_models": [
-        "flux1-dev-fp8.safetensors"
-      ],
+      "missing_models": [],
       "params": {
         "model": "flux1-dev-fp8.safetensors",
         "resolution": "832x1216",
@@ -562,9 +560,7 @@
       "models": [
         "flux1-dev-fp8.safetensors"
       ],
-      "missing_models": [
-        "flux1-dev-fp8.safetensors"
-      ],
+      "missing_models": [],
       "params": {
         "model": "flux1-dev-fp8.safetensors",
         "resolution": "832x1216",
@@ -607,10 +603,7 @@
         "flux-union-pro-2.0.safetensors",
         "flux1-dev-fp8.safetensors"
       ],
-      "missing_models": [
-        "flux1-dev-fp8.safetensors",
-        "flux-union-pro-2.0.safetensors"
-      ],
+      "missing_models": [],
       "params": {
         "model": "flux1-dev-fp8.safetensors",
         "resolution": "832x1216",
@@ -701,9 +694,7 @@
         "controlnet-openpose-sdxl-1.0.safetensors",
         "turingteacher_v002_quick.safetensors"
       ],
-      "missing_models": [
-        "turingteacher_v002_quick.safetensors"
-      ],
+      "missing_models": [],
       "params": {
         "model": "RealVisXL_V5.0_fp16.safetensors",
         "resolution": "832x1216",
@@ -1162,9 +1153,7 @@
       "models": [
         "v1-5-pruned-emaonly-fp16.safetensors"
       ],
-      "missing_models": [
-        "v1-5-pruned-emaonly-fp16.safetensors"
-      ],
+      "missing_models": [],
       "params": {
         "model": "v1-5-pruned-emaonly-fp16.safetensors",
         "resolution": "512x512",
@@ -1784,9 +1773,7 @@
         "wan2.1_t2v_1.3B_fp16.safetensors",
         "wan_2.1_vae.safetensors"
       ],
-      "missing_models": [
-        "wan2.1_t2v_1.3B_fp16.safetensors"
-      ],
+      "missing_models": [],
       "params": {
         "model": "wan2.1_t2v_1.3B_fp16.safetensors",
         "resolution": null,
