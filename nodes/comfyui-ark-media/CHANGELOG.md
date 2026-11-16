@@ -19,3 +19,9 @@
 
 - 源码母版迁入 `turingdigiart/ComfyUI_workflows_turingdigiart` 的 `nodes/comfyui-ark-media/`；本地运行时 `custom_nodes/comfyui-ark-media` 改为 junction 指向本仓库，避免双份正文。
 - 示例工作流路径更新为仓库内 `workflows/image/ark/`、`workflows/video/ark/`；默认模型标注为 2026-11-16 实机验证（Seedream 5.0-flash / 5.5、Seedance 2.5）。
+
+## 1.0.1 — 2026-11-17｜机构规则：所有生成一律不加水印
+
+- 负责人「记住 所有水印都不要加！」→ 节点 `ArkSeedream` / `ArkSeedanceSubmit` 的 `watermark` 默认值由 true 改为 false；`tools/create_workflows.py` 生成的示例也改为 false。
+- 仓库工作流 18/19/21/25 的 `watermark` 参数批量固化为 false（20 号为任务取回，无提交节点）；脚本调用须显式传 `watermark: false`。
+- 合规：对外发布仍须按《人工智能生成合成内容标识办法》由使用方自行补显式标识，本规则不解除该义务。

@@ -100,7 +100,7 @@
         "adaptive",
         5,
         true,
-        true,
+        false,
         0
       ]
     },

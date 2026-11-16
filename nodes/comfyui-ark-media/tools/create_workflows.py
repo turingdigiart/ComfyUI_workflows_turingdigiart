@@ -11,8 +11,8 @@ def main():
     p=argparse.ArgumentParser(); p.add_argument('--project-root',type=Path,required=True); a=p.parse_args()
     root=a.project_root.resolve(); app=root/'ComfyUI_windows_portable/ComfyUI'
     with urlopen('http://127.0.0.1:8188/object_info') as response: schema=json.load(response)
-    image=dict(enable_api=False,prompt='参考图片重新设计机器人：保持可爱的大头短身比例和完整全身，使用钴蓝色装甲、橙色配件、发光眼睛及胸口能量核心，干净的浅灰背景，精致3D角色设定图。',model='',size='2K',watermark=True,refresh_id=0)
-    video=dict(enable_api=False,prompt='可爱机器人缓慢抬起右手向镜头挥手，眼睛轻轻闪烁，固定镜头，保持角色造型一致，轻微机械运转音，无对白。',model='',mode='first_frame',resolution='720p',ratio='adaptive',duration=5,generate_audio=True,watermark=True,refresh_id=0)
+    image=dict(enable_api=False,prompt='参考图片重新设计机器人：保持可爱的大头短身比例和完整全身，使用钴蓝色装甲、橙色配件、发光眼睛及胸口能量核心，干净的浅灰背景，精致3D角色设定图。',model='',size='2K',watermark=False,refresh_id=0)
+    video=dict(enable_api=False,prompt='可爱机器人缓慢抬起右手向镜头挥手，眼睛轻轻闪烁，固定镜头，保持角色造型一致，轻微机械运转音，无对白。',model='',mode='first_frame',resolution='720p',ratio='adaptive',duration=5,generate_audio=True,watermark=False,refresh_id=0)
     def node(kind, **inputs): return dict(class_type=kind,inputs=inputs)
     def save(name,g,note):
         nodes=[]; links=[]; rows={}; depths={}

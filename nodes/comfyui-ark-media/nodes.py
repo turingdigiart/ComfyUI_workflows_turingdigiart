@@ -60,7 +60,7 @@ class ArkSeedream:
             "prompt": ("STRING", {"multiline": True, "default": "重新设计这个机器人：保留可爱的大头短身比例，改为钴蓝色装甲、橙色配件和发光眼睛，干净的浅灰背景，完整全身。"}),
             "model": ("STRING", {"default": "", "tooltip": "留空使用ark.local.json的seedream_model，也可填自己的模型ID或Endpoint ID"}),
             "size": ("STRING", {"default": "2K"}),
-            "watermark": ("BOOLEAN", {"default": True}),
+            "watermark": ("BOOLEAN", {"default": False}),
             "refresh_id": ("INT", {"default": 0, "min": 0, "max": 2147483647, "tooltip": "增大以发起新的付费生成。相同请求默认复用本地记录。"}),
         }, "optional": {"reference_images": ("IMAGE",)}, "hidden": {"unique_id": "UNIQUE_ID"}}
     RETURN_TYPES = ("IMAGE", "STRING")
@@ -116,7 +116,7 @@ class ArkSeedanceSubmit:
             "ratio": (["adaptive", "16:9", "9:16", "1:1", "4:3", "3:4", "21:9"],),
             "duration": ("INT", {"default": 5, "min": 4, "max": 30}),
             "generate_audio": ("BOOLEAN", {"default": True}),
-            "watermark": ("BOOLEAN", {"default": True}),
+            "watermark": ("BOOLEAN", {"default": False}),
             "refresh_id": ("INT", {"default": 0, "min": 0, "max": 2147483647}),
         }, "optional": {"reference_images": ("IMAGE",), "last_frame": ("IMAGE",)}, "hidden": {"unique_id": "UNIQUE_ID"}}
     RETURN_TYPES = ("STRING", "STRING")
