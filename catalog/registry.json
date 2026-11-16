@@ -1,21 +1,63 @@
 {
   "schema": 2,
-  "generated_at": "2026-11-15T20:43:45.735Z",
-  "source": "E:\\RAE_ToolRoot\\comfyui\\ComfyUI_windows_portable\\ComfyUI\\user\\default\\workflows",
-  "count": 28,
-  "missing_model_count": 1,
-  "undocumented_count": 10,
+  "generated_at": "2026-11-16T07:10:59.261Z",
+  "source": "E:\\Private\\AIDev\\TECH-COMFY-001_comfyui-workflows\\workflows",
+  "count": 41,
+  "missing_model_count": 16,
+  "undocumented_count": 22,
   "workflows": [
     {
-      "workflow_id": "identity-tt-ip-写实版-01_写实版_基准脸",
-      "path": "identity/tt-ip-写实版/01_写实版_基准脸.json",
+      "workflow_id": "audio-ace-24_ace_step_文生音频",
+      "path": "audio/ace/24_ACE_Step_文生音频.json",
+      "category": "audio",
+      "subcategory": "ace",
+      "name": "24_ACE_Step_文生音频",
+      "title": "ACE-Step 1.0 · 10 秒纯音乐",
+      "description": "# ACE-Step 1.0 · 10 秒纯音乐\n\n1. 确认模型为 `ace_step_v1_3.5b.safetensors`，放在 `models/checkpoints/`。\n2. 修改 tags 可改变乐器和曲风；保留 `[instrumental]` 可生成纯音乐。\n3. Ctrl+Enter 开始生成，结果保存到 `output/audio/`，格式为 FLAC。\n\n默认：10 秒、30 步、CFG 5、Euler / simple、固定 seed。测试通路可用配套 4 步 API；4 步结果不代表正常生成质量。\n\n[官方教程](https://docs.comfy.org/zh-CN/tutorials/audio/ace-step/ace-step-v1) · [官方模型](https://huggingface.co/Comfy-Org/ACE-Step_ComfyUI_repackaged)\n\n模型许可证：Apache-2.0。工作流仅使用 ComfyUI 原生节点。",
+      "has_description": true,
+      "version": null,
+      "sha256": "13af553fca09335b052f3215fd75c17765f844c66423c2dada3155f8bdea9eec",
+      "bytes": 12450,
+      "node_count": 12,
+      "node_types": [
+        "KSampler",
+        "VAEDecodeAudio",
+        "ConditioningZeroOut",
+        "TextEncodeAceStepAudio",
+        "LatentOperationTonemapReinhard",
+        "SaveAudio",
+        "MarkdownNote",
+        "Note",
+        "CheckpointLoaderSimple",
+        "EmptyAceStepLatentAudio",
+        "LatentApplyOperationCFG",
+        "ModelSamplingSD3"
+      ],
+      "models": [
+        "ace_step_v1_3.5b.safetensors"
+      ],
+      "missing_models": [],
+      "params": {
+        "model": "ace_step_v1_3.5b.safetensors",
+        "resolution": null,
+        "steps": 30,
+        "sampler": "euler",
+        "frames": null,
+        "fps": null
+      },
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "identity-tt-ip-写实版-01_写实版_基准脸_v001",
+      "path": "identity/tt-ip-写实版/01_写实版_基准脸_v001.json",
       "category": "identity",
       "subcategory": "tt-ip-写实版",
-      "name": "01_写实版_基准脸",
-      "title": "01_写实版_基准脸",
+      "name": "01_写实版_基准脸_v001",
+      "title": "01_写实版_基准脸_v001",
       "description": "",
       "has_description": false,
-      "version": null,
+      "version": "v001",
       "sha256": "28530eb4e489e9c2f25cd5b19b2ba7e88ceb4763ad6746bcc7b3b5b73a6185a4",
       "bytes": 8377,
       "node_count": 7,
@@ -43,15 +85,51 @@
       "status": "Candidate"
     },
     {
-      "workflow_id": "identity-tt-ip-写实版-02_写实版_apose全身",
-      "path": "identity/tt-ip-写实版/02_写实版_Apose全身.json",
+      "workflow_id": "identity-tt-ip-写实版-01_写实版_基准脸_v002",
+      "path": "identity/tt-ip-写实版/01_写实版_基准脸_v002.json",
       "category": "identity",
       "subcategory": "tt-ip-写实版",
-      "name": "02_写实版_Apose全身",
-      "title": "02_写实版_Apose全身",
+      "name": "01_写实版_基准脸_v002",
+      "title": "01_写实版_基准脸_v002",
       "description": "",
       "has_description": false,
-      "version": null,
+      "version": "v002",
+      "sha256": "5d962ecd3beb083dc70d332e8ecad729c36ea90500a8aef7c571d351de26e304",
+      "bytes": 8437,
+      "node_count": 7,
+      "node_types": [
+        "CheckpointLoaderSimple",
+        "CLIPTextEncode",
+        "EmptyLatentImage",
+        "KSampler",
+        "VAEDecode",
+        "SaveImage"
+      ],
+      "models": [
+        "RealVisXL_V5.0_fp16.safetensors"
+      ],
+      "missing_models": [],
+      "params": {
+        "model": "RealVisXL_V5.0_fp16.safetensors",
+        "resolution": "896x1152",
+        "steps": 30,
+        "sampler": "dpmpp_2m_sde",
+        "frames": null,
+        "fps": null
+      },
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "identity-tt-ip-写实版-02_写实版_apose全身_v001",
+      "path": "identity/tt-ip-写实版/02_写实版_Apose全身_v001.json",
+      "category": "identity",
+      "subcategory": "tt-ip-写实版",
+      "name": "02_写实版_Apose全身_v001",
+      "title": "02_写实版_Apose全身_v001",
+      "description": "",
+      "has_description": false,
+      "version": "v001",
       "sha256": "39a649b780a595280d2e419fa8859672f26812e9bcea5be4c80a95abf42884c6",
       "bytes": 11876,
       "node_count": 10,
@@ -83,15 +161,55 @@
       "status": "Candidate"
     },
     {
-      "workflow_id": "identity-tt-ip-写实版-03_写实版_apose三套穿搭",
-      "path": "identity/tt-ip-写实版/03_写实版_Apose三套穿搭.json",
+      "workflow_id": "identity-tt-ip-写实版-02_写实版_apose全身_v002",
+      "path": "identity/tt-ip-写实版/02_写实版_Apose全身_v002.json",
       "category": "identity",
       "subcategory": "tt-ip-写实版",
-      "name": "03_写实版_Apose三套穿搭",
-      "title": "03_写实版_Apose三套穿搭",
+      "name": "02_写实版_Apose全身_v002",
+      "title": "02_写实版_Apose全身_v002",
       "description": "",
       "has_description": false,
-      "version": null,
+      "version": "v002",
+      "sha256": "414bb31c54b0af93fc2733c19d2980f023d95cd2c0490153465afa555db63973",
+      "bytes": 12215,
+      "node_count": 10,
+      "node_types": [
+        "CheckpointLoaderSimple",
+        "CLIPTextEncode",
+        "EmptyLatentImage",
+        "LoadImage",
+        "ControlNetLoader",
+        "ControlNetApplyAdvanced",
+        "KSampler",
+        "VAEDecode",
+        "SaveImage"
+      ],
+      "models": [
+        "RealVisXL_V5.0_fp16.safetensors",
+        "controlnet-openpose-sdxl-1.0.safetensors"
+      ],
+      "missing_models": [],
+      "params": {
+        "model": "RealVisXL_V5.0_fp16.safetensors",
+        "resolution": "832x1216",
+        "steps": 30,
+        "sampler": "dpmpp_2m_sde",
+        "frames": null,
+        "fps": null
+      },
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "identity-tt-ip-写实版-03_写实版_apose三套穿搭_v001",
+      "path": "identity/tt-ip-写实版/03_写实版_Apose三套穿搭_v001.json",
+      "category": "identity",
+      "subcategory": "tt-ip-写实版",
+      "name": "03_写实版_Apose三套穿搭_v001",
+      "title": "03_写实版_Apose三套穿搭_v001",
+      "description": "",
+      "has_description": false,
+      "version": "v001",
       "sha256": "5ab8447e4ac28c69c28800c6888286f04f3aa0d5bd1189727b4096e1a0343f6a",
       "bytes": 61589,
       "node_count": 45,
@@ -123,17 +241,93 @@
       "status": "Candidate"
     },
     {
-      "workflow_id": "identity-tt-ip-写实版-04_写实版_封面构图",
-      "path": "identity/tt-ip-写实版/04_写实版_封面构图.json",
+      "workflow_id": "identity-tt-ip-写实版-03_写实版_apose三套穿搭_v002",
+      "path": "identity/tt-ip-写实版/03_写实版_Apose三套穿搭_v002.json",
       "category": "identity",
       "subcategory": "tt-ip-写实版",
-      "name": "04_写实版_封面构图",
-      "title": "04_写实版_封面构图",
+      "name": "03_写实版_Apose三套穿搭_v002",
+      "title": "03_写实版_Apose三套穿搭_v002",
       "description": "",
       "has_description": false,
-      "version": null,
+      "version": "v002",
+      "sha256": "1f66dfe8795e7d891b8e38fa90281e6a02eb893dee71ed4b042714147737ae1a",
+      "bytes": 63907,
+      "node_count": 45,
+      "node_types": [
+        "CheckpointLoaderSimple",
+        "EmptyLatentImage",
+        "LoadImage",
+        "ControlNetLoader",
+        "CLIPTextEncode",
+        "ControlNetApplyAdvanced",
+        "KSampler",
+        "VAEDecode",
+        "SaveImage"
+      ],
+      "models": [
+        "RealVisXL_V5.0_fp16.safetensors",
+        "controlnet-openpose-sdxl-1.0.safetensors"
+      ],
+      "missing_models": [],
+      "params": {
+        "model": "RealVisXL_V5.0_fp16.safetensors",
+        "resolution": "832x1216",
+        "steps": 30,
+        "sampler": "dpmpp_2m_sde",
+        "frames": null,
+        "fps": null
+      },
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "identity-tt-ip-写实版-04_写实版_封面构图_v001",
+      "path": "identity/tt-ip-写实版/04_写实版_封面构图_v001.json",
+      "category": "identity",
+      "subcategory": "tt-ip-写实版",
+      "name": "04_写实版_封面构图_v001",
+      "title": "04_写实版_封面构图_v001",
+      "description": "",
+      "has_description": false,
+      "version": "v001",
       "sha256": "a11e2a07976625ac4e1cd6828dff032024657fd8e5491ba50de3aa50c8488636",
       "bytes": 13306,
+      "node_count": 12,
+      "node_types": [
+        "CheckpointLoaderSimple",
+        "CLIPTextEncode",
+        "EmptyLatentImage",
+        "KSampler",
+        "VAEDecode",
+        "SaveImage"
+      ],
+      "models": [
+        "RealVisXL_V5.0_fp16.safetensors"
+      ],
+      "missing_models": [],
+      "params": {
+        "model": "RealVisXL_V5.0_fp16.safetensors",
+        "resolution": "896x1152",
+        "steps": 30,
+        "sampler": "dpmpp_2m_sde",
+        "frames": null,
+        "fps": null
+      },
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "identity-tt-ip-写实版-04_写实版_封面构图_v002",
+      "path": "identity/tt-ip-写实版/04_写实版_封面构图_v002.json",
+      "category": "identity",
+      "subcategory": "tt-ip-写实版",
+      "name": "04_写实版_封面构图_v002",
+      "title": "04_写实版_封面构图_v002",
+      "description": "",
+      "has_description": false,
+      "version": "v002",
+      "sha256": "8e1afe032057747e8861c1a0949611fe2ad70c2bca44ebc8260a967bb802fee7",
+      "bytes": 13366,
       "node_count": 12,
       "node_types": [
         "CheckpointLoaderSimple",
@@ -194,15 +388,15 @@
       "status": "Candidate"
     },
     {
-      "workflow_id": "identity-tt-ip-写实版-06_写实版_照片一致性",
-      "path": "identity/tt-ip-写实版/06_写实版_照片一致性.json",
+      "workflow_id": "identity-tt-ip-写实版-06_写实版_照片一致性_v001",
+      "path": "identity/tt-ip-写实版/06_写实版_照片一致性_v001.json",
       "category": "identity",
       "subcategory": "tt-ip-写实版",
-      "name": "06_写实版_照片一致性",
-      "title": "06_写实版_照片一致性",
+      "name": "06_写实版_照片一致性_v001",
+      "title": "06_写实版_照片一致性_v001",
       "description": "",
       "has_description": false,
-      "version": null,
+      "version": "v001",
       "sha256": "58d8c428ea23a0dc9cd14f16976954ceca8a600f2167befbc35251d39b87314f",
       "bytes": 12253,
       "node_count": 11,
@@ -236,15 +430,57 @@
       "status": "Candidate"
     },
     {
-      "workflow_id": "identity-tt-ip-写实版-07_flux_四套穿搭",
-      "path": "identity/tt-ip-写实版/07_Flux_四套穿搭.json",
+      "workflow_id": "identity-tt-ip-写实版-06_写实版_照片一致性_v002",
+      "path": "identity/tt-ip-写实版/06_写实版_照片一致性_v002.json",
       "category": "identity",
       "subcategory": "tt-ip-写实版",
-      "name": "07_Flux_四套穿搭",
-      "title": "07_Flux_四套穿搭",
+      "name": "06_写实版_照片一致性_v002",
+      "title": "06_写实版_照片一致性_v002",
       "description": "",
       "has_description": false,
-      "version": null,
+      "version": "v002",
+      "sha256": "aa13a30d7a040dab6d1846581e11e238189614707dbc84296975515952d3c78f",
+      "bytes": 12313,
+      "node_count": 11,
+      "node_types": [
+        "CheckpointLoaderSimple",
+        "CLIPVisionLoader",
+        "IPAdapterModelLoader",
+        "LoadImage",
+        "IPAdapterAdvanced",
+        "CLIPTextEncode",
+        "EmptyLatentImage",
+        "KSampler",
+        "VAEDecode",
+        "SaveImage"
+      ],
+      "models": [
+        "CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors",
+        "RealVisXL_V5.0_fp16.safetensors",
+        "ip-adapter-plus_sdxl_vit-h.safetensors"
+      ],
+      "missing_models": [],
+      "params": {
+        "model": "RealVisXL_V5.0_fp16.safetensors",
+        "resolution": "896x1152",
+        "steps": 30,
+        "sampler": "dpmpp_2m_sde",
+        "frames": null,
+        "fps": null
+      },
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "identity-tt-ip-写实版-07_flux_四套穿搭_v001",
+      "path": "identity/tt-ip-写实版/07_Flux_四套穿搭_v001.json",
+      "category": "identity",
+      "subcategory": "tt-ip-写实版",
+      "name": "07_Flux_四套穿搭_v001",
+      "title": "07_Flux_四套穿搭_v001",
+      "description": "",
+      "has_description": false,
+      "version": "v001",
       "sha256": "5b754635dd9d332ecad9f314f6d1864f9d023a5435fe7fd5cd443ec99842b685",
       "bytes": 52606,
       "node_count": 43,
@@ -260,14 +496,177 @@
       "models": [
         "flux1-dev-fp8.safetensors"
       ],
-      "missing_models": [
-        "flux1-dev-fp8.safetensors"
-      ],
+      "missing_models": [],
       "params": {
         "model": "flux1-dev-fp8.safetensors",
         "resolution": "832x1216",
         "steps": 24,
         "sampler": "euler",
+        "frames": null,
+        "fps": null
+      },
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "identity-tt-ip-写实版-07_flux_四套穿搭_v002",
+      "path": "identity/tt-ip-写实版/07_Flux_四套穿搭_v002.json",
+      "category": "identity",
+      "subcategory": "tt-ip-写实版",
+      "name": "07_Flux_四套穿搭_v002",
+      "title": "07_Flux_四套穿搭_v002",
+      "description": "",
+      "has_description": false,
+      "version": "v002",
+      "sha256": "9f74c07af736d5fe31070b473151bea66041968f134a51df5e3d3301ddbb3f4e",
+      "bytes": 53294,
+      "node_count": 43,
+      "node_types": [
+        "CheckpointLoaderSimple",
+        "CLIPTextEncode",
+        "EmptyLatentImage",
+        "FluxGuidance",
+        "KSampler",
+        "VAEDecode",
+        "SaveImage"
+      ],
+      "models": [
+        "flux1-dev-fp8.safetensors"
+      ],
+      "missing_models": [],
+      "params": {
+        "model": "flux1-dev-fp8.safetensors",
+        "resolution": "832x1216",
+        "steps": 24,
+        "sampler": "euler",
+        "frames": null,
+        "fps": null
+      },
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "identity-tt-ip-写实版-08_flux_四套_锁姿势",
+      "path": "identity/tt-ip-写实版/08_Flux_四套_锁姿势.json",
+      "category": "identity",
+      "subcategory": "tt-ip-写实版",
+      "name": "08_Flux_四套_锁姿势",
+      "title": "08_Flux_四套_锁姿势",
+      "description": "",
+      "has_description": false,
+      "version": null,
+      "sha256": "ff2cd70d1dbbf9ef8ae8753920e7a71ff25bd3ee87b89a93fd31e222f558d83f",
+      "bytes": 36872,
+      "node_count": 29,
+      "node_types": [
+        "CheckpointLoaderSimple",
+        "LoadImage",
+        "ControlNetLoader",
+        "EmptyLatentImage",
+        "CLIPTextEncode",
+        "FluxGuidance",
+        "ControlNetApplyAdvanced",
+        "KSampler",
+        "VAEDecode",
+        "SaveImage"
+      ],
+      "models": [
+        "flux-union-pro-2.0.safetensors",
+        "flux1-dev-fp8.safetensors"
+      ],
+      "missing_models": [],
+      "params": {
+        "model": "flux1-dev-fp8.safetensors",
+        "resolution": "832x1216",
+        "steps": 24,
+        "sampler": "euler",
+        "frames": null,
+        "fps": null
+      },
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "identity-tt-ip-写实版-09_sdxl_四套_锁脸锁姿势",
+      "path": "identity/tt-ip-写实版/09_SDXL_四套_锁脸锁姿势.json",
+      "category": "identity",
+      "subcategory": "tt-ip-写实版",
+      "name": "09_SDXL_四套_锁脸锁姿势",
+      "title": "09_SDXL_四套_锁脸锁姿势",
+      "description": "",
+      "has_description": false,
+      "version": null,
+      "sha256": "5b9950f9fb3174c0f857edc957f5a8e52f603343f0084a41d26a0f2fba945c47",
+      "bytes": 38408,
+      "node_count": 29,
+      "node_types": [
+        "CheckpointLoaderSimple",
+        "CLIPVisionLoader",
+        "IPAdapterModelLoader",
+        "LoadImage",
+        "IPAdapterAdvanced",
+        "ControlNetLoader",
+        "EmptyLatentImage",
+        "CLIPTextEncode",
+        "ControlNetApplyAdvanced",
+        "KSampler",
+        "VAEDecode",
+        "SaveImage"
+      ],
+      "models": [
+        "CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors",
+        "RealVisXL_V5.0_fp16.safetensors",
+        "controlnet-openpose-sdxl-1.0.safetensors",
+        "ip-adapter-plus_sdxl_vit-h.safetensors"
+      ],
+      "missing_models": [],
+      "params": {
+        "model": "RealVisXL_V5.0_fp16.safetensors",
+        "resolution": "832x1216",
+        "steps": 30,
+        "sampler": "dpmpp_2m_sde",
+        "frames": null,
+        "fps": null
+      },
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "identity-tt-ip-写实版-10_sdxl_lora_四套",
+      "path": "identity/tt-ip-写实版/10_SDXL_LoRA_四套.json",
+      "category": "identity",
+      "subcategory": "tt-ip-写实版",
+      "name": "10_SDXL_LoRA_四套",
+      "title": "10_SDXL_LoRA_四套",
+      "description": "",
+      "has_description": false,
+      "version": null,
+      "sha256": "4b324380dee6fd5a4b2f4cf5f8ace5ecb630c8e00b964af1b0dd0fa2361612be",
+      "bytes": 35692,
+      "node_count": 26,
+      "node_types": [
+        "CheckpointLoaderSimple",
+        "LoraLoader",
+        "LoadImage",
+        "ControlNetLoader",
+        "EmptyLatentImage",
+        "CLIPTextEncode",
+        "ControlNetApplyAdvanced",
+        "KSampler",
+        "VAEDecode",
+        "SaveImage"
+      ],
+      "models": [
+        "RealVisXL_V5.0_fp16.safetensors",
+        "controlnet-openpose-sdxl-1.0.safetensors",
+        "turingteacher_v002_quick.safetensors"
+      ],
+      "missing_models": [],
+      "params": {
+        "model": "RealVisXL_V5.0_fp16.safetensors",
+        "resolution": "832x1216",
+        "steps": 26,
+        "sampler": "dpmpp_2m_sde",
         "frames": null,
         "fps": null
       },
@@ -337,7 +736,11 @@
         "qwen_3_4b.safetensors",
         "z_image_turbo_bf16.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "z_image_turbo_bf16.safetensors",
+        "qwen_3_4b.safetensors",
+        "ae.safetensors"
+      ],
       "params": {
         "model": "z_image_turbo_bf16.safetensors",
         "resolution": "1024x1024",
@@ -416,7 +819,11 @@
         "flux2-vae.safetensors",
         "qwen_3_4b.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "flux-2-klein-4b-fp8.safetensors",
+        "qwen_3_4b.safetensors",
+        "flux2-vae.safetensors"
+      ],
       "params": {
         "model": "flux-2-klein-4b-fp8.safetensors",
         "resolution": null,
@@ -466,9 +873,40 @@
         "flux2-vae.safetensors",
         "qwen_3_4b.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "flux-2-klein-4b-fp8.safetensors",
+        "qwen_3_4b.safetensors",
+        "flux2-vae.safetensors"
+      ],
       "params": {
         "model": "flux-2-klein-4b-fp8.safetensors",
+        "resolution": null,
+        "steps": null,
+        "sampler": null,
+        "frames": null,
+        "fps": null
+      },
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "image-poster-poster_layered_v001_api",
+      "path": "image/poster/POSTER_LAYERED_v001_api.json",
+      "category": "image",
+      "subcategory": "poster",
+      "name": "POSTER_LAYERED_v001_api",
+      "title": "POSTER_LAYERED_v001_api",
+      "description": "",
+      "has_description": false,
+      "version": "v001",
+      "sha256": "c2d301f5683ceecd0783263c1db3168e3be55d07a7e5fc8dbda3b290339f7176",
+      "bytes": 6901,
+      "node_count": 0,
+      "node_types": [],
+      "models": [],
+      "missing_models": [],
+      "params": {
+        "model": null,
         "resolution": null,
         "steps": null,
         "sampler": null,
@@ -511,7 +949,11 @@
         "qwen_image_2.1_turbo_int8_convrot.safetensors",
         "qwen_image_2.1_vae_bf16.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "qwen_image_2.1_turbo_int8_convrot.safetensors",
+        "qwen3vl_8b_int8_convrot.safetensors",
+        "qwen_image_2.1_vae_bf16.safetensors"
+      ],
       "params": {
         "model": "qwen_image_2.1_turbo_int8_convrot.safetensors",
         "resolution": null,
@@ -557,7 +999,11 @@
         "qwen_image_2.1_turbo_int8_convrot.safetensors",
         "qwen_image_2.1_vae_bf16.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "qwen_image_2.1_turbo_int8_convrot.safetensors",
+        "qwen3vl_8b_int8_convrot.safetensors",
+        "qwen_image_2.1_vae_bf16.safetensors"
+      ],
       "params": {
         "model": "qwen_image_2.1_turbo_int8_convrot.safetensors",
         "resolution": null,
@@ -598,11 +1044,51 @@
         "qwen_image_2.1_int8_convrot.safetensors",
         "qwen_image_2.1_vae_bf16.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "qwen_image_2.1_int8_convrot.safetensors",
+        "qwen3vl_8b_int8_convrot.safetensors",
+        "qwen_image_2.1_vae_bf16.safetensors"
+      ],
       "params": {
         "model": "qwen_image_2.1_int8_convrot.safetensors",
         "resolution": null,
         "steps": 40,
+        "sampler": "euler",
+        "frames": null,
+        "fps": null
+      },
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "image-sd15-22_sd15_文生图",
+      "path": "image/sd15/22_SD15_文生图.json",
+      "category": "image",
+      "subcategory": "sd15",
+      "name": "22_SD15_文生图",
+      "title": "22_SD15_文生图",
+      "description": "",
+      "has_description": false,
+      "version": null,
+      "sha256": "1d8626d2622239963167e955bcd0ed9ce63941f66ff8ae3984478955620d2d58",
+      "bytes": 5873,
+      "node_count": 7,
+      "node_types": [
+        "CheckpointLoaderSimple",
+        "CLIPTextEncode",
+        "EmptyLatentImage",
+        "KSampler",
+        "VAEDecode",
+        "SaveImage"
+      ],
+      "models": [
+        "v1-5-pruned-emaonly-fp16.safetensors"
+      ],
+      "missing_models": [],
+      "params": {
+        "model": "v1-5-pruned-emaonly-fp16.safetensors",
+        "resolution": "512x512",
+        "steps": 20,
         "sampler": "euler",
         "frames": null,
         "fps": null
@@ -634,7 +1120,9 @@
       "models": [
         "sd_xl_base_1.0.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "sd_xl_base_1.0.safetensors"
+      ],
       "params": {
         "model": "sd_xl_base_1.0.safetensors",
         "resolution": "1024x1024",
@@ -672,7 +1160,9 @@
       "models": [
         "sd_xl_base_1.0.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "sd_xl_base_1.0.safetensors"
+      ],
       "params": {
         "model": "sd_xl_base_1.0.safetensors",
         "resolution": null,
@@ -712,7 +1202,9 @@
       "models": [
         "sd_xl_base_1.0.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "sd_xl_base_1.0.safetensors"
+      ],
       "params": {
         "model": "sd_xl_base_1.0.safetensors",
         "resolution": null,
@@ -752,7 +1244,9 @@
       "models": [
         "sd_xl_base_1.0.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "sd_xl_base_1.0.safetensors"
+      ],
       "params": {
         "model": "sd_xl_base_1.0.safetensors",
         "resolution": null,
@@ -795,7 +1289,11 @@
         "qwen_3_4b.safetensors",
         "z_image_turbo_bf16.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "z_image_turbo_bf16.safetensors",
+        "qwen_3_4b.safetensors",
+        "ae.safetensors"
+      ],
       "params": {
         "model": "z_image_turbo_bf16.safetensors",
         "resolution": "1024x1024",
@@ -836,7 +1334,9 @@
       "models": [
         "hunyuan_3d_v2.1.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "hunyuan_3d_v2.1.safetensors"
+      ],
       "params": {
         "model": null,
         "resolution": null,
@@ -990,7 +1490,12 @@
         "ltx-2.3-spatial-upscaler-x2-1.1.safetensors",
         "ltx_2.3_22b_distilled_1.1_lora_dynamic_fro09_avg_rank_111_bf16.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "ltx-2.3-22b-dev-fp8.safetensors",
+        "ltx_2.3_22b_distilled_1.1_lora_dynamic_fro09_avg_rank_111_bf16.safetensors",
+        "gemma_3_12B_it_fp4_mixed.safetensors",
+        "ltx-2.3-spatial-upscaler-x2-1.1.safetensors"
+      ],
       "params": {
         "model": "ltx-2.3-22b-dev-fp8.safetensors",
         "resolution": null,
@@ -1034,7 +1539,10 @@
         "wan2.2_ti2v_5B_fp16.safetensors",
         "wan2.2_vae.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "wan2.2_ti2v_5B_fp16.safetensors",
+        "wan2.2_vae.safetensors"
+      ],
       "params": {
         "model": "wan2.2_ti2v_5B_fp16.safetensors",
         "resolution": null,
@@ -1078,7 +1586,10 @@
         "wan2.2_ti2v_5B_fp16.safetensors",
         "wan2.2_vae.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "wan2.2_ti2v_5B_fp16.safetensors",
+        "wan2.2_vae.safetensors"
+      ],
       "params": {
         "model": "wan2.2_ti2v_5B_fp16.safetensors",
         "resolution": null,
@@ -1126,13 +1637,59 @@
         "wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors",
         "wan_2.1_vae.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors",
+        "wan2.2_i2v_lightx2v_4steps_lora_v1_high_noise.safetensors",
+        "wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors",
+        "wan2.2_i2v_lightx2v_4steps_lora_v1_low_noise.safetensors"
+      ],
       "params": {
         "model": "wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors",
         "resolution": null,
         "steps": null,
         "sampler": null,
         "frames": null,
+        "fps": null
+      },
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "video-wan-23_wan21_13b_文生视频",
+      "path": "video/wan/23_Wan21_13B_文生视频.json",
+      "category": "video",
+      "subcategory": "wan",
+      "name": "23_Wan21_13B_文生视频",
+      "title": "23_Wan21_13B_文生视频",
+      "description": "",
+      "has_description": false,
+      "version": null,
+      "sha256": "1e7c9cfe5d9e3b5ae03ce173bbe7e4f0638e32b50678699a4f25d449f45f8402",
+      "bytes": 10332,
+      "node_count": 10,
+      "node_types": [
+        "CLIPLoader",
+        "VAELoader",
+        "CLIPTextEncode",
+        "UNETLoader",
+        "EmptyHunyuanLatentVideo",
+        "VAEDecodeTiled",
+        "KSampler",
+        "SaveAnimatedWEBP",
+        "ModelSamplingSD3"
+      ],
+      "models": [
+        "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+        "wan2.1_t2v_1.3B_fp16.safetensors",
+        "wan_2.1_vae.safetensors"
+      ],
+      "missing_models": [],
+      "params": {
+        "model": "wan2.1_t2v_1.3B_fp16.safetensors",
+        "resolution": null,
+        "steps": 20,
+        "sampler": "uni_pc",
+        "frames": 416,
         "fps": null
       },
       "parse_error": null,
