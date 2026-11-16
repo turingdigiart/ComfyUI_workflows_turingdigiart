@@ -1,9 +1,9 @@
 # 工作流台账
 
 > 由 `scripts/catalog.mjs` 生成，**不要手改**。改工作流后重跑脚本。
-> 生成时间：2026-11-16T09:40:24.072Z
+> 生成时间：2026-11-16T10:45:18.726Z
 > 来源目录：`E:\Private\AIDev\TECH-COMFY-001_comfyui-workflows\workflows`
-> 共 42 条｜缺模型 16 条｜缺说明 22 条
+> 共 43 条｜缺模型 16 条｜缺说明 22 条
 
 ## 分类分布
 
@@ -12,7 +12,7 @@
 | audio | 1 |
 | identity | 16 |
 | image | 16 |
-| model3d | 1 |
+| model3d | 2 |
 | video | 8 |
 
 ## audio
@@ -68,6 +68,7 @@
 | 工作流 | 说明 | 参数 | 模型 | 校验 |
 |---|---|---|---|:--:|
 | `model3d/hunyuan/13_Hunyuan3D21_图片生成3D模型.json` | 3D可行性验证：单张参考图生成无贴图GLB网格。默认官方示例图、30步、4096潜变量、256网格解码分辨率。输出不是已绑定角色：仍需要拓扑整理、UV/材质、骨骼和蒙皮。可将GLB导入Blender继续制作。 | 30 步 · euler | 1 | ⚠️缺模型 |
+| `model3d/tripo/26_Tripo_文生3D.json` | Key 在本机插件目录 tt-tripo/tripo.local.json（或环境变量 TRIPO_API_KEY），不入画布/同步盘（DEC-ORG-094）。付费调用属 P1：每次生成消耗 Tripo 额度，先确认预算。enable_a | — | 0 | ✅ |
 
 ## video
 

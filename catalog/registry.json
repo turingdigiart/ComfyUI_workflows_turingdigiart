@@ -1,8 +1,8 @@
 {
   "schema": 2,
-  "generated_at": "2026-11-16T09:40:24.072Z",
+  "generated_at": "2026-11-16T10:45:18.726Z",
   "source": "E:\\Private\\AIDev\\TECH-COMFY-001_comfyui-workflows\\workflows",
-  "count": 42,
+  "count": 43,
   "missing_model_count": 16,
   "undocumented_count": 22,
   "workflows": [
@@ -1374,6 +1374,39 @@
         "resolution": null,
         "steps": 30,
         "sampler": "euler",
+        "frames": null,
+        "fps": null
+      },
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "model3d-tripo-26_tripo_文生3d",
+      "path": "model3d/tripo/26_Tripo_文生3D.json",
+      "category": "model3d",
+      "subcategory": "tripo",
+      "name": "26_Tripo_文生3D",
+      "title": "Key 在本机插件目录 tt-tripo/tripo.local.json（或环境变量 TRIPO_API_KEY），不入画布/同步盘（DEC-ORG-094）。付费调用属 P1：每次生成消耗 Tripo 额度，先确认预算。enable_a",
+      "description": "Key 在本机插件目录 tt-tripo/tripo.local.json（或环境变量 TRIPO_API_KEY），不入画布/同步盘（DEC-ORG-094）。付费调用属 P1：每次生成消耗 Tripo 额度，先确认预算。enable_api 确认参数后再打开；任务超时用同一 task_id 再次取回，不重复提交。",
+      "has_description": true,
+      "version": null,
+      "sha256": "0af6c7230c768c5373c11efd68561f0fc86136f4580c87f828bbb61902a62b18",
+      "bytes": 3859,
+      "node_count": 6,
+      "node_types": [
+        "MarkdownNote",
+        "TTTripoSubmit",
+        "TTTripoFetch",
+        "PreviewImage",
+        "PreviewAny"
+      ],
+      "models": [],
+      "missing_models": [],
+      "params": {
+        "model": null,
+        "resolution": null,
+        "steps": null,
+        "sampler": null,
         "frames": null,
         "fps": null
       },

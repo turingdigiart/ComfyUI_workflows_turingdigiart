@@ -204,13 +204,18 @@
 - 模型：ae.safetensors、qwen_3_4b.safetensors、z_image_turbo_bf16.safetensors
 - 说明：8步快速出图；默认1024×1024。修改提示词后运行。支持中文与英文提示词。原生节点，无需额外插件。
 
-### model3d（1）
+### model3d（2）
 
 **13_Hunyuan3D21_图片生成3D模型**  ⚠️ 缺模型
 - 路径：`model3d/hunyuan/13_Hunyuan3D21_图片生成3D模型.json`
 - 参数：30 步 · euler
 - 模型：hunyuan_3d_v2.1.safetensors
 - 说明：3D可行性验证：单张参考图生成无贴图GLB网格。默认官方示例图、30步、4096潜变量、256网格解码分辨率。输出不是已绑定角色：仍需要拓扑整理、UV/材质、骨骼和蒙皮。可将GLB导入Blender继续制作。
+
+**26_Tripo_文生3D**
+- 路径：`model3d/tripo/26_Tripo_文生3D.json`
+- 参数：—
+- 说明：Key 在本机插件目录 tt-tripo/tripo.local.json（或环境变量 TRIPO_API_KEY），不入画布/同步盘（DEC-ORG-094）。付费调用属 P1：每次生成消耗 Tripo 额度，先确认预算。enable_a
 
 ### video（8）
 

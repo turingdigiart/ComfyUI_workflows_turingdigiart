@@ -1,0 +1,4 @@
+# tt-tripo 运行依赖
+# requests 用于调用 Tripo API；本机 ComfyUI python_embeded 已自带（实测 2.34.2），无需安装。
+# PIL / numpy / torch 为 ComfyUI 运行时自带，不在本清单。
+requests

@@ -1,0 +1,7 @@
+{
+  "base_url": "https://openapi.tripo3d.ai/v3",
+  "api_key_env": "TRIPO_API_KEY",
+  "api_key": "",
+  "request_timeout": 60,
+  "poll_interval": 5
+}
