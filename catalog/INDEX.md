@@ -110,7 +110,7 @@
 - 模型：RealVisXL_V5.0_fp16.safetensors、controlnet-openpose-sdxl-1.0.safetensors、turingteacher_v002_quick.safetensors
 - 说明：（画布里没有说明节点，靠文件名判断）
 
-### image（15）
+### image（16）
 
 **14_通用API提示词_预览**
 - 路径：`image/api/14_通用API提示词_预览.json`
@@ -127,6 +127,11 @@
 - 路径：`image/ark/18_方舟Seedream_机器人改图.json`
 - 参数：—
 - 说明：配置部署插件目录中的 ark.local.json，填API Key并在方舟开通模型；模型留空使用配置。确认后打开 enable_api。密钥不要填进画布。参考图会上传到火山方舟，调用使用方舟账户额度。
+
+**25_方舟Seedream_写实IP三视图_表情_细节**
+- 路径：`image/ark/25_方舟Seedream_写实IP三视图_表情_细节.json`
+- 参数：—
+- 说明：三视图/表情集/细节均为方向探索与角度占位，按 REALISTIC_IP_BRIEF_v002 逐张核对身份后再晋级，多视图生成不构成身份一致性保证；参考图上传方舟，仅限本人授权素材；enable_api 确认参数后再开；换新结果才增大 r
 
 **09_Flux2Klein_快速文生图**  ⚠️ 缺模型
 - 路径：`image/flux/09_Flux2Klein_快速文生图.json`

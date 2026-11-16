@@ -1,8 +1,8 @@
 {
   "schema": 2,
-  "generated_at": "2026-11-16T07:10:59.261Z",
+  "generated_at": "2026-11-16T09:40:24.072Z",
   "source": "E:\\Private\\AIDev\\TECH-COMFY-001_comfyui-workflows\\workflows",
-  "count": 41,
+  "count": 42,
   "missing_model_count": 16,
   "undocumented_count": 22,
   "workflows": [
@@ -770,6 +770,38 @@
         "ArkSeedream",
         "SaveImage",
         "PreviewAny",
+        "MarkdownNote"
+      ],
+      "models": [],
+      "missing_models": [],
+      "params": {
+        "model": null,
+        "resolution": null,
+        "steps": null,
+        "sampler": null,
+        "frames": null,
+        "fps": null
+      },
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "image-ark-25_方舟seedream_写实ip三视图_表情_细节",
+      "path": "image/ark/25_方舟Seedream_写实IP三视图_表情_细节.json",
+      "category": "image",
+      "subcategory": "ark",
+      "name": "25_方舟Seedream_写实IP三视图_表情_细节",
+      "title": "三视图/表情集/细节均为方向探索与角度占位，按 REALISTIC_IP_BRIEF_v002 逐张核对身份后再晋级，多视图生成不构成身份一致性保证；参考图上传方舟，仅限本人授权素材；enable_api 确认参数后再开；换新结果才增大 r",
+      "description": "三视图/表情集/细节均为方向探索与角度占位，按 REALISTIC_IP_BRIEF_v002 逐张核对身份后再晋级，多视图生成不构成身份一致性保证；参考图上传方舟，仅限本人授权素材；enable_api 确认参数后再开；换新结果才增大 refresh_id。",
+      "has_description": true,
+      "version": null,
+      "sha256": "d277eccc77782654a5664618c985a2494773cfd1cae05a26fe01fa1f510f8a67",
+      "bytes": 8764,
+      "node_count": 12,
+      "node_types": [
+        "LoadImage",
+        "ArkSeedream",
+        "SaveImage",
         "MarkdownNote"
       ],
       "models": [],

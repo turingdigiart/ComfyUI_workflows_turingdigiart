@@ -1,9 +1,9 @@
 # 工作流台账
 
 > 由 `scripts/catalog.mjs` 生成，**不要手改**。改工作流后重跑脚本。
-> 生成时间：2026-11-16T07:10:59.261Z
+> 生成时间：2026-11-16T09:40:24.072Z
 > 来源目录：`E:\Private\AIDev\TECH-COMFY-001_comfyui-workflows\workflows`
-> 共 41 条｜缺模型 16 条｜缺说明 22 条
+> 共 42 条｜缺模型 16 条｜缺说明 22 条
 
 ## 分类分布
 
@@ -11,7 +11,7 @@
 |---|---:|
 | audio | 1 |
 | identity | 16 |
-| image | 15 |
+| image | 16 |
 | model3d | 1 |
 | video | 8 |
 
@@ -49,6 +49,7 @@
 | `image/api/14_通用API提示词_预览.json` | 14_通用API提示词_预览 | — | 0 | ✅ |
 | `image/api/15_通用API提示词_ZImage文生图.json` | 通用 API 提示词 → Z-Image。默认 manual，无 API 费用。先在 14 预览流程调试平台，再切换 api。调整 refresh_id 可重新生成提示词；可将预览文本粘贴至 manual_prompt 后手动编辑。平台密钥 | z_image_turbo_bf16 · 1024x1024 · 8 步 · res_multistep | 3 | ⚠️缺模型 |
 | `image/ark/18_方舟Seedream_机器人改图.json` | 配置部署插件目录中的 ark.local.json，填API Key并在方舟开通模型；模型留空使用配置。确认后打开 enable_api。密钥不要填进画布。参考图会上传到火山方舟，调用使用方舟账户额度。 | — | 0 | ✅ |
+| `image/ark/25_方舟Seedream_写实IP三视图_表情_细节.json` | 三视图/表情集/细节均为方向探索与角度占位，按 REALISTIC_IP_BRIEF_v002 逐张核对身份后再晋级，多视图生成不构成身份一致性保证；参考图上传方舟，仅限本人授权素材；enable_api 确认参数后再开；换新结果才增大 r | — | 0 | ✅ |
 | `image/flux/09_Flux2Klein_快速文生图.json` | FLUX.2 Klein 4B FP8：4步生成，默认1024×1024。图生图使用参考潜空间，直接描述修改要求。 | flux-2-klein-4b-fp8 | 3 | ⚠️缺模型 |
 | `image/flux/10_Flux2Klein_指令改图.json` | FLUX.2 Klein 4B FP8：4步生成，默认1024×1024。图生图使用参考潜空间，直接描述修改要求。 | flux-2-klein-4b-fp8 | 3 | ⚠️缺模型 |
 | `image/poster/POSTER_LAYERED_v001_api.json` | POSTER_LAYERED_v001_api | — | 0 | ✅ |
