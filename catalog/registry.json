@@ -1,9 +1,9 @@
 {
   "schema": 2,
-  "generated_at": "2026-11-16T10:45:18.726Z",
-  "source": "E:\\Private\\AIDev\\TECH-COMFY-001_comfyui-workflows\\workflows",
+  "generated_at": "2026-11-16T15:08:20.141Z",
+  "source": "E:\\RAE_ToolRoot\\comfyui\\ComfyUI_windows_portable\\ComfyUI\\user\\default\\workflows",
   "count": 43,
-  "missing_model_count": 16,
+  "missing_model_count": 6,
   "undocumented_count": 22,
   "workflows": [
     {
@@ -16,8 +16,8 @@
       "description": "# ACE-Step 1.0 · 10 秒纯音乐\n\n1. 确认模型为 `ace_step_v1_3.5b.safetensors`，放在 `models/checkpoints/`。\n2. 修改 tags 可改变乐器和曲风；保留 `[instrumental]` 可生成纯音乐。\n3. Ctrl+Enter 开始生成，结果保存到 `output/audio/`，格式为 FLAC。\n\n默认：10 秒、30 步、CFG 5、Euler / simple、固定 seed。测试通路可用配套 4 步 API；4 步结果不代表正常生成质量。\n\n[官方教程](https://docs.comfy.org/zh-CN/tutorials/audio/ace-step/ace-step-v1) · [官方模型](https://huggingface.co/Comfy-Org/ACE-Step_ComfyUI_repackaged)\n\n模型许可证：Apache-2.0。工作流仅使用 ComfyUI 原生节点。",
       "has_description": true,
       "version": null,
-      "sha256": "13af553fca09335b052f3215fd75c17765f844c66423c2dada3155f8bdea9eec",
-      "bytes": 12450,
+      "sha256": "3cfb37a3ac02fbdbd90417568ca20c5c87eab433b4eed9af247d888decc5f546",
+      "bytes": 11801,
       "node_count": 12,
       "node_types": [
         "KSampler",
@@ -94,8 +94,8 @@
       "description": "",
       "has_description": false,
       "version": "v002",
-      "sha256": "5d962ecd3beb083dc70d332e8ecad729c36ea90500a8aef7c571d351de26e304",
-      "bytes": 8437,
+      "sha256": "3627b3a3d2882d76f7f50e495f9b9eeae3e596971530e663c971b569f70fbd2f",
+      "bytes": 8037,
       "node_count": 7,
       "node_types": [
         "CheckpointLoaderSimple",
@@ -170,8 +170,8 @@
       "description": "",
       "has_description": false,
       "version": "v002",
-      "sha256": "414bb31c54b0af93fc2733c19d2980f023d95cd2c0490153465afa555db63973",
-      "bytes": 12215,
+      "sha256": "5935ea40f45b4e2910ffa71d8bbeb31101773cce5a946bf2731fa100f44fabbd",
+      "bytes": 11631,
       "node_count": 10,
       "node_types": [
         "CheckpointLoaderSimple",
@@ -250,8 +250,8 @@
       "description": "",
       "has_description": false,
       "version": "v002",
-      "sha256": "1f66dfe8795e7d891b8e38fa90281e6a02eb893dee71ed4b042714147737ae1a",
-      "bytes": 63907,
+      "sha256": "2c5dec7174bed66bab40bb973d6c15bf43d3aad206f29213bf8dbe5b9de4312f",
+      "bytes": 60782,
       "node_count": 45,
       "node_types": [
         "CheckpointLoaderSimple",
@@ -326,8 +326,8 @@
       "description": "",
       "has_description": false,
       "version": "v002",
-      "sha256": "8e1afe032057747e8861c1a0949611fe2ad70c2bca44ebc8260a967bb802fee7",
-      "bytes": 13366,
+      "sha256": "7f0ab27ea53d7f6e45bd58185a4961f7bb8b4aa6d6a2f773c81c419842745f3b",
+      "bytes": 12680,
       "node_count": 12,
       "node_types": [
         "CheckpointLoaderSimple",
@@ -439,8 +439,8 @@
       "description": "",
       "has_description": false,
       "version": "v002",
-      "sha256": "aa13a30d7a040dab6d1846581e11e238189614707dbc84296975515952d3c78f",
-      "bytes": 12313,
+      "sha256": "03ae72a8080b30b56385cf9e91d3ad3e69af3a831811c0e58d84c18656550aad",
+      "bytes": 11704,
       "node_count": 11,
       "node_types": [
         "CheckpointLoaderSimple",
@@ -496,7 +496,9 @@
       "models": [
         "flux1-dev-fp8.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "flux1-dev-fp8.safetensors"
+      ],
       "params": {
         "model": "flux1-dev-fp8.safetensors",
         "resolution": "832x1216",
@@ -518,8 +520,8 @@
       "description": "",
       "has_description": false,
       "version": "v002",
-      "sha256": "9f74c07af736d5fe31070b473151bea66041968f134a51df5e3d3301ddbb3f4e",
-      "bytes": 53294,
+      "sha256": "25c8e9ce09569af2ddfc6eb57a0150ea2499115162d7da922b1087bdc00511c9",
+      "bytes": 50753,
       "node_count": 43,
       "node_types": [
         "CheckpointLoaderSimple",
@@ -533,7 +535,9 @@
       "models": [
         "flux1-dev-fp8.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "flux1-dev-fp8.safetensors"
+      ],
       "params": {
         "model": "flux1-dev-fp8.safetensors",
         "resolution": "832x1216",
@@ -555,8 +559,8 @@
       "description": "",
       "has_description": false,
       "version": null,
-      "sha256": "ff2cd70d1dbbf9ef8ae8753920e7a71ff25bd3ee87b89a93fd31e222f558d83f",
-      "bytes": 36872,
+      "sha256": "d92f2e6497a0c3cc4b5b37ae749522193fafb6fad4c60ff1a8b9ea42819a99fb",
+      "bytes": 35007,
       "node_count": 29,
       "node_types": [
         "CheckpointLoaderSimple",
@@ -574,7 +578,10 @@
         "flux-union-pro-2.0.safetensors",
         "flux1-dev-fp8.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "flux1-dev-fp8.safetensors",
+        "flux-union-pro-2.0.safetensors"
+      ],
       "params": {
         "model": "flux1-dev-fp8.safetensors",
         "resolution": "832x1216",
@@ -596,8 +603,8 @@
       "description": "",
       "has_description": false,
       "version": null,
-      "sha256": "5b9950f9fb3174c0f857edc957f5a8e52f603343f0084a41d26a0f2fba945c47",
-      "bytes": 38408,
+      "sha256": "217a118eb26e4bb545e91b8d173b8e7697958552d24fbb4bdd23877c183f0d16",
+      "bytes": 36525,
       "node_count": 29,
       "node_types": [
         "CheckpointLoaderSimple",
@@ -641,8 +648,8 @@
       "description": "",
       "has_description": false,
       "version": null,
-      "sha256": "4b324380dee6fd5a4b2f4cf5f8ace5ecb630c8e00b964af1b0dd0fa2361612be",
-      "bytes": 35692,
+      "sha256": "087ccbe5faecee4c69cf265394d3a023060de8e10dd46d13dc60f7675f7203c1",
+      "bytes": 33949,
       "node_count": 26,
       "node_types": [
         "CheckpointLoaderSimple",
@@ -661,7 +668,9 @@
         "controlnet-openpose-sdxl-1.0.safetensors",
         "turingteacher_v002_quick.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "turingteacher_v002_quick.safetensors"
+      ],
       "params": {
         "model": "RealVisXL_V5.0_fp16.safetensors",
         "resolution": "832x1216",
@@ -736,11 +745,7 @@
         "qwen_3_4b.safetensors",
         "z_image_turbo_bf16.safetensors"
       ],
-      "missing_models": [
-        "z_image_turbo_bf16.safetensors",
-        "qwen_3_4b.safetensors",
-        "ae.safetensors"
-      ],
+      "missing_models": [],
       "params": {
         "model": "z_image_turbo_bf16.safetensors",
         "resolution": "1024x1024",
@@ -851,11 +856,7 @@
         "flux2-vae.safetensors",
         "qwen_3_4b.safetensors"
       ],
-      "missing_models": [
-        "flux-2-klein-4b-fp8.safetensors",
-        "qwen_3_4b.safetensors",
-        "flux2-vae.safetensors"
-      ],
+      "missing_models": [],
       "params": {
         "model": "flux-2-klein-4b-fp8.safetensors",
         "resolution": null,
@@ -905,11 +906,7 @@
         "flux2-vae.safetensors",
         "qwen_3_4b.safetensors"
       ],
-      "missing_models": [
-        "flux-2-klein-4b-fp8.safetensors",
-        "qwen_3_4b.safetensors",
-        "flux2-vae.safetensors"
-      ],
+      "missing_models": [],
       "params": {
         "model": "flux-2-klein-4b-fp8.safetensors",
         "resolution": null,
@@ -981,11 +978,7 @@
         "qwen_image_2.1_turbo_int8_convrot.safetensors",
         "qwen_image_2.1_vae_bf16.safetensors"
       ],
-      "missing_models": [
-        "qwen_image_2.1_turbo_int8_convrot.safetensors",
-        "qwen3vl_8b_int8_convrot.safetensors",
-        "qwen_image_2.1_vae_bf16.safetensors"
-      ],
+      "missing_models": [],
       "params": {
         "model": "qwen_image_2.1_turbo_int8_convrot.safetensors",
         "resolution": null,
@@ -1031,11 +1024,7 @@
         "qwen_image_2.1_turbo_int8_convrot.safetensors",
         "qwen_image_2.1_vae_bf16.safetensors"
       ],
-      "missing_models": [
-        "qwen_image_2.1_turbo_int8_convrot.safetensors",
-        "qwen3vl_8b_int8_convrot.safetensors",
-        "qwen_image_2.1_vae_bf16.safetensors"
-      ],
+      "missing_models": [],
       "params": {
         "model": "qwen_image_2.1_turbo_int8_convrot.safetensors",
         "resolution": null,
@@ -1076,11 +1065,7 @@
         "qwen_image_2.1_int8_convrot.safetensors",
         "qwen_image_2.1_vae_bf16.safetensors"
       ],
-      "missing_models": [
-        "qwen_image_2.1_int8_convrot.safetensors",
-        "qwen3vl_8b_int8_convrot.safetensors",
-        "qwen_image_2.1_vae_bf16.safetensors"
-      ],
+      "missing_models": [],
       "params": {
         "model": "qwen_image_2.1_int8_convrot.safetensors",
         "resolution": null,
@@ -1116,7 +1101,9 @@
       "models": [
         "v1-5-pruned-emaonly-fp16.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "v1-5-pruned-emaonly-fp16.safetensors"
+      ],
       "params": {
         "model": "v1-5-pruned-emaonly-fp16.safetensors",
         "resolution": "512x512",
@@ -1152,9 +1139,7 @@
       "models": [
         "sd_xl_base_1.0.safetensors"
       ],
-      "missing_models": [
-        "sd_xl_base_1.0.safetensors"
-      ],
+      "missing_models": [],
       "params": {
         "model": "sd_xl_base_1.0.safetensors",
         "resolution": "1024x1024",
@@ -1192,9 +1177,7 @@
       "models": [
         "sd_xl_base_1.0.safetensors"
       ],
-      "missing_models": [
-        "sd_xl_base_1.0.safetensors"
-      ],
+      "missing_models": [],
       "params": {
         "model": "sd_xl_base_1.0.safetensors",
         "resolution": null,
@@ -1234,9 +1217,7 @@
       "models": [
         "sd_xl_base_1.0.safetensors"
       ],
-      "missing_models": [
-        "sd_xl_base_1.0.safetensors"
-      ],
+      "missing_models": [],
       "params": {
         "model": "sd_xl_base_1.0.safetensors",
         "resolution": null,
@@ -1276,9 +1257,7 @@
       "models": [
         "sd_xl_base_1.0.safetensors"
       ],
-      "missing_models": [
-        "sd_xl_base_1.0.safetensors"
-      ],
+      "missing_models": [],
       "params": {
         "model": "sd_xl_base_1.0.safetensors",
         "resolution": null,
@@ -1321,11 +1300,7 @@
         "qwen_3_4b.safetensors",
         "z_image_turbo_bf16.safetensors"
       ],
-      "missing_models": [
-        "z_image_turbo_bf16.safetensors",
-        "qwen_3_4b.safetensors",
-        "ae.safetensors"
-      ],
+      "missing_models": [],
       "params": {
         "model": "z_image_turbo_bf16.safetensors",
         "resolution": "1024x1024",
@@ -1366,9 +1341,7 @@
       "models": [
         "hunyuan_3d_v2.1.safetensors"
       ],
-      "missing_models": [
-        "hunyuan_3d_v2.1.safetensors"
-      ],
+      "missing_models": [],
       "params": {
         "model": null,
         "resolution": null,
@@ -1555,12 +1528,7 @@
         "ltx-2.3-spatial-upscaler-x2-1.1.safetensors",
         "ltx_2.3_22b_distilled_1.1_lora_dynamic_fro09_avg_rank_111_bf16.safetensors"
       ],
-      "missing_models": [
-        "ltx-2.3-22b-dev-fp8.safetensors",
-        "ltx_2.3_22b_distilled_1.1_lora_dynamic_fro09_avg_rank_111_bf16.safetensors",
-        "gemma_3_12B_it_fp4_mixed.safetensors",
-        "ltx-2.3-spatial-upscaler-x2-1.1.safetensors"
-      ],
+      "missing_models": [],
       "params": {
         "model": "ltx-2.3-22b-dev-fp8.safetensors",
         "resolution": null,
@@ -1604,10 +1572,7 @@
         "wan2.2_ti2v_5B_fp16.safetensors",
         "wan2.2_vae.safetensors"
       ],
-      "missing_models": [
-        "wan2.2_ti2v_5B_fp16.safetensors",
-        "wan2.2_vae.safetensors"
-      ],
+      "missing_models": [],
       "params": {
         "model": "wan2.2_ti2v_5B_fp16.safetensors",
         "resolution": null,
@@ -1651,10 +1616,7 @@
         "wan2.2_ti2v_5B_fp16.safetensors",
         "wan2.2_vae.safetensors"
       ],
-      "missing_models": [
-        "wan2.2_ti2v_5B_fp16.safetensors",
-        "wan2.2_vae.safetensors"
-      ],
+      "missing_models": [],
       "params": {
         "model": "wan2.2_ti2v_5B_fp16.safetensors",
         "resolution": null,
@@ -1702,12 +1664,7 @@
         "wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors",
         "wan_2.1_vae.safetensors"
       ],
-      "missing_models": [
-        "wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors",
-        "wan2.2_i2v_lightx2v_4steps_lora_v1_high_noise.safetensors",
-        "wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors",
-        "wan2.2_i2v_lightx2v_4steps_lora_v1_low_noise.safetensors"
-      ],
+      "missing_models": [],
       "params": {
         "model": "wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors",
         "resolution": null,
@@ -1729,8 +1686,8 @@
       "description": "",
       "has_description": false,
       "version": null,
-      "sha256": "1e7c9cfe5d9e3b5ae03ce173bbe7e4f0638e32b50678699a4f25d449f45f8402",
-      "bytes": 10332,
+      "sha256": "01b4b47267726e74975ef5d1d5d557950c8f3707c0b8be1db954555779410950",
+      "bytes": 9774,
       "node_count": 10,
       "node_types": [
         "CLIPLoader",
@@ -1748,7 +1705,9 @@
         "wan2.1_t2v_1.3B_fp16.safetensors",
         "wan_2.1_vae.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "wan2.1_t2v_1.3B_fp16.safetensors"
+      ],
       "params": {
         "model": "wan2.1_t2v_1.3B_fp16.safetensors",
         "resolution": null,
