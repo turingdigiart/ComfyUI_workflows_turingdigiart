@@ -1,0 +1,10 @@
+{
+  "base_url": "https://ark.cn-beijing.volces.com/api/v3",
+  "api_key_env": "ARK_API_KEY",
+  "api_key": "",
+  "proxy": "system",
+  "seedream_model": "doubao-seedream-5-0-flash-260915",
+  "seedance_model": "doubao-seedance-2-5-260628",
+  "request_timeout": 180,
+  "poll_interval": 5
+}

@@ -30,9 +30,17 @@
 - **修法**：批处理里把 `2>&1` 换成 `2>$null`（丢弃 stderr），或在该段临时把 `$ErrorActionPreference` 降为 `Continue`。
 - **边界**：同一个坑在本项目已反复出现（此前在 `git add` 被 git 的 CRLF 警告中断过一次）。凡是"循环调用外部命令 + Stop 模式"的脚本，一律不要用 `2>&1`。
 
+## 2026-11-16 · 方舟插件并入统一仓库：节点类名保持不变，运行时靠 junction 对齐
+
+- **现象**：`comfyui-ark-media` 原先放在 `E:\RAE_ToolRoot\comfyui\plugins\` 并另建独立 git；`nodes/README.md` 约定节点类名带 `TT` 前缀，但插件类名是 `ArkSeedream` / `ArkSeedanceSubmit` / `ArkSeedanceFetch`，已被 18–21 号工作流引用。
+- **根因**：节点类名是工作流 ABI（`class_type`），改名会让已入库与用户目录里的工作流全部失效；`TT` 前缀只是新插件命名约定，不是迁移理由。
+- **修法**：保留原节点类名（兼容优先），按目录约定收录到 `nodes/comfyui-ark-media/`；`ark.local.json` 由根 `.gitignore` 的 `*.local.json` 和插件自己的 `.gitignore` 双重排除；运行时 `custom_nodes/comfyui-ark-media` 改为指向本仓库的 junction，源码与运行不再双份。
+- **边界**：`nodes/` 不是 ComfyUI 自动加载路径，必须 junction/安装后才生效；junction 变更需重启 ComfyUI 才被加载，重启前的 `/object_info` 不代表新状态。新插件仍按 `TT` 前缀命名。
+
 ## 2026-11-16 · 多机模型集合不对称时，verify.mjs 结果跨机不可比，必须做基线对照
 
 - **现象**：同一仓库同一批工作流，他机 verify 报告「0 失败 / 1 警告」，本机跑出「6 失败 / 16 警告」，像仓库退化了。
 - **根因**：FAIL 缺节点取决于各机 ComfyUI 实例加载的节点包（他机有 comfyui-ark-media / UniversalPrompter，本机没有）；WARN 缺模型取决于各机 `models/` 集合（他机 63 个、本机 20 个）。两者都是「机器现场」而非「仓库内容」。
 - **修法**：迁移/大改前先跑一次 verify 存基线失败集合，改后重跑对照——只允许失败集合不变或缩小，不允许新增。T8 迁入 13 个文件后集合与基线完全一致（6 FAIL / 16 WARN），判定无新增失败。
 - **边界**：节点包与模型集合不同的两台机之间，verify 的绝对数字不可比；跨机对比只看「相对基线的增量」。模型目录可用 `COMFY_MODELS` 环境变量覆盖默认路径。
+

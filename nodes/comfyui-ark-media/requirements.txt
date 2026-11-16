@@ -1,0 +1,2 @@
+# 仅依赖 ComfyUI 运行时自带依赖（Pillow / NumPy / Torch / PyAV），无需额外安装。
+# 插件 HTTP 客户端仅用 Python 标准库（urllib / json / hashlib）。
