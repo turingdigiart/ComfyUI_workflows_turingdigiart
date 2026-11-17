@@ -26,3 +26,11 @@
 - 仓库工作流 18/19/21/25 的 `watermark` 参数批量固化为 false（20 号为任务取回，无提交节点）；脚本调用须显式传 `watermark: false`。
 - 合规：对外发布仍须按《人工智能生成合成内容标识办法》由使用方自行补显式标识，本规则不解除该义务。
 - 补充（2026-11-17）：负责人确认「不需要补」——不额外添加 AI 显式标识，对外发布亦不加。
+
+## 1.0.2 — 2026-11-17｜ArkSeedream 参考图输入改为列表（T20）
+
+- 现象：T19 用 API 图给 `reference_images` 连三路参考图，`/prompt` 校验拒绝（`bad_linked_input` / `unhashable type: 'list'`），三视图多参考链路走不通；且核心代码 `references()` 本就按列表设计（≤10 张），仅输入声明为单输入，前后矛盾。
+- 根因：节点 `INPUT_TYPES` 把 `reference_images` 声明为单个 `("IMAGE",)`，ComfyUI 视为单连接输入。
+- 修法：`ArkSeedream` 增加 `INPUT_IS_LIST = True`（`/object_info` 暴露 `is_input_list: true`，前端允许多路连接）；`run()` 对各输入做单值解包（向后兼容：单图连接与 18–21 号工作流不受影响），`reference_images` 统一归一为张量列表后交给既有 `references()`。
+- 边界：已知本机 ComfyUI 0.43 构建级缺陷——`/prompt` 的列表链接 `[["1",0],["2",0]]` 校验在旧式与新式节点（含核心 `ImageMergeTileList`）一律失败（详见仓库 `docs/DEV_EXPERIENCE.md`），因此本修复的 API 图路径仍受该缺陷阻塞，UI 手工多路连接为当前可用路径；此为本构建问题，非插件缺陷。不改变 Key 存储与付费 P1 口径。
+- 部署：机器 B 若为 `manage.py install` 安装副本，需重新执行 `python manage.py install` 后生效；本机 junction 指向仓库母版，即时生效。

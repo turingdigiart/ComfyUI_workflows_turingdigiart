@@ -8,7 +8,7 @@ import time
 from urllib import request, parse, error
 import uuid
 
-VERSION = "1.0.0"
+VERSION = "1.0.2"
 
 
 class ArkError(RuntimeError):

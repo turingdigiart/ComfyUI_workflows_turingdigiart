@@ -78,6 +78,8 @@ python manage.py package --output "D:\releases\comfyui-ark-media-1.0.0.zip"
 
 工程源码母版在本仓库 `nodes/comfyui-ark-media/`，部署副本在便携版custom_nodes（可为 junction 指向本仓库，或 manage.py 安装副本）；安装保留已有ark.local.json。迁移时密钥单独安全配置，发布包不含Key和运行缓存。支持当前ComfyUI的原生VIDEO类型，较旧版本可能需升级。
 
+v1.0.2 起 `ArkSeedream` 为列表输入节点（reference_images 可多路连接，单图仍兼容）：**机器 B 若为 `manage.py install` 安装副本，需重新执行 `manage.py install` 后生效；本机 junction 指向仓库母版即时生效，无需重装**。
+
 `tools/create_workflows.py --project-root <工程目录>` 从运行中后台节点schema生成示例。`tools/smoke_test.py --project-root <工程目录>` 使用本机模拟API及已有机器人/LTX样例测试，期间临时替换部署配置，finally恢复。请仅在队列空闲、无人编辑配置时运行；异常断电后检查配置文件。它不会发起真实方舟调用。
 
 目前验证的是请求结构和本机集成；真实平台认证、账户额度、生成质量，需用户配置Key后验证。模拟视频/图片为原有样例回放，不是Seed模型生成结果。

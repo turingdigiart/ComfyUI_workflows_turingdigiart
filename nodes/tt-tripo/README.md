@@ -1,9 +1,10 @@
-# tt-tripo｜机构自研 Tripo 文生/图生/多视图生 3D 调用节点（v0.2.0）
+# tt-tripo｜机构自研 Tripo 文生/图生/多视图生 3D 调用节点（v0.2.1）
 
 在 ComfyUI 里提交 Tripo API 文生/图生/多视图生 3D 任务并取回结果（GLB + 渲染预览图）。
 
 ## 版本
 
+- **v0.2.1（2026-11-17）**：修复 T19 暴露的列表输入缺陷——现象：`TTTripoMultiviewTo3D` 经 API 图连 2 路 `images` 被 ComfyUI 校验拒绝（`unhashable type: 'list'`），多视图链路不可执行；根因：`images` 声明为单输入 `("IMAGE",)`，不能承载多路连接；修法：节点加 `INPUT_IS_LIST = True`（`/object_info` 暴露 `is_input_list: true`，前端允许多路连接），`run()` 对控件单值解包，`images` 归一为张量列表（2–4 张、front/left/back/right 顺序不变），单图连接向后兼容；边界：已知本机 ComfyUI 0.43 构建级缺陷——`/prompt` 列表链接校验对所有节点一律失败（详见仓库 `docs/DEV_EXPERIENCE.md`），API 图路径仍受该缺陷阻塞，UI 手工多路连接为当前可用路径；Key 存储与付费 P1 口径不变。
 - **v0.2.0（2026-11-17）**：新增「图生 3D」与「多视图生 3D」（负责人指示）。现象（需求）：只有文生 3D 一个入口，图生与多视图能力缺失；根因：节点未覆盖 `POST /generation/image-to-model` 与 `/generation/multiview-to-model` 及前置 `/files` 上传；修法：新增共享 `_upload_image`（IMAGE→临时 PNG→multipart 上传→file_token，上传后清理）与节点 `TTTripoImageTo3D`（input=file_token；texture_alignment=original_image|geometry、orientation=default|align_image、enable_image_autofix）、`TTTripoMultiviewTo3D`（2–4 张视图，**连接顺序=front/left/back/right、第一张视为 front、front 必填**，inputs 用 view-key 格式 `[{"front":token},…]`），失败均把 `ERROR:<原因>` 写入 task_id 输出；边界：`TTTripoFetch` 通用不改、enable_api 默认关、不自动重试提交、Key 存储与付费 P1 口径不变；示例工作流 27/28。
 - **v0.1.1（2026-11-17）**：修复 E2E 测试暴露的缺陷——现象：`/prompt` 直接使用两节点图报 `prompt_no_outputs`，且节点输出不进 `/history`，任务失败后无法取证；根因：两节点均非 `OUTPUT_NODE`、task_id 未持久化；修法：`TTTripoFetch` 设 `OUTPUT_NODE=True`（图以它收尾、输出进 `/history`），每次执行写 `output/Tripo/<task_id>.meta.json`（task_id/status/model_path/preview_path/error/ts），Submit 失败把 `ERROR:<原因>` 写入 task_id 输出供 Fetch 透传取证，预览图同步落盘 `output/Tripo/<task_id>_preview.png`；边界：兜底空白图逻辑保留、不自动重试提交、不改变 Key 存储与付费 P1 口径。
 - **v0.1.0（2026-11-16）**：初版（T14a/T14b）。

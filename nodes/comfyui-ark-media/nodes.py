@@ -52,7 +52,14 @@ def info(kind, model, **extra):
     return json.dumps({"provider": "Volcengine Ark", "kind": kind, "model": model, **extra}, ensure_ascii=False)
 
 
+def first(value):
+    """INPUT_IS_LIST 节点所有输入都以列表到达；单值解包第一个元素。"""
+    return value[0] if isinstance(value, (list, tuple)) else value
+
+
 class ArkSeedream:
+    INPUT_IS_LIST = True
+
     @classmethod
     def INPUT_TYPES(cls):
         return {"required": {
@@ -71,6 +78,12 @@ class ArkSeedream:
     def IS_CHANGED(cls, **kwargs):
         return config_fingerprint()
     def run(self, enable_api, prompt, model, size, watermark, refresh_id, reference_images=None, unique_id="default"):
+        enable_api = first(enable_api); prompt = first(prompt); model = first(model)
+        size = first(size); watermark = first(watermark); refresh_id = first(refresh_id)
+        if reference_images is None:
+            reference_images = []
+        elif not isinstance(reference_images, (list, tuple)):
+            reference_images = [reference_images]
         enabled(enable_api); c = client(); check()
         model = model.strip() or c.config.get("seedream_model", "")
         body = image_body(model, prompt, size, watermark, references(reference_images))

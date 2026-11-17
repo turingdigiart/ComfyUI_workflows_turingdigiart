@@ -44,3 +44,16 @@
 - **修法**：迁移/大改前先跑一次 verify 存基线失败集合，改后重跑对照——只允许失败集合不变或缩小，不允许新增。T8 迁入 13 个文件后集合与基线完全一致（6 FAIL / 16 WARN），判定无新增失败。
 - **边界**：节点包与模型集合不同的两台机之间，verify 的绝对数字不可比；跨机对比只看「相对基线的增量」。模型目录可用 `COMFY_MODELS` 环境变量覆盖默认路径。
 
+## 2026-11-17 · PowerShell 5.1 经 /prompt 提交含中文 SaveImage 前缀时文件名编码成 ??? 导致落盘失败
+
+- **现象**：脚本用 `Invoke-RestMethod -Body ($payload | ConvertTo-Json)` 提交 API 图，SaveImage `filename_prefix` 含中文（如 `Ark/IP_三视图`），节点执行到写盘时报 `[Errno 22] Invalid argument: ...\output\Ark\IP_???_00001_.png`，整图报错，已生成的付费图片未落盘。
+- **根因**：PowerShell 5.1 把字符串请求体按非 UTF-8 默认编码序列化，中文字符在到达 ComfyUI 前已被破坏为 `?`；Windows 文件名不允许 `?`，open() 失败。生成侧（节点 4）已成功，仅保存侧（节点 5）失败。
+- **修法**：脚本/API 提交路径一律用 **ASCII 前缀**（如 `Ark/IP_sanshi`）；UI 手工运行不受影响（前端按 UTF-8 提交）。付费生成已成功而落盘失败时，可先从插件私有缓存（如方舟 `user/ark-media-private/`）恢复成图，不重跑生成（防重复扣费）。
+- **边界**：仅影响「脚本提交 + 中文路径片段」组合；纯 ASCII 图、UI 提交、`ConvertTo-Json` 深度不足导致的截断是另一类问题。T19 A 线即受此坑，T20 改用 ASCII 前缀规避。
+
+## 2026-11-17 · ComfyUI 0.43 本机构建缺陷：/prompt 列表链接（多路输入）校验对所有节点一律失败
+
+- **现象**：API 图给列表输入（`INPUT_IS_LIST` 节点或新式 `io.Schema(is_input_list=True)` 节点）传 `[["1",0],["2",0]]` 时，3 路报 `bad_linked_input`、2 路报 `unhashable type: 'list'`（execution.py validate_inputs L931-947：任何 list 值都按单链接 `[node_id, slot_index]` 处理，`val[0]` 是 list 时 `prompt[o_id]` 键查找崩溃）。T20 实测三种节点全中招：旧式 `ArkSeedream`（加 `INPUT_IS_LIST=True` 前后）、旧式 `TTTripoMultiviewTo3D`、核心新式 `ImageMergeTileList`。
+- **根因**：本构建 `execution.py` 的 `validate_inputs` 只实现了「单链接」分支（`isinstance(val, list)` → `len!=2` 即拒绝），没有「列表链接」分支；`is_input_list` 仅在 server.py 暴露给前端、未被校验逻辑消费。校验先于执行，因此**零扣费**。
+- **修法（插件侧已做）**：节点照常加 `INPUT_IS_LIST = True` 并在 `run()` 内解包单值（向后兼容单图连接）；这是正确的 schema 声明，UI 手工多路连接可用。API 图路径需等 ComfyUI 上游修复校验（或升级到修复版本）后解锁，勿自行 patch 校验层绕过。
+- **边界**：判断「列表输入是否真生效」不能只看 `/object_info` 的 `is_input_list: true`，必须以一次 `/prompt` 提交实测为准；失败属构建级阻塞时如实记录、不重试付费调用（防重复扣费），并把核心节点 `ImageMergeTileList` 的同样失败作为「非插件缺陷」证据保留。

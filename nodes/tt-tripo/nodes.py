@@ -398,13 +398,15 @@ class TTTripoImageTo3D:
 
 class TTTripoMultiviewTo3D:
     """多视图生 3D：images 2–4 张（连接顺序 = front/left/back/right，第一张视为 front）
-    → 逐张上传 /files → POST /generation/multiview-to-model（inputs 为 view-key 格式）。"""
+    → 逐张上传 /files → POST /generation/multiview-to-model（inputs 为 view-key 格式）。
+    INPUT_IS_LIST=True：images 为列表输入（前端多路连接）；其余控件以单元素列表到达，run 内解包，单图连接兼容。"""
 
     CATEGORY = "TT"
     RETURN_TYPES = ("STRING", "STRING")
     RETURN_NAMES = ("task_id", "调用信息")
     FUNCTION = "run"
     OUTPUT_NODE = False
+    INPUT_IS_LIST = True
     VIEW_KEYS = ["front", "left", "back", "right"]
 
     @classmethod
@@ -422,7 +424,16 @@ class TTTripoMultiviewTo3D:
         }
 
     def run(self, images, enable_api, model, face_limit, texture, pbr, orientation):
+        def _first(v):
+            return v[0] if isinstance(v, (list, tuple)) else v
+
         cfg = _load_config()
+        enable_api = _first(enable_api)
+        model = _first(model)
+        face_limit = _first(face_limit)
+        texture = _first(texture)
+        pbr = _first(pbr)
+        orientation = _first(orientation)
         if not isinstance(images, (list, tuple)):
             images = [images]
         count = len(images)
