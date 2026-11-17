@@ -16,8 +16,10 @@ Key 管理遵循 DEC-ORG-094「本机配置 + 中控只验证约束」：不入�
 import io
 import json
 import os
+import re
 import tempfile
 import time
+import zipfile
 
 import requests
 
@@ -83,11 +85,17 @@ def _now_ts():
     return time.strftime("%Y-%m-%d %H:%M:%S")
 
 
-def _write_meta(task_id, status, model_path, preview_path, error, ext="", retries=0, recovered=False):
+def _safe_filename_part(s):
+    """清洗文件名字段：替换 Windows 非法字符（含 ASCII 冒号，防 NTFS 备用流/误建文件）。"""
+    return re.sub(r'[<>:"/\\|?*\x00-\x1f]', "_", s or "")
+
+
+def _write_meta(task_id, status, model_path, preview_path, error, ext="", retries=0, recovered=False, extra=None):
     """取证持久化：output/Tripo/<task_id>.meta.json（无任务 ID 时用时间戳文件名）。
-    ext=模型文件扩展名（如 .fbx）；retries=实际重试次数；recovered=是否经重试/续传恢复。"""
+    ext=模型文件扩展名（如 .fbx）；retries=实际重试次数；recovered=是否经重试/续传恢复；
+    extra=附加字段字典（如 archive/files/unzip_dir/format_override），format_override 优先于 ext 推导。"""
     try:
-        name = (task_id or ("no-task-" + _now_ts().replace(":", "").replace(" ", "-"))) + ".meta.json"
+        name = (_safe_filename_part(task_id) or ("no-task-" + _now_ts().replace(":", "").replace(" ", "-"))) + ".meta.json"
         data = {
             "task_id": task_id,
             "status": status,
@@ -98,9 +106,13 @@ def _write_meta(task_id, status, model_path, preview_path, error, ext="", retrie
             "recovered": bool(recovered),
             "ts": _now_ts(),
         }
+        extra = extra or {}
         if ext:
             data["ext"] = ext
-            data["format"] = ext.lstrip(".").upper()
+            data["format"] = extra.get("format_override") or ext.lstrip(".").upper()
+        for k, v in extra.items():
+            if k != "format_override":
+                data[k] = v
         with open(os.path.join(_tripo_outdir(), name), "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
     except Exception:
@@ -232,24 +244,28 @@ _MODEL_EXTS = [".fbx", ".obj", ".glb", ".gltf", ".stl", ".3mf", ".usdz"]
 
 
 def _model_ext(url):
-    """从 model_url 的 URL 后缀推断扩展名（忽略查询串）；无法推断回退 .glb。"""
+    """从 model_url 的 URL 后缀推断扩展名（忽略查询串）；返回 (ext, known)。
+    known=False 表示后缀不在已知列表（回退 .glb，下载后需嗅探文件头，可能是 zip）。"""
     path = (url or "").split("?")[0].strip().lower()
     for ext in _MODEL_EXTS:
         if path.endswith(ext):
-            return ext
-    return ".glb"
+            return ext, True
+    return ".glb", False
 
 
 def _download_model(cfg, url, task_id):
-    ext = _model_ext(url)
+    ext, _ = _model_ext(url)
     local = os.path.join(_tripo_outdir(), task_id + ext)
     retries, recovered = _download_bytes_resumable(url, local, max(int(cfg.get("request_timeout") or 60), 120))
     return local, ext, retries, recovered
 
 
 def _upload_image(cfg, tensor):
-    """IMAGE tensor → 临时 PNG → multipart POST {base}/files → file_token；上传后清理临时文件。"""
-    arr = (tensor[0].clamp(0, 1).cpu().numpy() * 255.0 + 0.5).astype(np.uint8)
+    """IMAGE tensor → 临时 PNG → multipart POST {base}/files → file_token；上传后清理临时文件。
+    兼容 3D (H,W,C) 与 4D (B,H,W,C) 输入（Multiview batch 拆分后的切片为 3D）。"""
+    if tensor.ndim == 4:
+        tensor = tensor[0]
+    arr = (tensor.clamp(0, 1).cpu().numpy() * 255.0 + 0.5).astype(np.uint8)
     img = Image.fromarray(arr, "RGB")
     tmp = tempfile.NamedTemporaryFile(suffix=".png", delete=False)
     try:
@@ -423,6 +439,7 @@ class TTTripoFetch:
         image_url = out.get("rendered_image_url") or ""
         local_path = ""
         ext = ""
+        meta_extra = {}
         try:
             if model_url:
                 local_path, ext, dl_retries, dl_recovered = _download_model(cfg, model_url, task_id)
@@ -431,6 +448,40 @@ class TTTripoFetch:
         except Exception as e:
             status = "模型下载失败（含 {0} 次下载重试）：{1}".format(total_retries, e)
             return finish("", blank, status, status, total_retries, recovered)
+        # URL 后缀不在已知列表时嗅探文件头：PK → zip（OBJ 等转换常以 zip 交付 obj+mtl+贴图）
+        _, ext_known = _model_ext(model_url)
+        fmt_hint = ""
+        di = d.get("input")
+        if isinstance(di, dict):
+            fmt_hint = str(di.get("format") or "").upper()
+        if not ext_known and local_path and os.path.isfile(local_path):
+            try:
+                with open(local_path, "rb") as fh:
+                    magic = fh.read(4)
+            except OSError:
+                magic = b""
+            if magic == b"PK\x03\x04":
+                zip_path = os.path.join(_tripo_outdir(), task_id + ".zip")
+                if os.path.abspath(zip_path) != os.path.abspath(local_path):
+                    if os.path.exists(zip_path):
+                        os.unlink(zip_path)
+                    os.replace(local_path, zip_path)
+                local_path = zip_path
+                ext = ".zip"
+                label = fmt_hint or "ZIP"
+                unzip_dir = os.path.join(_tripo_outdir(), _safe_filename_part(task_id) + "_" + label)
+                os.makedirs(unzip_dir, exist_ok=True)
+                files = []
+                try:
+                    with zipfile.ZipFile(zip_path) as zf:
+                        zf.extractall(unzip_dir)
+                        files = sorted(zf.namelist())
+                except Exception as e:
+                    status = "success（zip 已下载 {0}）；解包失败：{1}".format(local_path, e)
+                    _write_meta(task_id, status, local_path, "", "", ext, total_retries, recovered,
+                                {"archive": True, "unzip_dir": unzip_dir, "files": files, "format_override": fmt_hint or "ZIP"})
+                    return {"ui": {"text": [status]}, "result": (local_path, blank, status)}
+                meta_extra = {"archive": True, "unzip_dir": unzip_dir, "files": files, "format_override": fmt_hint or "ZIP"}
         image = blank
         preview_path = ""
         try:
@@ -440,12 +491,15 @@ class TTTripoFetch:
                 recovered = recovered or dl_recovered
         except Exception as e:
             status = "success（模型已下载{0}）；预览图下载失败：{1}".format(ext, e)
-            _write_meta(task_id, status, local_path, "", str(e), ext, total_retries, recovered)
+            _write_meta(task_id, status, local_path, "", str(e), ext, total_retries, recovered, meta_extra)
             return {"ui": {"text": [status]}, "result": (local_path, blank, status)}
-        status = "success：模型 {0}；预览图 {1}；credits_consumed={2}".format(
-            local_path or model_url, preview_path or ("已下载" if image_url else "未提供"), d.get("credits_consumed")
+        unpack_note = ""
+        if meta_extra.get("archive"):
+            unpack_note = "（解包 {0} 个文件至 {1}）".format(len(meta_extra.get("files") or []), meta_extra.get("unzip_dir"))
+        status = "success：模型 {0}{1}；预览图 {2}；credits_consumed={3}".format(
+            local_path or model_url, unpack_note, preview_path or ("已下载" if image_url else "未提供"), d.get("credits_consumed")
         )
-        _write_meta(task_id, status, local_path, preview_path, "", ext, total_retries, recovered)
+        _write_meta(task_id, status, local_path, preview_path, "", ext, total_retries, recovered, meta_extra)
         return {"ui": {"text": [status]}, "result": (local_path, image, status)}
 
 
