@@ -69,6 +69,8 @@ node scripts/gen-qwen.mjs --recipe recipes/image/qwen/07_turbo_edit.api.json `
 | 内部精修 3:4 | `--preset standard-3x4` |
 | 改图 | `--preset edit` |
 | 对外商业底图 | `--commercial`（自动选 `original-3x4`，2.1 会被拒绝） |
+| 知乎/公众号 16:9 内部 | `--preset turbo-16x9` |
+| 知乎/公众号 16:9 商用 | `--preset original-16x9` |
 | 指定原始 Qwen | `--preset original-3x4` |
 
 ```powershell

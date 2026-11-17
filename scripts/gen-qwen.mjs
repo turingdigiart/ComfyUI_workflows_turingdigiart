@@ -19,11 +19,13 @@ const RECIPE_DIR = path.join(ROOT, 'recipes', 'image', 'qwen');
 const PRESETS = {
   turbo: '06_turbo_t2i',
   'turbo-3x4': '06_turbo_t2i_3x4',
+  'turbo-16x9': '06_turbo_t2i_16x9',
   edit: '07_turbo_edit',
   standard: '08_standard_t2i',
   'standard-3x4': '08_standard_t2i_3x4',
   original: '09_original_t2i',
-  'original-3x4': '09_original_t2i_3x4'
+  'original-3x4': '09_original_t2i_3x4',
+  'original-16x9': '09_original_t2i_16x9'
 };
 const COMMERCIAL_PRESET = 'original-3x4';
 const args = process.argv.slice(2);

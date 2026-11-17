@@ -14,6 +14,8 @@ UI 格式母版仍在 `workflows/image/qwen/`（06/07/08）；这里的配方用
 | `08_standard_t2i_3x4.api.json` | 同上 | 1152×1536 | 标准版竖版 |
 | `09_original_t2i.api.json` | `qwen_image_fp8_e4m3fn` | 1328×1328 | 原始 Qwen-Image，20 步 |
 | `09_original_t2i_3x4.api.json` | 同上 | 1152×1536 | 原始 Qwen 竖版（**Apache-2.0 商用路径**） |
+| `06_turbo_t2i_16x9.api.json` | 2.1 Turbo | 1536×864 | 知乎/公众号 16:9 底图（内部） |
+| `09_original_t2i_16x9.api.json` | 原始 Qwen | 1536×864 | 知乎/公众号 16:9 商用底图（Apache-2.0） |
 | `10_prompt_enhancer.api.json` | `qwen3.5_9b_qwen_image_2.1_pe_t2i.int8_convrot` | — | 官方 PE 提示词增强（**可选**；权重未装完，当前用 Ollama Qwen3.5） |
 
 共享文件：`qwen3vl_8b_int8_convrot`（2.1 编码器）/ `qwen_2.5_vl_7b_fp8_scaled`（原始 Qwen 编码器）/ 各自 VAE。
