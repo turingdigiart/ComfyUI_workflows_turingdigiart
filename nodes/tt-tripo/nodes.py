@@ -22,6 +22,7 @@ import time
 import requests
 
 # ComfyUI python_embeded 自带（见 requirements.txt 说明）
+import comfy.model_management
 import folder_paths
 import numpy as np
 import torch
@@ -82,8 +83,9 @@ def _now_ts():
     return time.strftime("%Y-%m-%d %H:%M:%S")
 
 
-def _write_meta(task_id, status, model_path, preview_path, error, ext=""):
-    """取证持久化：output/Tripo/<task_id>.meta.json（无任务 ID 时用时间戳文件名）。ext=模型文件扩展名（如 .fbx）。"""
+def _write_meta(task_id, status, model_path, preview_path, error, ext="", retries=0, recovered=False):
+    """取证持久化：output/Tripo/<task_id>.meta.json（无任务 ID 时用时间戳文件名）。
+    ext=模型文件扩展名（如 .fbx）；retries=实际重试次数；recovered=是否经重试/续传恢复。"""
     try:
         name = (task_id or ("no-task-" + _now_ts().replace(":", "").replace(" ", "-"))) + ".meta.json"
         data = {
@@ -92,6 +94,8 @@ def _write_meta(task_id, status, model_path, preview_path, error, ext=""):
             "model_path": model_path,
             "preview_path": preview_path,
             "error": error,
+            "retries": int(retries or 0),
+            "recovered": bool(recovered),
             "ts": _now_ts(),
         }
         if ext:
@@ -115,18 +119,113 @@ def _request_json(cfg, method, path, payload=None):
     return r.json()
 
 
+NET_RETRIES = 3
+BACKOFF_SECONDS = [2, 4, 8]
+
+
+def _check_interrupted():
+    comfy.model_management.throw_exception_if_processing_interrupted()
+
+
+def _sleep_interruptible(seconds):
+    end = time.time() + seconds
+    while time.time() < end:
+        _check_interrupted()
+        time.sleep(min(1.0, end - time.time()))
+
+
+def _is_network_error(e):
+    """仅网络类异常可重试（连接错误/超时/代理故障/流中断）；HTTP 状态错误与业务错误不重试。"""
+    return isinstance(e, (
+        requests.exceptions.ConnectionError,
+        requests.exceptions.Timeout,
+        requests.exceptions.ChunkedEncodingError,
+    ))
+
+
+def _request_json_retry(cfg, method, path, payload=None, max_retries=NET_RETRIES):
+    """查询任务状态（GET）带网络类有界重试：最多 max_retries 次、指数退避 2/4/8 秒、期间可中断。
+    业务错误（code!=0）不抛异常、不重试，由调用方处理。返回 (data, attempts)。"""
+    attempts = 0
+    while True:
+        attempts += 1
+        try:
+            return _request_json(cfg, method, path, payload), attempts
+        except requests.exceptions.RequestException as e:
+            if not _is_network_error(e) or attempts > max_retries:
+                raise
+            _sleep_interruptible(BACKOFF_SECONDS[min(attempts - 1, len(BACKOFF_SECONDS) - 1)])
+
+
+def _download_bytes_resumable(url, dest_path, timeout, max_retries=NET_RETRIES):
+    """有界下载 + HTTP Range 断点续传：网络中断后从 .part 已下载字节续传；校验最终大小与
+    Content-Length 一致（不一致视为失败并重试）。返回 (retries, recovered)。"""
+    tmp = dest_path + ".part"
+    retries = 0
+    recovered = False
+    for attempt in range(1, max_retries + 1):
+        existing = os.path.getsize(tmp) if os.path.exists(tmp) else 0
+        headers = {"Range": "bytes={0}-".format(existing)} if existing > 0 else {}
+        try:
+            with requests.get(url, headers=headers, stream=True, timeout=timeout) as r:
+                r.raise_for_status()
+                if existing > 0 and r.status_code == 206:
+                    total = existing + int(r.headers.get("Content-Length") or 0)
+                    mode = "ab"
+                    recovered = True
+                else:
+                    total = int(r.headers.get("Content-Length") or 0)
+                    mode = "wb"
+                    existing = 0
+                with open(tmp, mode) as f:
+                    for chunk in r.iter_content(chunk_size=65536):
+                        if chunk:
+                            f.write(chunk)
+            size = os.path.getsize(tmp)
+            if total and size != total:
+                raise RuntimeError("下载不完整：已收 {0}/{1} 字节".format(size, total))
+            if not total and size <= 0:
+                raise RuntimeError("下载为空文件且无 Content-Length。")
+            os.replace(tmp, dest_path)
+            return retries, recovered
+        except requests.exceptions.RequestException as e:
+            retries += 1
+            if attempt >= max_retries or not _is_network_error(e):
+                try:
+                    os.unlink(tmp)
+                except OSError:
+                    pass
+                raise
+            _sleep_interruptible(BACKOFF_SECONDS[min(attempt - 1, len(BACKOFF_SECONDS) - 1)])
+        except RuntimeError:
+            # 大小校验不一致：已有部分字节视为断点，继续重试
+            retries += 1
+            if attempt >= max_retries:
+                try:
+                    os.unlink(tmp)
+                except OSError:
+                    pass
+                raise
+            _sleep_interruptible(BACKOFF_SECONDS[min(attempt - 1, len(BACKOFF_SECONDS) - 1)])
+    raise RuntimeError("下载失败（已重试 {0} 次）".format(max_retries))
+
+
 def _blank_image():
     return torch.zeros((1, 1, 1, 3), dtype=torch.float32)
 
 
 def _download_image(cfg, url, task_id):
-    r = requests.get(url, timeout=int(cfg.get("request_timeout") or 120))
-    r.raise_for_status()
-    img = Image.open(io.BytesIO(r.content)).convert("RGB")
     png = os.path.join(_tripo_outdir(), task_id + "_preview.png")
+    tmp = png + ".dl"
+    retries, recovered = _download_bytes_resumable(url, tmp, int(cfg.get("request_timeout") or 120))
+    img = Image.open(tmp).convert("RGB")
     img.save(png)
+    try:
+        os.unlink(tmp)
+    except OSError:
+        pass
     arr = np.asarray(img, dtype=np.float32) / 255.0
-    return torch.from_numpy(arr)[None, ...], png
+    return torch.from_numpy(arr)[None, ...], png, retries, recovered
 
 
 _MODEL_EXTS = [".fbx", ".obj", ".glb", ".gltf", ".stl", ".3mf", ".usdz"]
@@ -144,11 +243,8 @@ def _model_ext(url):
 def _download_model(cfg, url, task_id):
     ext = _model_ext(url)
     local = os.path.join(_tripo_outdir(), task_id + ext)
-    r = requests.get(url, timeout=max(int(cfg.get("request_timeout") or 60), 120))
-    r.raise_for_status()
-    with open(local, "wb") as f:
-        f.write(r.content)
-    return local, ext
+    retries, recovered = _download_bytes_resumable(url, local, max(int(cfg.get("request_timeout") or 60), 120))
+    return local, ext, retries, recovered
 
 
 def _upload_image(cfg, tensor):
@@ -252,7 +348,8 @@ class TTTripoSubmit:
 
 class TTTripoFetch:
     """轮询任务并取回结果；OUTPUT_NODE=True（输出进入 /history 可取证），
-    每次执行写 output/Tripo/<task_id>.meta.json 取证；不自动重试提交。"""
+    每次执行写 output/Tripo/<task_id>.meta.json 取证（含 retries/recovered）；
+    查询与下载对网络类异常做有界重试（2/4/8s 退避）+ HTTP Range 断点续传，**绝不重试提交**。"""
 
     CATEGORY = "TT"
     RETURN_TYPES = ("STRING", "IMAGE", "STRING")
@@ -276,8 +373,8 @@ class TTTripoFetch:
         blank = _blank_image()
         task_id = (task_id or "").strip()
 
-        def finish(path, image, status, error):
-            _write_meta(task_id or "", status, path or "", "", error)
+        def finish(path, image, status, error, retries=0, recovered=False):
+            _write_meta(task_id or "", status, path or "", "", error, "", retries, recovered)
             return {"ui": {"text": [status]}, "result": (path, image, status)}
 
         if task_id.startswith("ERROR:"):
@@ -292,16 +389,21 @@ class TTTripoFetch:
         interval = max(1, int(cfg.get("poll_interval") or poll_interval or 5))
         deadline = time.time() + int(wait_seconds)
         status = "unknown"
+        total_retries = 0
+        recovered = False
         while time.time() < deadline:
             try:
-                data = _request_json(cfg, "GET", "/tasks/" + task_id)
+                data, attempts = _request_json_retry(cfg, "GET", "/tasks/" + task_id)
+                if attempts > 1:
+                    total_retries += attempts - 1
+                    recovered = True
             except Exception as e:
-                status = "查询失败（网络/配置）：{0}".format(e)
-                return finish("", blank, status, status)
+                status = "查询失败（网络/配置，已重试 {0} 次）：{1}".format(total_retries, e)
+                return finish("", blank, status, status, total_retries, recovered)
             if not isinstance(data, dict) or data.get("code") != 0:
                 code = (data or {}).get("code") if isinstance(data, dict) else None
                 status = "查询失败：code={0}".format(code)
-                return finish("", blank, status, status)
+                return finish("", blank, status, status, total_retries, recovered)
             d = data.get("data") or {}
             status = d.get("status") or "unknown"
             if status == "success":
@@ -310,12 +412,12 @@ class TTTripoFetch:
                 status = "任务终态 {0}：error_code={1} error_message={2}".format(
                     status, d.get("error_code"), d.get("error_message", "")
                 )
-                return finish("", blank, status, status)
+                return finish("", blank, status, status, total_retries, recovered)
             # queued / running / unknown：继续轮询，不重复提交
-            time.sleep(interval)
+            _sleep_interruptible(interval)
         else:
             status = "等待超时（{0}s）：任务仍为 {1}。可用同一 task_id 再次取回，无需重新提交。".format(int(wait_seconds), status)
-            return finish("", blank, status, status)
+            return finish("", blank, status, status, total_retries, recovered)
         out = d.get("output") or {}
         model_url = out.get("model_url") or ""
         image_url = out.get("rendered_image_url") or ""
@@ -323,23 +425,27 @@ class TTTripoFetch:
         ext = ""
         try:
             if model_url:
-                local_path, ext = _download_model(cfg, model_url, task_id)
+                local_path, ext, dl_retries, dl_recovered = _download_model(cfg, model_url, task_id)
+                total_retries += dl_retries
+                recovered = recovered or dl_recovered
         except Exception as e:
-            status = "模型下载失败：{0}".format(e)
-            return finish("", blank, status, status)
+            status = "模型下载失败（含 {0} 次下载重试）：{1}".format(total_retries, e)
+            return finish("", blank, status, status, total_retries, recovered)
         image = blank
         preview_path = ""
         try:
             if image_url:
-                image, preview_path = _download_image(cfg, image_url, task_id)
+                image, preview_path, dl_retries, dl_recovered = _download_image(cfg, image_url, task_id)
+                total_retries += dl_retries
+                recovered = recovered or dl_recovered
         except Exception as e:
             status = "success（模型已下载{0}）；预览图下载失败：{1}".format(ext, e)
-            _write_meta(task_id, status, local_path, "", str(e), ext)
+            _write_meta(task_id, status, local_path, "", str(e), ext, total_retries, recovered)
             return {"ui": {"text": [status]}, "result": (local_path, blank, status)}
         status = "success：模型 {0}；预览图 {1}；credits_consumed={2}".format(
             local_path or model_url, preview_path or ("已下载" if image_url else "未提供"), d.get("credits_consumed")
         )
-        _write_meta(task_id, status, local_path, preview_path, "", ext)
+        _write_meta(task_id, status, local_path, preview_path, "", ext, total_retries, recovered)
         return {"ui": {"text": [status]}, "result": (local_path, image, status)}
 
 

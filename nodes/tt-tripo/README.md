@@ -1,9 +1,10 @@
-# tt-tripo｜机构自研 Tripo 文生/图生/多视图生/格式转换 3D 调用节点（v0.3.0）
+# tt-tripo｜机构自研 Tripo 文生/图生/多视图生/格式转换 3D 调用节点（v0.3.1）
 
 在 ComfyUI 里提交 Tripo API 文生/图生/多视图生 3D 任务、做格式转换并取回结果（GLB/FBX/OBJ… + 渲染预览图）。
 
 ## 版本
 
+- **v0.3.1（2026-11-17）**：轮询与下载的网络抖动韧性修复——现象：负责人 16:19 的生成任务已在 Tripo 侧 success，但 Fetch 轮询遇本机系统代理瞬时断连（ProxyError/RemoteDisconnected）直接报错，已成功任务被当成失败丢弃；根因：查询与下载均无重试、无断点续传；修法：`TTTripoFetch` 查询任务状态对**网络类异常**（连接错误/超时/代理故障/流中断）做有界重试（最多 3 次、指数退避 2/4/8 秒、期间可中断），任务终态与业务错误不重试；GLB/预览下载同样有界重试并支持 **HTTP Range 断点续传**（从 .part 已下载字节继续，校验最终大小与 Content-Length 一致，不一致重试）；meta.json 新增 `retries`/`recovered` 字段（现有字段兼容）；边界：**提交接口绝不重试**（提交仍单次，防重复计费），HTTP 状态错误与业务错误不重试。
 - **v0.3.0（2026-11-17）**：新增「格式转换」节点（负责人指示「返回 obj 或 fbx 模型，这很重要」）。现象：生成接口固定输出 GLB，交付 FBX/OBJ 需手工转换；根因：插件未覆盖 `POST /models/convert`；修法：新增 `TTTripoConvert`（task_id 可粘贴/连线，format=FBX/OBJ/GLTF/USDZ/STL/3MF，quad、face_limit(0=不传)、texture_size，异步返回新 task_id 交给 `TTTripoFetch` 轮询），`TTTripoFetch` 下载扩展名从 `output.model_url` URL 后缀推断（.fbx/.obj/.glb/.gltf/.stl/.3mf/.usdz，无法推断回退 .glb），meta.json 新增 `ext/format` 字段；边界：OBJ 无动画、STL/3MF 仅几何、quad=true 强制输出 FBX（且未设 face_limit 时平台默认 1 万面）；Key 存储与付费 P1 口径不变；示例工作流 29。
 - **v0.2.2（2026-11-17）**：紧急回退 T20 的列表输入方案——现象：`INPUT_IS_LIST=True` 使 ComfyUI 0.43 前端把 `TTTripoMultiviewTo3D` 全部控件（enable_api/model/…）渲染成不可交互输入槽，用户无法勾选 enable_api；根因：`INPUT_IS_LIST` 是整节点列表化语义，且本构建 `/prompt` 列表链接校验对所有节点失败；修法：删除 `INPUT_IS_LIST`，`images` 恢复**单 IMAGE 输入承载图像批次**（`(B,H,W,C)` 按 batch 维拆分，batch 顺序=front/left/back/right），多图用 ComfyUI 自带 `ImageBatch` 串联成单链输入（4 张 = 3 个 ImageBatch），API/UI 两条路径可用；边界：多图必须经 ImageBatch 单链入 `images`，直接多路连线仍会被校验拒绝；Key 存储与付费 P1 口径不变。
 - **v0.2.1（2026-11-17）**：修复 T19 暴露的列表输入缺陷（`INPUT_IS_LIST=True` 方案）——已被 v0.2.2 回退，仅作历史记录。
