@@ -92,3 +92,10 @@
 - **根因**：Tripo 导出的 GLB 在 UV 接缝/法线断开处**顶点重复**（5000 面版实测 4,005 顶点、**2,419 条边界边**）；直接对全部顶点做拉普拉斯平滑时，同一几何点的各份顶点被分别位移，接缝张开。
 - **修法**：平滑前先 `bmesh.ops.remove_doubles(dist=1e-5)` 焊接 → `recalc_face_normals` → shade_smooth → smooth_vert×2（同参数）。实测 5000 面版：顶点 4,005→**2,663**、边界边 2,419→**6**、面数 5,335 不变（UV 由 loop 数据保留）；导出 `astro_p5000_smooth2.glb/.fbx`。20000 面版同法（Lead 实测 12,875→9,964、边界 5,529→88）。
 - **边界**：焊接阈值 1e-5 只合并接缝重复点，真实开放边界（如底部开口）保留；必须先焊接再平滑，禁止对 split geometry 直接 smoothing。旧流程产物（retopo5000_smooth.glb、retopo20000_smooth.glb、astro_p20000_smooth.fbx）为错误流程产物，已被 `_smooth2` 系列取代（文件保留、仅标注）。
+
+## 2026-11-17 · 曲率加权自适应减面：Decimate 顶点组在本构建无效，改用 dissolve_limit 角阈值（T33）
+
+- **现象**：负责人反馈 20000 面重拓扑后头盔护目镜弧面有折痕/凹凸感，需要「弧面保面、平整区简化」；尝试 Blender Decimate COLLAPSE + 曲率顶点组做加权减面时，顶点组完全不生效（invert 两方向、factor 0→0.5、权重分布 min-max 归一与秩归一化，结果全部 ≈ 全局无权重减面，探针+主跑双重证实）。
+- **根因**：Blender 4.3 的 Decimate COLLAPSE 对本机构建基本不采纳 vertex_group（factor/invert 影响可忽略）；API 侧 Tripo 也无权重面数控制参数。
+- **修法**：改用 `bmesh.ops.dissolve_limit(angle_limit=radians(5), use_dissolve_boundaries=False, delimit={"NORMAL","UV"})`——二面角阈值即逐边曲率加权等价物：只溶解 ≤5° 的平整边（19,899→**11,979 面**，目标 12,000 的 0.2% 内），曲率 >5° 的边 100% 保留；delimit NORMAL+UV 保护法线接缝与 UV 岛；先 remove_doubles(1e-5) 再溶解，最后 recalc normals + shade_smooth + smooth_vert×2；顶点仅 9,964→9,320（dissolve 不并点，弧面更平滑）。导出 GLB 2,678,112 B / FBX 1,061,292 B，TEXCOORD_0 校验在。
+- **边界**：角阈值是全局单参数（如需区域分级可用多网格/多次溶解组合）；目标面数可配置；弧面观感仍需 F3D 目检（33_curvweighted.png / GUI）。
