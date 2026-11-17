@@ -1,0 +1,159 @@
+{
+  "id": "b8e1f2a3-4c5d-4e6f-8a9b-1c2d3e4f5a6b",
+  "revision": 0,
+  "last_node_id": 7,
+  "last_link_id": 5,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "MarkdownNote",
+      "title": "使用说明",
+      "pos": [0, -300],
+      "size": [860, 240],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "properties": {},
+      "widgets_values": [
+        "Key 在本机插件目录 tt-tripo/tripo.local.json（或环境变量 TRIPO_API_KEY），不入画布/同步盘（DEC-ORG-094）。付费调用属 P1：每次生成消耗 Tripo 额度，先确认预算。enable_api 确认参数后再打开；换图改 LoadImage 文件名（文件需在 ComfyUI input/，默认 example.png 为占位）。任务超时用同一 task_id 再次取回，不重复提交。"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "LoadImage",
+      "title": "参考图（换图改此文件名）",
+      "pos": [0, 0],
+      "size": [450, 540],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        { "name": "IMAGE", "type": "IMAGE", "links": [1], "slot_index": 0 },
+        { "name": "MASK", "type": "MASK", "links": [], "slot_index": 1 }
+      ],
+      "properties": { "Node name for S&R": "LoadImage" },
+      "widgets_values": ["example.png", "image"]
+    },
+    {
+      "id": 3,
+      "type": "TTTripoImageTo3D",
+      "title": "TT-Tripo 提交（图生3D）",
+      "pos": [560, 0],
+      "size": [450, 560],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        { "name": "image", "type": "IMAGE", "link": 1 }
+      ],
+      "outputs": [
+        { "name": "task_id", "type": "STRING", "links": [2], "slot_index": 0 },
+        { "name": "调用信息", "type": "STRING", "links": [], "slot_index": 1 }
+      ],
+      "properties": { "Node name for S&R": "TTTripoImageTo3D" },
+      "widgets_values": [
+        false,
+        "v3.1-20260211",
+        100000,
+        true,
+        true,
+        "original_image",
+        "default",
+        false
+      ]
+    },
+    {
+      "id": 4,
+      "type": "TTTripoFetch",
+      "title": "TT-Tripo 任务取回",
+      "pos": [1120, 0],
+      "size": [450, 460],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        { "name": "task_id", "type": "STRING", "link": 2 }
+      ],
+      "outputs": [
+        { "name": "模型路径", "type": "STRING", "links": [4], "slot_index": 0 },
+        { "name": "预览图", "type": "IMAGE", "links": [3], "slot_index": 1 },
+        { "name": "状态", "type": "STRING", "links": [5], "slot_index": 2 }
+      ],
+      "properties": { "Node name for S&R": "TTTripoFetch" },
+      "widgets_values": [
+        "",
+        600,
+        5,
+        0
+      ]
+    },
+    {
+      "id": 5,
+      "type": "PreviewImage",
+      "title": "预览图",
+      "pos": [1680, 0],
+      "size": [300, 300],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        { "name": "images", "type": "IMAGE", "link": 3 }
+      ],
+      "outputs": [
+        { "name": "images", "type": "IMAGE", "links": [], "slot_index": 0 }
+      ],
+      "properties": { "Node name for S&R": "PreviewImage" },
+      "widgets_values": []
+    },
+    {
+      "id": 6,
+      "type": "PreviewAny",
+      "title": "模型路径",
+      "pos": [1680, 360],
+      "size": [300, 300],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        { "name": "source", "type": "*", "link": 4 }
+      ],
+      "outputs": [
+        { "name": "STRING", "type": "STRING", "links": [], "slot_index": 0 }
+      ],
+      "properties": { "Node name for S&R": "PreviewAny" },
+      "widgets_values": []
+    },
+    {
+      "id": 7,
+      "type": "PreviewAny",
+      "title": "状态",
+      "pos": [1680, 700],
+      "size": [300, 300],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        { "name": "source", "type": "*", "link": 5 }
+      ],
+      "outputs": [
+        { "name": "STRING", "type": "STRING", "links": [], "slot_index": 0 }
+      ],
+      "properties": { "Node name for S&R": "PreviewAny" },
+      "widgets_values": []
+    }
+  ],
+  "links": [
+    [1, 2, 0, 3, 0, "IMAGE"],
+    [2, 3, 0, 4, 0, "STRING"],
+    [3, 4, 1, 5, 0, "IMAGE"],
+    [4, 4, 0, 6, 0, "STRING"],
+    [5, 4, 2, 7, 0, "STRING"]
+  ],
+  "groups": [
+    { "title": "Tripo 图生3D", "bounding": [-40, -340, 2050, 1100], "color": "#3f789e", "font_size": 24, "flags": {} }
+  ],
+  "config": {},
+  "extra": { "ds": { "scale": 0.65, "offset": [30, 460] } },
+  "version": 0.4
+}

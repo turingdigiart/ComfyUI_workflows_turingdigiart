@@ -1,9 +1,9 @@
 {
   "schema": 2,
-  "generated_at": "2026-11-16T16:57:14.037Z",
-  "source": "E:\\RAE_ToolRoot\\comfyui\\ComfyUI_windows_portable\\ComfyUI\\user\\default\\workflows",
-  "count": 43,
-  "missing_model_count": 0,
+  "generated_at": "2026-11-17T04:06:18.890Z",
+  "source": "E:\\Private\\AIDev\\TECH-COMFY-001_comfyui-workflows\\workflows",
+  "count": 45,
+  "missing_model_count": 16,
   "undocumented_count": 0,
   "workflows": [
     {
@@ -17,8 +17,8 @@
       "description": "# ACE-Step 1.0 · 10 秒纯音乐\n\n1. 确认模型为 `ace_step_v1_3.5b.safetensors`，放在 `models/checkpoints/`。\n2. 修改 tags 可改变乐器和曲风；保留 `[instrumental]` 可生成纯音乐。\n3. Ctrl+Enter 开始生成，结果保存到 `output/audio/`，格式为 FLAC。\n\n默认：10 秒、30 步、CFG 5、Euler / simple、固定 seed。测试通路可用配套 4 步 API；4 步结果不代表正常生成质量。\n\n[官方教程](https://docs.comfy.org/zh-CN/tutorials/audio/ace-step/ace-step-v1) · [官方模型](https://huggingface.co/Comfy-Org/ACE-Step_ComfyUI_repackaged)\n\n模型许可证：Apache-2.0。工作流仅使用 ComfyUI 原生节点。",
       "has_description": true,
       "version": null,
-      "sha256": "3cfb37a3ac02fbdbd90417568ca20c5c87eab433b4eed9af247d888decc5f546",
-      "bytes": 11801,
+      "sha256": "13af553fca09335b052f3215fd75c17765f844c66423c2dada3155f8bdea9eec",
+      "bytes": 12450,
       "node_count": 12,
       "node_types": [
         "KSampler",
@@ -60,8 +60,8 @@
       "description": "# 01_写实版_基准脸_v001\n\n- 归类：identity / tt-ip-写实版\n- 参数：底模 RealVisXL_V5.0_fp16.safetensors · 896x1152 · 30 步 · dpmpp_2m_sde\n- 说明：本条为 2026-11-16 迁入的既有工作流，画布原先没有说明。\n 上面的参数由节点连线自动读取；用途请看文件名，实际用法以连线为准。\n 需要补充准确用法时，直接改这条说明并重跑 catalog。",
       "has_description": true,
       "version": "v001",
-      "sha256": "7a3bd4768f6e951f36719dcf3cda6dfead3a02562cca7305dc93c568d836b336",
-      "bytes": 8723,
+      "sha256": "c7647ec8a84f7f84e5afe39abe9c018e032f91f5356a42cc4abcd495c4a0f8aa",
+      "bytes": 9143,
       "node_count": 8,
       "node_types": [
         "CheckpointLoaderSimple",
@@ -98,8 +98,8 @@
       "description": "# 01_写实版_基准脸_v002\n\n- 归类：identity / tt-ip-写实版\n- 参数：底模 RealVisXL_V5.0_fp16.safetensors · 896x1152 · 30 步 · dpmpp_2m_sde\n- 说明：本条为 2026-11-16 迁入的既有工作流，画布原先没有说明。\n 上面的参数由节点连线自动读取；用途请看文件名，实际用法以连线为准。\n 需要补充准确用法时，直接改这条说明并重跑 catalog。",
       "has_description": true,
       "version": "v002",
-      "sha256": "673a898ad307592573fa28e3f39e281a03b0100bec6e117beba578a622d7571f",
-      "bytes": 8783,
+      "sha256": "ea9fe8e1f26cacd017ccdf51838a69ea105c6c9a1ffe3814b8dce728793ade15",
+      "bytes": 9203,
       "node_count": 8,
       "node_types": [
         "CheckpointLoaderSimple",
@@ -136,8 +136,8 @@
       "description": "# 02_写实版_Apose全身_v001\n\n- 归类：identity / tt-ip-写实版\n- 参数：底模 RealVisXL_V5.0_fp16.safetensors · 832x1216 · 30 步 · dpmpp_2m_sde\n- 说明：本条为 2026-11-16 迁入的既有工作流，画布原先没有说明。\n 上面的参数由节点连线自动读取；用途请看文件名，实际用法以连线为准。\n 需要补充准确用法时，直接改这条说明并重跑 catalog。",
       "has_description": true,
       "version": "v001",
-      "sha256": "4c12b06f5d9bcc761ba6686c5fac4b60926d4971201561bdf721935d4eb5ccbb",
-      "bytes": 12050,
+      "sha256": "94c3993d97db8af28f06126886a0464a26ffca996f8051f83d167a21c6ef3e14",
+      "bytes": 12640,
       "node_count": 11,
       "node_types": [
         "CheckpointLoaderSimple",
@@ -178,8 +178,8 @@
       "description": "# 02_写实版_Apose全身_v002\n\n- 归类：identity / tt-ip-写实版\n- 参数：底模 RealVisXL_V5.0_fp16.safetensors · 832x1216 · 30 步 · dpmpp_2m_sde\n- 说明：本条为 2026-11-16 迁入的既有工作流，画布原先没有说明。\n 上面的参数由节点连线自动读取；用途请看文件名，实际用法以连线为准。\n 需要补充准确用法时，直接改这条说明并重跑 catalog。",
       "has_description": true,
       "version": "v002",
-      "sha256": "061477e828b1bcf28c2e07363dd0793a7f244c2623f213179d2f0bddbe7bb71b",
-      "bytes": 12375,
+      "sha256": "0b09bce2c7e42b5fe103f3bc095baa82d6fbf1ba8e6417de4dca42ab50968c0c",
+      "bytes": 12979,
       "node_count": 11,
       "node_types": [
         "CheckpointLoaderSimple",
@@ -220,8 +220,8 @@
       "description": "# 03_写实版_Apose三套穿搭_v001\n\n- 归类：identity / tt-ip-写实版\n- 参数：底模 RealVisXL_V5.0_fp16.safetensors · 832x1216 · 30 步 · dpmpp_2m_sde\n- 说明：本条为 2026-11-16 迁入的既有工作流，画布原先没有说明。\n 上面的参数由节点连线自动读取；用途请看文件名，实际用法以连线为准。\n 需要补充准确用法时，直接改这条说明并重跑 catalog。",
       "has_description": true,
       "version": "v001",
-      "sha256": "9facd1544412de62238c783af27ae6b1ad299d9399d0eadef7f03796c057eb5c",
-      "bytes": 59256,
+      "sha256": "278952338a7e31585c242aadd68586f3a70929bd2ec48c15ec64cb5706a2f58b",
+      "bytes": 62289,
       "node_count": 46,
       "node_types": [
         "CheckpointLoaderSimple",
@@ -262,8 +262,8 @@
       "description": "# 03_写实版_Apose三套穿搭_v002\n\n- 归类：identity / tt-ip-写实版\n- 参数：底模 RealVisXL_V5.0_fp16.safetensors · 832x1216 · 30 步 · dpmpp_2m_sde\n- 说明：本条为 2026-11-16 迁入的既有工作流，画布原先没有说明。\n 上面的参数由节点连线自动读取；用途请看文件名，实际用法以连线为准。\n 需要补充准确用法时，直接改这条说明并重跑 catalog。",
       "has_description": true,
       "version": "v002",
-      "sha256": "c8112272c69de0044ed05cc1440acc45bc0c0cabade54535896c5c240e064ba3",
-      "bytes": 61462,
+      "sha256": "baed9388d80bcdf7b5765d9e3c268aa0da6917db0ef144c304f9d0c8c9d2e95c",
+      "bytes": 64607,
       "node_count": 46,
       "node_types": [
         "CheckpointLoaderSimple",
@@ -304,8 +304,8 @@
       "description": "# 04_写实版_封面构图_v001\n\n- 归类：identity / tt-ip-写实版\n- 参数：底模 RealVisXL_V5.0_fp16.safetensors · 896x1152 · 30 步 · dpmpp_2m_sde\n- 说明：本条为 2026-11-16 迁入的既有工作流，画布原先没有说明。\n 上面的参数由节点连线自动读取；用途请看文件名，实际用法以连线为准。\n 需要补充准确用法时，直接改这条说明并重跑 catalog。",
       "has_description": true,
       "version": "v001",
-      "sha256": "9cc5dbbb45b0d49a2b0f005cf7344c4fcd6f29b212d05591796b7c5cd5223611",
-      "bytes": 13367,
+      "sha256": "3736dec42ce50c39b77f24827acaed2fdb3fff8542b349618f97b945892f09bf",
+      "bytes": 14073,
       "node_count": 13,
       "node_types": [
         "CheckpointLoaderSimple",
@@ -342,8 +342,8 @@
       "description": "# 04_写实版_封面构图_v002\n\n- 归类：identity / tt-ip-写实版\n- 参数：底模 RealVisXL_V5.0_fp16.safetensors · 896x1152 · 30 步 · dpmpp_2m_sde\n- 说明：本条为 2026-11-16 迁入的既有工作流，画布原先没有说明。\n 上面的参数由节点连线自动读取；用途请看文件名，实际用法以连线为准。\n 需要补充准确用法时，直接改这条说明并重跑 catalog。",
       "has_description": true,
       "version": "v002",
-      "sha256": "36b56bd2a1026281a3825dce3b93bf55d22eb8437d084d1f785983fc9ff77370",
-      "bytes": 13427,
+      "sha256": "a6b7570c967c95e862ea0e29e7fbde927fcd159707d7ba406c22010ccac7c2eb",
+      "bytes": 14133,
       "node_count": 13,
       "node_types": [
         "CheckpointLoaderSimple",
@@ -380,8 +380,8 @@
       "description": "# 05_写实版_放大修图\n\n- 归类：identity / tt-ip-写实版\n- 参数：未从连线读到关键参数\n- 说明：本条为 2026-11-16 迁入的既有工作流，画布原先没有说明。\n 上面的参数由节点连线自动读取；用途请看文件名，实际用法以连线为准。\n 需要补充准确用法时，直接改这条说明并重跑 catalog。",
       "has_description": true,
       "version": null,
-      "sha256": "ec1e743505ea83c16241c8b579f2fdd6f5786827cc93b9cbce66d028b8310033",
-      "bytes": 4879,
+      "sha256": "55366bb3eab1223debec34f37692f3b5881f7499681fd62cfad736285f4c7b92",
+      "bytes": 5150,
       "node_count": 6,
       "node_types": [
         "LoadImage",
@@ -417,8 +417,8 @@
       "description": "# 06_写实版_照片一致性_v001\n\n- 归类：identity / tt-ip-写实版\n- 参数：底模 RealVisXL_V5.0_fp16.safetensors · 896x1152 · 30 步 · dpmpp_2m_sde\n- 说明：本条为 2026-11-16 迁入的既有工作流，画布原先没有说明。\n 上面的参数由节点连线自动读取；用途请看文件名，实际用法以连线为准。\n 需要补充准确用法时，直接改这条说明并重跑 catalog。",
       "has_description": true,
       "version": "v001",
-      "sha256": "60ff1274099ae770795c59fe57a210ea3c5fc5bbeb2cdacd18016b9ac47aec93",
-      "bytes": 12394,
+      "sha256": "8fa072b1fab0159eca46d35ce38f98eb89d40706c4080a6b66dd6dcf2f6cca19",
+      "bytes": 13023,
       "node_count": 12,
       "node_types": [
         "CheckpointLoaderSimple",
@@ -461,8 +461,8 @@
       "description": "# 06_写实版_照片一致性_v002\n\n- 归类：identity / tt-ip-写实版\n- 参数：底模 RealVisXL_V5.0_fp16.safetensors · 896x1152 · 30 步 · dpmpp_2m_sde\n- 说明：本条为 2026-11-16 迁入的既有工作流，画布原先没有说明。\n 上面的参数由节点连线自动读取；用途请看文件名，实际用法以连线为准。\n 需要补充准确用法时，直接改这条说明并重跑 catalog。",
       "has_description": true,
       "version": "v002",
-      "sha256": "bd0fd7fac3fb850cf387713a39c18c421996c11814cd1c987003084fc1c0c645",
-      "bytes": 12454,
+      "sha256": "87a2640af289effff7b443eb461ea79e07715184fd46aeb69bd68c295023ee94",
+      "bytes": 13083,
       "node_count": 12,
       "node_types": [
         "CheckpointLoaderSimple",
@@ -505,8 +505,8 @@
       "description": "# 07_Flux_四套穿搭_v001\n\n- 归类：identity / tt-ip-写实版\n- 参数：底模 flux1-dev-fp8.safetensors · 832x1216 · 24 步 · euler\n- 说明：本条为 2026-11-16 迁入的既有工作流，画布原先没有说明。\n 上面的参数由节点连线自动读取；用途请看文件名，实际用法以连线为准。\n 需要补充准确用法时，直接改这条说明并重跑 catalog。",
       "has_description": true,
       "version": "v001",
-      "sha256": "a9cad12c351d373c8e34f12ba8b7efbbdeeaba868d1e47ad04cf74650a74dea3",
-      "bytes": 50770,
+      "sha256": "0a2b5b6499d4b47cf180b9bc4bea98159687faabd48f7f77997d53c189ec23f4",
+      "bytes": 53331,
       "node_count": 44,
       "node_types": [
         "CheckpointLoaderSimple",
@@ -544,8 +544,8 @@
       "description": "# 07_Flux_四套穿搭_v002\n\n- 归类：identity / tt-ip-写实版\n- 参数：底模 flux1-dev-fp8.safetensors · 832x1216 · 24 步 · euler\n- 说明：本条为 2026-11-16 迁入的既有工作流，画布原先没有说明。\n 上面的参数由节点连线自动读取；用途请看文件名，实际用法以连线为准。\n 需要补充准确用法时，直接改这条说明并重跑 catalog。",
       "has_description": true,
       "version": "v002",
-      "sha256": "264c6f0bc9f23e55059d27260c9bab714e896730b7f338d74e23dc489db3b414",
-      "bytes": 51458,
+      "sha256": "7e001c80455637187a4e475006ded4d1e8cb286d1e7883a99ae6e278411e59c9",
+      "bytes": 54019,
       "node_count": 44,
       "node_types": [
         "CheckpointLoaderSimple",
@@ -583,8 +583,8 @@
       "description": "# 08_Flux_四套_锁姿势\n\n- 归类：identity / tt-ip-写实版\n- 参数：底模 flux1-dev-fp8.safetensors · 832x1216 · 24 步 · euler\n- 说明：本条为 2026-11-16 迁入的既有工作流，画布原先没有说明。\n 上面的参数由节点连线自动读取；用途请看文件名，实际用法以连线为准。\n 需要补充准确用法时，直接改这条说明并重跑 catalog。",
       "has_description": true,
       "version": null,
-      "sha256": "e4ec9ea18d6ca04b5134dba0b9789aa585f138ca454af26bd4fdeb4e77a4973b",
-      "bytes": 35719,
+      "sha256": "ae37db5ec37487ed2158af10cd99f79dffa60824a93c7798e2c6cd2c946e72ce",
+      "bytes": 37604,
       "node_count": 30,
       "node_types": [
         "CheckpointLoaderSimple",
@@ -626,8 +626,8 @@
       "description": "# 09_SDXL_四套_锁脸锁姿势\n\n- 归类：identity / tt-ip-写实版\n- 参数：底模 RealVisXL_V5.0_fp16.safetensors · 832x1216 · 30 步 · dpmpp_2m_sde\n- 说明：本条为 2026-11-16 迁入的既有工作流，画布原先没有说明。\n 上面的参数由节点连线自动读取；用途请看文件名，实际用法以连线为准。\n 需要补充准确用法时，直接改这条说明并重跑 catalog。",
       "has_description": true,
       "version": null,
-      "sha256": "6bf0ab8c2e0507c4807b0497ceb4417cd17fc49dfe8ac1e437257b885507349d",
-      "bytes": 37238,
+      "sha256": "2e095b5552bcf103b7a49e5afad12d4754c8a51c47d998356447fb60a57857a2",
+      "bytes": 39141,
       "node_count": 30,
       "node_types": [
         "CheckpointLoaderSimple",
@@ -673,8 +673,8 @@
       "description": "# 10_SDXL_LoRA_四套\n\n- 归类：identity / tt-ip-写实版\n- 参数：底模 RealVisXL_V5.0_fp16.safetensors · 832x1216 · 26 步 · dpmpp_2m_sde\n- 说明：本条为 2026-11-16 迁入的既有工作流，画布原先没有说明。\n 上面的参数由节点连线自动读取；用途请看文件名，实际用法以连线为准。\n 需要补充准确用法时，直接改这条说明并重跑 catalog。",
       "has_description": true,
       "version": null,
-      "sha256": "15aa28b9bc09f5dbd1b0a077130298a09be758836904f1ebb1fd6d8967c10c8a",
-      "bytes": 34661,
+      "sha256": "b3f5eb2746a35d0b4a1e56991960635caad00ed5cf82c78d2a615de11dca8d0d",
+      "bytes": 36424,
       "node_count": 27,
       "node_types": [
         "CheckpointLoaderSimple",
@@ -717,8 +717,8 @@
       "description": "# 14_通用API提示词_预览\n\n- 归类：image / api\n- 参数：未从连线读到关键参数\n- 说明：本条为 2026-11-16 迁入的既有工作流，画布原先没有说明。\n 上面的参数由节点连线自动读取；用途请看文件名，实际用法以连线为准。\n 需要补充准确用法时，直接改这条说明并重跑 catalog。",
       "has_description": true,
       "version": null,
-      "sha256": "9b8b8d9256cc85db8785aa80493a5934914d72aa9b803e1bfe42691acb00b605",
-      "bytes": 2761,
+      "sha256": "8597d9fe12a8f0a2dcb8c903883ce4aea0126a6a2b1bb3816b96d40f631832a9",
+      "bytes": 2895,
       "node_count": 3,
       "node_types": [
         "UniversalPrompter",
@@ -772,7 +772,11 @@
         "qwen_3_4b.safetensors",
         "z_image_turbo_bf16.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "z_image_turbo_bf16.safetensors",
+        "qwen_3_4b.safetensors",
+        "ae.safetensors"
+      ],
       "params": {
         "model": "z_image_turbo_bf16.safetensors",
         "resolution": "1024x1024",
@@ -795,8 +799,8 @@
       "description": "配置部署插件目录中的 ark.local.json，填API Key并在方舟开通模型；模型留空使用配置。确认后打开 enable_api。密钥不要填进画布。参考图会上传到火山方舟，调用使用方舟账户额度。\n\n默认单图2K。移除参考图连接可文生图。相同请求复用本地记录；需要新结果才增加refresh_id。结果在output/Ark。",
       "has_description": true,
       "version": null,
-      "sha256": "a639b705dce6c0702199c8f8cca7cd3ba6b23e796988c273a2af7fdb5ec0f0a1",
-      "bytes": 4540,
+      "sha256": "0b71728020d7f9f1cce07a946a2f1d53eb6f4d5077778467616819fe548ce6e3",
+      "bytes": 4541,
       "node_count": 5,
       "node_types": [
         "LoadImage",
@@ -829,8 +833,8 @@
       "description": "三视图/表情集/细节均为方向探索与角度占位，按 REALISTIC_IP_BRIEF_v002 逐张核对身份后再晋级，多视图生成不构成身份一致性保证；参考图上传方舟，仅限本人授权素材；enable_api 确认参数后再开；换新结果才增大 refresh_id。",
       "has_description": true,
       "version": null,
-      "sha256": "d277eccc77782654a5664618c985a2494773cfd1cae05a26fe01fa1f510f8a67",
-      "bytes": 8764,
+      "sha256": "d991225b08489cec8dbc4019d830db1cbcf21a98c0fbf91249bd5caa98a4e967",
+      "bytes": 12248,
       "node_count": 12,
       "node_types": [
         "LoadImage",
@@ -886,7 +890,11 @@
         "flux2-vae.safetensors",
         "qwen_3_4b.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "flux-2-klein-4b-fp8.safetensors",
+        "qwen_3_4b.safetensors",
+        "flux2-vae.safetensors"
+      ],
       "params": {
         "model": "flux-2-klein-4b-fp8.safetensors",
         "resolution": null,
@@ -937,7 +945,11 @@
         "flux2-vae.safetensors",
         "qwen_3_4b.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "flux-2-klein-4b-fp8.safetensors",
+        "qwen_3_4b.safetensors",
+        "flux2-vae.safetensors"
+      ],
       "params": {
         "model": "flux-2-klein-4b-fp8.safetensors",
         "resolution": null,
@@ -1026,7 +1038,10 @@
         "qwen_image_2.1_turbo_int8_convrot.safetensors",
         "qwen_image_2.1_vae_bf16.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "qwen_image_2.1_turbo_int8_convrot.safetensors",
+        "qwen3vl_8b_int8_convrot.safetensors"
+      ],
       "params": {
         "model": "qwen_image_2.1_turbo_int8_convrot.safetensors",
         "resolution": null,
@@ -1073,7 +1088,10 @@
         "qwen_image_2.1_turbo_int8_convrot.safetensors",
         "qwen_image_2.1_vae_bf16.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "qwen_image_2.1_turbo_int8_convrot.safetensors",
+        "qwen3vl_8b_int8_convrot.safetensors"
+      ],
       "params": {
         "model": "qwen_image_2.1_turbo_int8_convrot.safetensors",
         "resolution": null,
@@ -1115,7 +1133,10 @@
         "qwen_image_2.1_int8_convrot.safetensors",
         "qwen_image_2.1_vae_bf16.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "qwen_image_2.1_int8_convrot.safetensors",
+        "qwen3vl_8b_int8_convrot.safetensors"
+      ],
       "params": {
         "model": "qwen_image_2.1_int8_convrot.safetensors",
         "resolution": null,
@@ -1138,8 +1159,8 @@
       "description": "# 22_SD15_文生图\n\n- 归类：image / sd15\n- 参数：底模 v1-5-pruned-emaonly-fp16.safetensors · 512x512 · 20 步 · euler\n- 说明：本条为 2026-11-16 迁入的既有工作流，画布原先没有说明。\n 上面的参数由节点连线自动读取；用途请看文件名，实际用法以连线为准。\n 需要补充准确用法时，直接改这条说明并重跑 catalog。",
       "has_description": true,
       "version": null,
-      "sha256": "62e726760b536c0104019d54edf60f4a021b0d54398a446f5538afd7804bf6e3",
-      "bytes": 11803,
+      "sha256": "69f6b65955ccf6a80cbe5316946faffa785e9a064c079b436ebe434349ba9622",
+      "bytes": 12389,
       "node_count": 8,
       "node_types": [
         "CheckpointLoaderSimple",
@@ -1176,8 +1197,8 @@
       "description": "# 01_SDXL_文生图\n\n- 归类：image / sdxl\n- 参数：底模 sd_xl_base_1.0.safetensors · 1024x1024 · 25 步 · dpmpp_2m\n- 说明：本条为 2026-11-16 迁入的既有工作流，画布原先没有说明。\n 上面的参数由节点连线自动读取；用途请看文件名，实际用法以连线为准。\n 需要补充准确用法时，直接改这条说明并重跑 catalog。",
       "has_description": true,
       "version": null,
-      "sha256": "9a6bccb498e3cab6de9d590e2984b7a058777e7bdd560e850d803e122c3fd338",
-      "bytes": 6913,
+      "sha256": "3fe30d02a28d10cf8ee5c58ea97fcfa07ee8e5570bd67e822d504e43ddd7dd1c",
+      "bytes": 7313,
       "node_count": 8,
       "node_types": [
         "CheckpointLoaderSimple",
@@ -1191,7 +1212,9 @@
       "models": [
         "sd_xl_base_1.0.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "sd_xl_base_1.0.safetensors"
+      ],
       "params": {
         "model": "sd_xl_base_1.0.safetensors",
         "resolution": "1024x1024",
@@ -1214,8 +1237,8 @@
       "description": "# 02_SDXL_图生图\n\n- 归类：image / sdxl\n- 参数：底模 sd_xl_base_1.0.safetensors · 25 步 · dpmpp_2m\n- 说明：本条为 2026-11-16 迁入的既有工作流，画布原先没有说明。\n 上面的参数由节点连线自动读取；用途请看文件名，实际用法以连线为准。\n 需要补充准确用法时，直接改这条说明并重跑 catalog。",
       "has_description": true,
       "version": null,
-      "sha256": "bfc20fd3cb9821a0c9548d2247c9edcb9f8b40b5025cc8a83a0f1fff6b0bb9d5",
-      "bytes": 8623,
+      "sha256": "caf2b3a6a77bef9e3e691c15dd3ddd05c8fa66389f50e7c74ff2f13132bb91bc",
+      "bytes": 9134,
       "node_count": 10,
       "node_types": [
         "CheckpointLoaderSimple",
@@ -1231,7 +1254,9 @@
       "models": [
         "sd_xl_base_1.0.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "sd_xl_base_1.0.safetensors"
+      ],
       "params": {
         "model": "sd_xl_base_1.0.safetensors",
         "resolution": null,
@@ -1272,7 +1297,9 @@
       "models": [
         "sd_xl_base_1.0.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "sd_xl_base_1.0.safetensors"
+      ],
       "params": {
         "model": "sd_xl_base_1.0.safetensors",
         "resolution": null,
@@ -1313,7 +1340,9 @@
       "models": [
         "sd_xl_base_1.0.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "sd_xl_base_1.0.safetensors"
+      ],
       "params": {
         "model": "sd_xl_base_1.0.safetensors",
         "resolution": null,
@@ -1357,7 +1386,11 @@
         "qwen_3_4b.safetensors",
         "z_image_turbo_bf16.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "z_image_turbo_bf16.safetensors",
+        "qwen_3_4b.safetensors",
+        "ae.safetensors"
+      ],
       "params": {
         "model": "z_image_turbo_bf16.safetensors",
         "resolution": "1024x1024",
@@ -1399,7 +1432,9 @@
       "models": [
         "hunyuan_3d_v2.1.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "hunyuan_3d_v2.1.safetensors"
+      ],
       "params": {
         "model": null,
         "resolution": null,
@@ -1446,6 +1481,76 @@
       "status": "Candidate"
     },
     {
+      "workflow_id": "model3d-tripo-27_tripo_图生3d",
+      "path": "model3d/tripo/27_Tripo_图生3D.json",
+      "category": "model3d",
+      "subcategory": "tripo",
+      "name": "27_Tripo_图生3D",
+      "format": "ui",
+      "title": "Key 在本机插件目录 tt-tripo/tripo.local.json（或环境变量 TRIPO_API_KEY），不入画布/同步盘（DEC-ORG-094）。付费调用属 P1：每次生成消耗 Tripo 额度，先确认预算。enable_a",
+      "description": "Key 在本机插件目录 tt-tripo/tripo.local.json（或环境变量 TRIPO_API_KEY），不入画布/同步盘（DEC-ORG-094）。付费调用属 P1：每次生成消耗 Tripo 额度，先确认预算。enable_api 确认参数后再打开；换图改 LoadImage 文件名（文件需在 ComfyUI input/，默认 example.png 为占位）。任务超时用同一 task_id 再次取回，不重复提交。",
+      "has_description": true,
+      "version": null,
+      "sha256": "3b833a3beafaa6e19da25f187ffbd02ce434ef8af247968065b8e82c6512c24b",
+      "bytes": 4529,
+      "node_count": 7,
+      "node_types": [
+        "MarkdownNote",
+        "LoadImage",
+        "TTTripoImageTo3D",
+        "TTTripoFetch",
+        "PreviewImage",
+        "PreviewAny"
+      ],
+      "models": [],
+      "missing_models": [],
+      "params": {
+        "model": null,
+        "resolution": null,
+        "steps": null,
+        "sampler": null,
+        "frames": null,
+        "fps": null
+      },
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "model3d-tripo-28_tripo_多视图生3d",
+      "path": "model3d/tripo/28_Tripo_多视图生3D.json",
+      "category": "model3d",
+      "subcategory": "tripo",
+      "name": "28_Tripo_多视图生3D",
+      "format": "ui",
+      "title": "多视图生 3D：连接顺序 = front/left/back/right（正面必填、至少 2 张、最多 4 张），第一张连接视为 front。Key 在本机插件目录 tt-tripo/tripo.local.json（或环境变量 TRIPO",
+      "description": "多视图生 3D：连接顺序 = front/left/back/right（正面必填、至少 2 张、最多 4 张），第一张连接视为 front。Key 在本机插件目录 tt-tripo/tripo.local.json（或环境变量 TRIPO_API_KEY），不入画布/同步盘（DEC-ORG-094）。付费调用属 P1：每次生成消耗 Tripo 额度，先确认预算。enable_api 确认参数后再打开；任务超时用同一 task_id 再次取回，不重复提交。",
+      "has_description": true,
+      "version": null,
+      "sha256": "ef7af18b2820a32013ca8a92d825bf961f8cf096c84ed8ebab3f33cfa7ecabfc",
+      "bytes": 6408,
+      "node_count": 10,
+      "node_types": [
+        "MarkdownNote",
+        "LoadImage",
+        "TTTripoMultiviewTo3D",
+        "TTTripoFetch",
+        "PreviewImage",
+        "PreviewAny"
+      ],
+      "models": [],
+      "missing_models": [],
+      "params": {
+        "model": null,
+        "resolution": null,
+        "steps": null,
+        "sampler": null,
+        "frames": null,
+        "fps": null
+      },
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
       "workflow_id": "video-ark-19_方舟seedance_机器人图生视频",
       "path": "video/ark/19_方舟Seedance_机器人图生视频.json",
       "category": "video",
@@ -1456,8 +1561,8 @@
       "description": "配置部署插件目录中的 ark.local.json，填API Key并在方舟开通模型；模型留空使用配置。确认后打开 enable_api。密钥不要填进画布。参考图会上传到火山方舟，调用使用方舟账户额度。\n\n默认5秒720p有声。首帧模式自动使用adaptive比例。提交任务后保留ID；超时重跑会查询原任务。不要随意增加refresh_id，否则会创建新付费任务。停止本地等待不等于取消云端。",
       "has_description": true,
       "version": null,
-      "sha256": "175766587ae3627f42c6cad67a748e433f71b07638fbcb54fe80c5227187e33d",
-      "bytes": 5817,
+      "sha256": "959a2fc6c99803d3dba4f404ccf819e3f63117e67f2b0946b2cec8663d94de05",
+      "bytes": 5818,
       "node_count": 6,
       "node_types": [
         "LoadImage",
@@ -1524,8 +1629,8 @@
       "description": "配置部署插件目录中的 ark.local.json，填API Key并在方舟开通模型；模型留空使用配置。确认后打开 enable_api。密钥不要填进画布。参考图会上传到火山方舟，调用使用方舟账户额度。\n\n纯文字生成5秒720p有声视频。任务取回、超时恢复规则与19相同。",
       "has_description": true,
       "version": null,
-      "sha256": "58fbdc26c601c49dbdd205b19ca591dbe08afdfc4be3a6d732c6cacec334b0cc",
-      "bytes": 4842,
+      "sha256": "147cef6d54f4c194d70ced405e954ba7bff547ea4ff441fbb20cc3138f49da74",
+      "bytes": 4843,
       "node_count": 5,
       "node_types": [
         "ArkSeedanceSubmit",
@@ -1591,7 +1696,12 @@
         "ltx-2.3-spatial-upscaler-x2-1.1.safetensors",
         "ltx_2.3_22b_distilled_1.1_lora_dynamic_fro09_avg_rank_111_bf16.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "ltx-2.3-22b-dev-fp8.safetensors",
+        "ltx_2.3_22b_distilled_1.1_lora_dynamic_fro09_avg_rank_111_bf16.safetensors",
+        "gemma_3_12B_it_fp4_mixed.safetensors",
+        "ltx-2.3-spatial-upscaler-x2-1.1.safetensors"
+      ],
       "params": {
         "model": "ltx-2.3-22b-dev-fp8.safetensors",
         "resolution": null,
@@ -1636,7 +1746,10 @@
         "wan2.2_ti2v_5B_fp16.safetensors",
         "wan2.2_vae.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "wan2.2_ti2v_5B_fp16.safetensors",
+        "wan2.2_vae.safetensors"
+      ],
       "params": {
         "model": "wan2.2_ti2v_5B_fp16.safetensors",
         "resolution": null,
@@ -1681,7 +1794,10 @@
         "wan2.2_ti2v_5B_fp16.safetensors",
         "wan2.2_vae.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "wan2.2_ti2v_5B_fp16.safetensors",
+        "wan2.2_vae.safetensors"
+      ],
       "params": {
         "model": "wan2.2_ti2v_5B_fp16.safetensors",
         "resolution": null,
@@ -1730,7 +1846,12 @@
         "wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors",
         "wan_2.1_vae.safetensors"
       ],
-      "missing_models": [],
+      "missing_models": [
+        "wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors",
+        "wan2.2_i2v_lightx2v_4steps_lora_v1_high_noise.safetensors",
+        "wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors",
+        "wan2.2_i2v_lightx2v_4steps_lora_v1_low_noise.safetensors"
+      ],
       "params": {
         "model": "wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors",
         "resolution": null,
@@ -1753,8 +1874,8 @@
       "description": "# 23_Wan21_13B_文生视频\n\n- 归类：video / wan\n- 参数：底模 wan2.1_t2v_1.3B_fp16.safetensors · 20 步 · uni_pc · 416 帧\n- 说明：本条为 2026-11-16 迁入的既有工作流，画布原先没有说明。\n 上面的参数由节点连线自动读取；用途请看文件名，实际用法以连线为准。\n 需要补充准确用法时，直接改这条说明并重跑 catalog。",
       "has_description": true,
       "version": null,
-      "sha256": "319cb9fe28af0d3017e6f47773d4715e5b19cfeb85c5f00efad0fab37ca0b8f8",
-      "bytes": 10502,
+      "sha256": "c1be07e894ce37941ad09dc7d7545a253d5d70d54e53211957c2cd5629b64d26",
+      "bytes": 11079,
       "node_count": 11,
       "node_types": [
         "CLIPLoader",

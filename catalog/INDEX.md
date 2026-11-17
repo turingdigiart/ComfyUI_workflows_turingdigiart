@@ -117,7 +117,7 @@
 - 参数：—
 - 说明：14_通用API提示词_预览
 
-**15_通用API提示词_ZImage文生图**
+**15_通用API提示词_ZImage文生图**  ⚠️ 缺模型
 - 路径：`image/api/15_通用API提示词_ZImage文生图.json`
 - 参数：z_image_turbo_bf16 · 1024x1024 · 8 步 · res_multistep
 - 模型：ae.safetensors、qwen_3_4b.safetensors、z_image_turbo_bf16.safetensors
@@ -133,13 +133,13 @@
 - 参数：—
 - 说明：三视图/表情集/细节均为方向探索与角度占位，按 REALISTIC_IP_BRIEF_v002 逐张核对身份后再晋级，多视图生成不构成身份一致性保证；参考图上传方舟，仅限本人授权素材；enable_api 确认参数后再开；换新结果才增大 r
 
-**09_Flux2Klein_快速文生图**
+**09_Flux2Klein_快速文生图**  ⚠️ 缺模型
 - 路径：`image/flux/09_Flux2Klein_快速文生图.json`
 - 参数：flux-2-klein-4b-fp8
 - 模型：flux-2-klein-4b-fp8.safetensors、flux2-vae.safetensors、qwen_3_4b.safetensors
 - 说明：FLUX.2 Klein 4B FP8：4步生成，默认1024×1024。图生图使用参考潜空间，直接描述修改要求。
 
-**10_Flux2Klein_指令改图**
+**10_Flux2Klein_指令改图**  ⚠️ 缺模型
 - 路径：`image/flux/10_Flux2Klein_指令改图.json`
 - 参数：flux-2-klein-4b-fp8
 - 模型：flux-2-klein-4b-fp8.safetensors、flux2-vae.safetensors、qwen_3_4b.safetensors
@@ -151,19 +151,19 @@
 - 模型：RealVisXL_V5.0_fp16.safetensors
 - 说明：POSTER_LAYERED_v001｜分层生成 + 单工作流合成
 
-**06_Qwen21_Turbo_文生图**
+**06_Qwen21_Turbo_文生图**  ⚠️ 缺模型
 - 路径：`image/qwen/06_Qwen21_Turbo_文生图.json`
 - 参数：qwen_image_2.1_turbo_int8_convrot
 - 模型：qwen3vl_8b_int8_convrot.safetensors、qwen_image_2.1_turbo_int8_convrot.safetensors、qwen_image_2.1_vae_bf16.safetensors
 - 说明：Qwen Image 2.1：默认1024像素；Turbo使用官方8步时间表，标准版使用40步。图生图上传参考图后，用文字描述要修改的内容。标准版与Turbo共享编码器和VAE。提示词增强器未启用，无需额外语言模型。
 
-**07_Qwen21_Turbo_指令改图**
+**07_Qwen21_Turbo_指令改图**  ⚠️ 缺模型
 - 路径：`image/qwen/07_Qwen21_Turbo_指令改图.json`
 - 参数：qwen_image_2.1_turbo_int8_convrot
 - 模型：qwen3vl_8b_int8_convrot.safetensors、qwen_image_2.1_turbo_int8_convrot.safetensors、qwen_image_2.1_vae_bf16.safetensors
 - 说明：Qwen Image 2.1：默认1024像素；Turbo使用官方8步时间表，标准版使用40步。图生图上传参考图后，用文字描述要修改的内容。标准版与Turbo共享编码器和VAE。提示词增强器未启用，无需额外语言模型。
 
-**08_Qwen21_标准版_文生图**
+**08_Qwen21_标准版_文生图**  ⚠️ 缺模型
 - 路径：`image/qwen/08_Qwen21_标准版_文生图.json`
 - 参数：qwen_image_2.1_int8_convrot · 40 步 · euler
 - 模型：qwen3vl_8b_int8_convrot.safetensors、qwen_image_2.1_int8_convrot.safetensors、qwen_image_2.1_vae_bf16.safetensors
@@ -175,39 +175,39 @@
 - 模型：v1-5-pruned-emaonly-fp16.safetensors
 - 说明：22_SD15_文生图
 
-**01_SDXL_文生图**
+**01_SDXL_文生图**  ⚠️ 缺模型
 - 路径：`image/sdxl/01_SDXL_文生图.json`
 - 参数：sd_xl_base_1.0 · 1024x1024 · 25 步 · dpmpp_2m
 - 模型：sd_xl_base_1.0.safetensors
 - 说明：01_SDXL_文生图
 
-**02_SDXL_图生图**
+**02_SDXL_图生图**  ⚠️ 缺模型
 - 路径：`image/sdxl/02_SDXL_图生图.json`
 - 参数：sd_xl_base_1.0 · 25 步 · dpmpp_2m
 - 模型：sd_xl_base_1.0.safetensors
 - 说明：02_SDXL_图生图
 
-**16_SDXL_我的人物形象_参考照片**
+**16_SDXL_我的人物形象_参考照片**  ⚠️ 缺模型
 - 路径：`image/sdxl/16_SDXL_我的人物形象_参考照片.json`
 - 参数：sd_xl_base_1.0 · 56 步 · dpmpp_2m
 - 模型：sd_xl_base_1.0.safetensors
 - 说明：我的人物形象图 / SDXL 图生图
 
-**17_SDXL_机器人重新设计_双强度对比**
+**17_SDXL_机器人重新设计_双强度对比**  ⚠️ 缺模型
 - 路径：`image/sdxl/17_SDXL_机器人重新设计_双强度对比.json`
 - 参数：sd_xl_base_1.0 · 30 步 · dpmpp_2m
 - 模型：sd_xl_base_1.0.safetensors
 - 说明：机器人重新设计 / 双强度对比
 
-**05_ZImageTurbo_快速文生图**
+**05_ZImageTurbo_快速文生图**  ⚠️ 缺模型
 - 路径：`image/zimage/05_ZImageTurbo_快速文生图.json`
 - 参数：z_image_turbo_bf16 · 1024x1024 · 8 步 · res_multistep
 - 模型：ae.safetensors、qwen_3_4b.safetensors、z_image_turbo_bf16.safetensors
 - 说明：8步快速出图；默认1024×1024。修改提示词后运行。支持中文与英文提示词。原生节点，无需额外插件。
 
-### model3d（2）
+### model3d（4）
 
-**13_Hunyuan3D21_图片生成3D模型**
+**13_Hunyuan3D21_图片生成3D模型**  ⚠️ 缺模型
 - 路径：`model3d/hunyuan/13_Hunyuan3D21_图片生成3D模型.json`
 - 参数：30 步 · euler
 - 模型：hunyuan_3d_v2.1.safetensors
@@ -217,6 +217,16 @@
 - 路径：`model3d/tripo/26_Tripo_文生3D.json`
 - 参数：—
 - 说明：Key 在本机插件目录 tt-tripo/tripo.local.json（或环境变量 TRIPO_API_KEY），不入画布/同步盘（DEC-ORG-094）。付费调用属 P1：每次生成消耗 Tripo 额度，先确认预算。enable_a
+
+**27_Tripo_图生3D**
+- 路径：`model3d/tripo/27_Tripo_图生3D.json`
+- 参数：—
+- 说明：Key 在本机插件目录 tt-tripo/tripo.local.json（或环境变量 TRIPO_API_KEY），不入画布/同步盘（DEC-ORG-094）。付费调用属 P1：每次生成消耗 Tripo 额度，先确认预算。enable_a
+
+**28_Tripo_多视图生3D**
+- 路径：`model3d/tripo/28_Tripo_多视图生3D.json`
+- 参数：—
+- 说明：多视图生 3D：连接顺序 = front/left/back/right（正面必填、至少 2 张、最多 4 张），第一张连接视为 front。Key 在本机插件目录 tt-tripo/tripo.local.json（或环境变量 TRIPO
 
 ### video（8）
 
@@ -235,25 +245,25 @@
 - 参数：—
 - 说明：配置部署插件目录中的 ark.local.json，填API Key并在方舟开通模型；模型留空使用配置。确认后打开 enable_api。密钥不要填进画布。参考图会上传到火山方舟，调用使用方舟账户额度。
 
-**12_LTX23_有声视频**
+**12_LTX23_有声视频**  ⚠️ 缺模型
 - 路径：`video/ltx/12_LTX23_有声视频.json`
 - 参数：ltx-2.3-22b-dev-fp8 · 320 帧
 - 模型：gemma_3_12B_it_fp4_mixed.safetensors、ltx-2.3-22b-dev-fp8.safetensors、ltx-2.3-spatial-upscaler-x2-1.1.safetensors、ltx_2.3_22b_distilled_1.1_lora_dynamic_fro09_avg_rank_111_bf16.safetensors
 - 说明：LTX 2.3 FP8 + 蒸馏LoRA：默认640×384、49帧、24fps，约2秒，联合生成画面与声音。提示词同时描述动作、镜头和声音。先320×192生成，再通过潜空间放大与3步细化得到640×384，以控制显存。不要直接设置长片或
 
-**03_Wan22_文生视频**
+**03_Wan22_文生视频**  ⚠️ 缺模型
 - 路径：`video/wan/03_Wan22_文生视频.json`
 - 参数：wan2.2_ti2v_5B_fp16 · 20 步 · uni_pc
 - 模型：umt5_xxl_fp8_e4m3fn_scaled.safetensors、wan2.2_ti2v_5B_fp16.safetensors、wan2.2_vae.safetensors
 - 说明：本机视频工作流
 
-**04_Wan22_图生视频**
+**04_Wan22_图生视频**  ⚠️ 缺模型
 - 路径：`video/wan/04_Wan22_图生视频.json`
 - 参数：wan2.2_ti2v_5B_fp16 · 20 步 · uni_pc
 - 模型：umt5_xxl_fp8_e4m3fn_scaled.safetensors、wan2.2_ti2v_5B_fp16.safetensors、wan2.2_vae.safetensors
 - 说明：本机视频工作流
 
-**11_Wan22_14B_图生视频**
+**11_Wan22_14B_图生视频**  ⚠️ 缺模型
 - 路径：`video/wan/11_Wan22_14B_图生视频.json`
 - 参数：wan2.2_i2v_high_noise_14B_fp8_scaled
 - 模型：umt5_xxl_fp8_e4m3fn_scaled.safetensors、wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors、wan2.2_i2v_lightx2v_4steps_lora_v1_high_noise.safetensors、wan2.2_i2v_lightx2v_4steps_lora_v1_low_noise.safetensors、wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors、wan_2.1_vae.safetensors
@@ -264,3 +274,24 @@
 - 参数：wan2.1_t2v_1.3B_fp16 · 20 步 · 416 帧 · uni_pc
 - 模型：umt5_xxl_fp8_e4m3fn_scaled.safetensors、wan2.1_t2v_1.3B_fp16.safetensors、wan_2.1_vae.safetensors
 - 说明：23_Wan21_13B_文生视频
+
+## 缺模型
+
+| 工作流 | 缺的模型 |
+|---|---|
+| `image/api/15_通用API提示词_ZImage文生图.json` | z_image_turbo_bf16.safetensors、qwen_3_4b.safetensors、ae.safetensors |
+| `image/flux/09_Flux2Klein_快速文生图.json` | flux-2-klein-4b-fp8.safetensors、qwen_3_4b.safetensors、flux2-vae.safetensors |
+| `image/flux/10_Flux2Klein_指令改图.json` | flux-2-klein-4b-fp8.safetensors、qwen_3_4b.safetensors、flux2-vae.safetensors |
+| `image/qwen/06_Qwen21_Turbo_文生图.json` | qwen_image_2.1_turbo_int8_convrot.safetensors、qwen3vl_8b_int8_convrot.safetensors |
+| `image/qwen/07_Qwen21_Turbo_指令改图.json` | qwen_image_2.1_turbo_int8_convrot.safetensors、qwen3vl_8b_int8_convrot.safetensors |
+| `image/qwen/08_Qwen21_标准版_文生图.json` | qwen_image_2.1_int8_convrot.safetensors、qwen3vl_8b_int8_convrot.safetensors |
+| `image/sdxl/01_SDXL_文生图.json` | sd_xl_base_1.0.safetensors |
+| `image/sdxl/02_SDXL_图生图.json` | sd_xl_base_1.0.safetensors |
+| `image/sdxl/16_SDXL_我的人物形象_参考照片.json` | sd_xl_base_1.0.safetensors |
+| `image/sdxl/17_SDXL_机器人重新设计_双强度对比.json` | sd_xl_base_1.0.safetensors |
+| `image/zimage/05_ZImageTurbo_快速文生图.json` | z_image_turbo_bf16.safetensors、qwen_3_4b.safetensors、ae.safetensors |
+| `model3d/hunyuan/13_Hunyuan3D21_图片生成3D模型.json` | hunyuan_3d_v2.1.safetensors |
+| `video/ltx/12_LTX23_有声视频.json` | ltx-2.3-22b-dev-fp8.safetensors、ltx_2.3_22b_distilled_1.1_lora_dynamic_fro09_avg_rank_111_bf16.safetensors、gemma_3_12B_it_fp4_mixed.safetensors、ltx-2.3-spatial-upscaler-x2-1.1.safetensors |
+| `video/wan/03_Wan22_文生视频.json` | wan2.2_ti2v_5B_fp16.safetensors、wan2.2_vae.safetensors |
+| `video/wan/04_Wan22_图生视频.json` | wan2.2_ti2v_5B_fp16.safetensors、wan2.2_vae.safetensors |
+| `video/wan/11_Wan22_14B_图生视频.json` | wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors、wan2.2_i2v_lightx2v_4steps_lora_v1_high_noise.safetensors、wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors、wan2.2_i2v_lightx2v_4steps_lora_v1_low_noise.safetensors |

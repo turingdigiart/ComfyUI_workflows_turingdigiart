@@ -1,7 +1,9 @@
-"""tt-tripo：机构自研 Tripo API 调用节点（文生 3D）。
+"""tt-tripo：机构自研 Tripo API 调用节点（文生 / 图生 / 多视图生 3D）。
 
-两个节点：
+四个节点：
 - TTTripoSubmit：POST /generation/text-to-model 提交生成任务（enable_api 默认关，防误扣费）。
+- TTTripoImageTo3D：IMAGE → 上传 /files → POST /generation/image-to-model（input=file_token）。
+- TTTripoMultiviewTo3D：2–4 张视图（连接顺序=front/left/back/right）→ 逐张上传 → POST /generation/multiview-to-model（inputs 用 view-key 格式）。
 - TTTripoFetch：GET /tasks/{task_id} 轮询取回，下载 GLB 与渲染预览图，不自动重试提交（防重复计费）。
   - OUTPUT_NODE=True：图以它收尾，输出（task_id/路径/状态）进入 /history 可取证；
   - 每次执行把 {task_id, status, model_path, preview_path, error, ts} 写入 output/Tripo/<task_id>.meta.json。
@@ -14,6 +16,7 @@ Key 管理遵循 DEC-ORG-094「本机配置 + 中控只验证约束」：不入�
 import io
 import json
 import os
+import tempfile
 import time
 
 import requests
@@ -130,6 +133,38 @@ def _download_model(cfg, url, task_id):
     with open(local, "wb") as f:
         f.write(r.content)
     return local
+
+
+def _upload_image(cfg, tensor):
+    """IMAGE tensor → 临时 PNG → multipart POST {base}/files → file_token；上传后清理临时文件。"""
+    arr = (tensor[0].clamp(0, 1).cpu().numpy() * 255.0 + 0.5).astype(np.uint8)
+    img = Image.fromarray(arr, "RGB")
+    tmp = tempfile.NamedTemporaryFile(suffix=".png", delete=False)
+    try:
+        tmp.close()
+        img.save(tmp.name, format="PNG")
+        with open(tmp.name, "rb") as f:
+            r = requests.post(
+                cfg["base_url"].rstrip("/") + "/files",
+                files={"file": ("upload.png", f, "image/png")},
+                headers={"Authorization": "Bearer " + cfg["api_key"]},
+                timeout=int(cfg.get("request_timeout") or 120),
+            )
+        r.raise_for_status()
+        data = r.json()
+        if not isinstance(data, dict) or data.get("code") != 0:
+            code = data.get("code") if isinstance(data, dict) else None
+            msg = (data.get("message") or data.get("msg") or "") if isinstance(data, dict) else ""
+            raise RuntimeError("上传失败：code={0} msg={1}".format(code, msg))
+        token = ((data.get("data") or {}).get("file_token") or "").strip()
+        if not token:
+            raise RuntimeError("上传失败：响应缺少 file_token。")
+        return token
+    finally:
+        try:
+            os.unlink(tmp.name)
+        except OSError:
+            pass
 
 
 class TTTripoSubmit:
@@ -291,12 +326,162 @@ class TTTripoFetch:
         return {"ui": {"text": [status]}, "result": (local_path, image, status)}
 
 
+class TTTripoImageTo3D:
+    """图生 3D：IMAGE → 上传 /files → POST /generation/image-to-model（input=file_token）。
+    enable_api=false 不发任何请求；失败把 ERROR:<原因> 写入 task_id 输出。"""
+
+    CATEGORY = "TT"
+    RETURN_TYPES = ("STRING", "STRING")
+    RETURN_NAMES = ("task_id", "调用信息")
+    FUNCTION = "run"
+    OUTPUT_NODE = False
+
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "image": ("IMAGE", {}),
+                "enable_api": ("BOOLEAN", {"default": False}),
+                "model": (MODEL_OPTIONS, {"default": "v3.1-20260211"}),
+                "face_limit": ("INT", {"default": 100000, "min": -1, "max": 1000000}),
+                "texture": ("BOOLEAN", {"default": True}),
+                "pbr": ("BOOLEAN", {"default": True}),
+                "texture_alignment": (["original_image", "geometry"], {"default": "original_image"}),
+                "orientation": (["default", "align_image"], {"default": "default"}),
+                "enable_image_autofix": ("BOOLEAN", {"default": False}),
+            }
+        }
+
+    def run(self, image, enable_api, model, face_limit, texture, pbr, texture_alignment, orientation, enable_image_autofix):
+        cfg = _load_config()
+        if not enable_api:
+            return ("ERROR:enable_api 未开启：未发起任何网络请求。确认参数与预算后打开 enable_api。",
+                    "enable_api 未开启：未发起任何网络请求。确认参数与预算后打开 enable_api。")
+        if not cfg["api_key"]:
+            return ("ERROR:" + _no_key_msg(), _no_key_msg())
+        try:
+            token = _upload_image(cfg, image)
+        except Exception as e:
+            err = "图片上传失败：{0}".format(e)
+            return ("ERROR:" + err, err)
+        payload = {
+            "input": token,
+            "model": model,
+            "texture": bool(texture),
+            "pbr": bool(pbr),
+            "face_limit": int(face_limit),
+            "texture_alignment": texture_alignment,
+            "orientation": orientation,
+            "enable_image_autofix": bool(enable_image_autofix),
+        }
+        try:
+            data = _request_json(cfg, "POST", "/generation/image-to-model", payload)
+        except Exception as e:
+            err = "提交失败（网络/配置）：{0}".format(e)
+            return ("ERROR:" + err, err)
+        if not isinstance(data, dict) or data.get("code") != 0:
+            if isinstance(data, dict):
+                code = data.get("code")
+                msg = data.get("message") or data.get("msg") or ""
+            else:
+                code, msg = None, ""
+            err = "提交失败：code={0} msg={1}".format(code, msg)
+            return ("ERROR:" + err, err)
+        task_id = ((data.get("data") or {}).get("task_id") or "").strip()
+        if not task_id:
+            return ("ERROR:提交失败：响应缺少 task_id。", "提交失败：响应缺少 task_id。")
+        info = "已提交：task_id={0}；model={1}；texture={2}；pbr={3}；face_limit={4}；texture_alignment={5}；orientation={6}；autofix={7}".format(
+            task_id, model, bool(texture), bool(pbr), int(face_limit), texture_alignment, orientation, bool(enable_image_autofix)
+        )
+        return (task_id, info)
+
+
+class TTTripoMultiviewTo3D:
+    """多视图生 3D：images 2–4 张（连接顺序 = front/left/back/right，第一张视为 front）
+    → 逐张上传 /files → POST /generation/multiview-to-model（inputs 为 view-key 格式）。"""
+
+    CATEGORY = "TT"
+    RETURN_TYPES = ("STRING", "STRING")
+    RETURN_NAMES = ("task_id", "调用信息")
+    FUNCTION = "run"
+    OUTPUT_NODE = False
+    VIEW_KEYS = ["front", "left", "back", "right"]
+
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "images": ("IMAGE", {}),
+                "enable_api": ("BOOLEAN", {"default": False}),
+                "model": (MODEL_OPTIONS, {"default": "v3.1-20260211"}),
+                "face_limit": ("INT", {"default": 100000, "min": -1, "max": 1000000}),
+                "texture": ("BOOLEAN", {"default": True}),
+                "pbr": ("BOOLEAN", {"default": True}),
+                "orientation": (["default", "align_image"], {"default": "default"}),
+            }
+        }
+
+    def run(self, images, enable_api, model, face_limit, texture, pbr, orientation):
+        cfg = _load_config()
+        if not isinstance(images, (list, tuple)):
+            images = [images]
+        count = len(images)
+        if not enable_api:
+            return ("ERROR:enable_api 未开启：未发起任何网络请求。确认参数与预算后打开 enable_api。",
+                    "enable_api 未开启：未发起任何网络请求。确认参数与预算后打开 enable_api。")
+        if count < 2 or count > 4:
+            err = "视图数量 {0} 张：需要 2–4 张（连接顺序=front/left/back/right，第一张为 front，front 必填）。".format(count)
+            return ("ERROR:" + err, err)
+        if not cfg["api_key"]:
+            return ("ERROR:" + _no_key_msg(), _no_key_msg())
+        views = []
+        try:
+            for i, img in enumerate(images):
+                token = _upload_image(cfg, img)
+                views.append({self.VIEW_KEYS[i]: token})
+        except Exception as e:
+            err = "图片上传失败：{0}".format(e)
+            return ("ERROR:" + err, err)
+        payload = {
+            "inputs": views,
+            "model": model,
+            "texture": bool(texture),
+            "pbr": bool(pbr),
+            "face_limit": int(face_limit),
+            "orientation": orientation,
+        }
+        try:
+            data = _request_json(cfg, "POST", "/generation/multiview-to-model", payload)
+        except Exception as e:
+            err = "提交失败（网络/配置）：{0}".format(e)
+            return ("ERROR:" + err, err)
+        if not isinstance(data, dict) or data.get("code") != 0:
+            if isinstance(data, dict):
+                code = data.get("code")
+                msg = data.get("message") or data.get("msg") or ""
+            else:
+                code, msg = None, ""
+            err = "提交失败：code={0} msg={1}".format(code, msg)
+            return ("ERROR:" + err, err)
+        task_id = ((data.get("data") or {}).get("task_id") or "").strip()
+        if not task_id:
+            return ("ERROR:提交失败：响应缺少 task_id。", "提交失败：响应缺少 task_id。")
+        info = "已提交：task_id={0}；views={1}；model={2}；texture={3}；pbr={4}；face_limit={5}；orientation={6}".format(
+            task_id, ",".join(self.VIEW_KEYS[:count]), model, bool(texture), bool(pbr), int(face_limit), orientation
+        )
+        return (task_id, info)
+
+
 NODE_CLASS_MAPPINGS = {
     "TTTripoSubmit": TTTripoSubmit,
+    "TTTripoImageTo3D": TTTripoImageTo3D,
+    "TTTripoMultiviewTo3D": TTTripoMultiviewTo3D,
     "TTTripoFetch": TTTripoFetch,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
     "TTTripoSubmit": "TT-Tripo 提交（文生3D）",
+    "TTTripoImageTo3D": "TT-Tripo 提交（图生3D）",
+    "TTTripoMultiviewTo3D": "TT-Tripo 提交（多视图生3D）",
     "TTTripoFetch": "TT-Tripo 任务取回",
 }

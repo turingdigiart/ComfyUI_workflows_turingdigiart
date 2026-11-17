@@ -1,9 +1,10 @@
-# tt-tripo｜机构自研 Tripo 文生 3D 调用节点（v0.1.1）
+# tt-tripo｜机构自研 Tripo 文生/图生/多视图生 3D 调用节点（v0.2.0）
 
-在 ComfyUI 里提交 Tripo API 文生 3D 任务并取回结果（GLB + 渲染预览图）。
+在 ComfyUI 里提交 Tripo API 文生/图生/多视图生 3D 任务并取回结果（GLB + 渲染预览图）。
 
 ## 版本
 
+- **v0.2.0（2026-11-17）**：新增「图生 3D」与「多视图生 3D」（负责人指示）。现象（需求）：只有文生 3D 一个入口，图生与多视图能力缺失；根因：节点未覆盖 `POST /generation/image-to-model` 与 `/generation/multiview-to-model` 及前置 `/files` 上传；修法：新增共享 `_upload_image`（IMAGE→临时 PNG→multipart 上传→file_token，上传后清理）与节点 `TTTripoImageTo3D`（input=file_token；texture_alignment=original_image|geometry、orientation=default|align_image、enable_image_autofix）、`TTTripoMultiviewTo3D`（2–4 张视图，**连接顺序=front/left/back/right、第一张视为 front、front 必填**，inputs 用 view-key 格式 `[{"front":token},…]`），失败均把 `ERROR:<原因>` 写入 task_id 输出；边界：`TTTripoFetch` 通用不改、enable_api 默认关、不自动重试提交、Key 存储与付费 P1 口径不变；示例工作流 27/28。
 - **v0.1.1（2026-11-17）**：修复 E2E 测试暴露的缺陷——现象：`/prompt` 直接使用两节点图报 `prompt_no_outputs`，且节点输出不进 `/history`，任务失败后无法取证；根因：两节点均非 `OUTPUT_NODE`、task_id 未持久化；修法：`TTTripoFetch` 设 `OUTPUT_NODE=True`（图以它收尾、输出进 `/history`），每次执行写 `output/Tripo/<task_id>.meta.json`（task_id/status/model_path/preview_path/error/ts），Submit 失败把 `ERROR:<原因>` 写入 task_id 输出供 Fetch 透传取证，预览图同步落盘 `output/Tripo/<task_id>_preview.png`；边界：兜底空白图逻辑保留、不自动重试提交、不改变 Key 存储与付费 P1 口径。
 - **v0.1.0（2026-11-16）**：初版（T14a/T14b）。
 
@@ -12,6 +13,8 @@
 | 节点 | 用途 | 输入 | 输出 |
 |---|---|---|---|
 | `TTTripoSubmit` | 提交 `POST /generation/text-to-model` | enable_api（默认关）、prompt、model、negative_prompt、face_limit、texture、pbr、seed（0=不传 model_seed） | `task_id`(STRING)、`调用信息`(STRING) |
+| `TTTripoImageTo3D` | 上传 `/files` 并提交 `POST /generation/image-to-model` | image（IMAGE 必连）、enable_api（默认关）、model、face_limit、texture、pbr、texture_alignment（original_image/geometry）、orientation（default/align_image）、enable_image_autofix | `task_id`(STRING)、`调用信息`(STRING) |
+| `TTTripoMultiviewTo3D` | 2–4 张视图逐张上传并提交 `POST /generation/multiview-to-model`（view-key 格式） | images（IMAGE 列表 2–4，**连接顺序=front/left/back/right，第一张视为 front**）、enable_api（默认关）、model、face_limit、texture、pbr、orientation | `task_id`(STRING)、`调用信息`(STRING) |
 | `TTTripoFetch` | 轮询 `GET /tasks/{task_id}` 并取回 | task_id（可连线/手工粘贴）、wait_seconds(600)、poll_interval(5)、refresh_id | `模型路径`(STRING，GLB 存 `output/Tripo/`)、`预览图`(IMAGE)、`状态`(STRING) |
 
 ## Key 管理（DEC-ORG-094「本机配置 + 中控只验证约束」）
@@ -29,8 +32,10 @@
 
 ## 与官方 ComfyUI-Tripo 的关系
 
-官方 `ComfyUI-Tripo`（1.3.0，11 节点）仅作设计参考；本插件为机构**自研替代**：只保留文生 3D 提交/取回两个最小节点、Key 走 DEC-ORG-094 本机配置模式、enable_api 默认关、不自动重试提交。代码全部自写，不复制官方源码。
+官方 `ComfyUI-Tripo`（1.3.0，11 节点）仅作设计参考；本插件为机构**自研替代**：只保留文生/图生/多视图生 3D 提交与任务取回的最小节点集、Key 走 DEC-ORG-094 本机配置模式、enable_api 默认关、不自动重试提交。代码全部自写，不复制官方源码。
 
 ## 示例工作流
 
-`workflows/model3d/tripo/26_Tripo_文生3D.json`（MarkdownNote 使用说明 → TTTripoSubmit → TTTripoFetch → PreviewImage/PreviewAny）。
+- `workflows/model3d/tripo/26_Tripo_文生3D.json`（MarkdownNote 使用说明 → TTTripoSubmit → TTTripoFetch → PreviewImage/PreviewAny）。
+- `workflows/model3d/tripo/27_Tripo_图生3D.json`（LoadImage 参考图 → TTTripoImageTo3D → TTTripoFetch → PreviewImage/PreviewAny×2）。
+- `workflows/model3d/tripo/28_Tripo_多视图生3D.json`（4×LoadImage 正面/左/背/右 → TTTripoMultiviewTo3D → TTTripoFetch → 同上三输出；连接顺序=front/left/back/right）。
