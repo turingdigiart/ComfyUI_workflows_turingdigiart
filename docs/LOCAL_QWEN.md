@@ -105,7 +105,7 @@ node scripts/gen-qwen.mjs --recipe recipes/image/qwen/07_turbo_edit.api.json `
 | 队列失败 `value not in list` | 模型文件没到目标目录/文件名不一致 | 对照 `models.manifest.json` 的 `target` |
 | 8GB 显存 OOM | fp8 19GB 模型 + 大画布 | 用 2.1 int8 / 降画布 / 关其他 GPU 程序 |
 | 改图 404 | 参考图不在 `ComfyUI/input/` | 先复制或用 `--image` 传 input 目录内文件名 |
-| 生成有字/水印 | 提示词未约束或模型自带 | 提示词加 `no text, no letters, no logo, no watermark`；机构规则不允许平台水印 |
+| 生成有字/水印 | 提示词未约束，或 Qwen 2.1 自行补字/竖排字 | 提示词加 `no text, no letters, no logo, no watermark`；再用 `--negative "text, letters, Chinese characters, calligraphy, handwriting, symbols, logo, watermark"` 并换 seed；仍出现则降低画面元素、改用纯纹理提示词 |
 
 ## 6. 相关记录
 

@@ -53,6 +53,8 @@ node scripts/gen-qwen.mjs --recipe ... --prompt "..." --dry-run
 
 Qwen 2.1 与原始 Qwen 都按 32 的倍数生成；3:4 用 1152×1536（=3:4 的 32 倍数）。`article-headline-forge` 需要的 1080×1440 会在渲染层缩放/裁切，因此配方统一输出 1152×1536。
 
+**底图出现汉字/竖排字**：Qwen 2.1 有时会自行补字。用 `--negative "text, letters, Chinese characters, calligraphy, handwriting, symbols, logo, watermark"` 并换 seed；仍出现就降低画面元素，用纯纹理提示词。
+
 ## 与 UI 工作流的关系
 
 - UI 母版：`workflows/image/qwen/06–08`（ComfyUI 界面直接打开）。
