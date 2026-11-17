@@ -82,8 +82,8 @@ def _now_ts():
     return time.strftime("%Y-%m-%d %H:%M:%S")
 
 
-def _write_meta(task_id, status, model_path, preview_path, error):
-    """取证持久化：output/Tripo/<task_id>.meta.json（无任务 ID 时用时间戳文件名）。"""
+def _write_meta(task_id, status, model_path, preview_path, error, ext=""):
+    """取证持久化：output/Tripo/<task_id>.meta.json（无任务 ID 时用时间戳文件名）。ext=模型文件扩展名（如 .fbx）。"""
     try:
         name = (task_id or ("no-task-" + _now_ts().replace(":", "").replace(" ", "-"))) + ".meta.json"
         data = {
@@ -94,6 +94,9 @@ def _write_meta(task_id, status, model_path, preview_path, error):
             "error": error,
             "ts": _now_ts(),
         }
+        if ext:
+            data["ext"] = ext
+            data["format"] = ext.lstrip(".").upper()
         with open(os.path.join(_tripo_outdir(), name), "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
     except Exception:
@@ -126,13 +129,26 @@ def _download_image(cfg, url, task_id):
     return torch.from_numpy(arr)[None, ...], png
 
 
+_MODEL_EXTS = [".fbx", ".obj", ".glb", ".gltf", ".stl", ".3mf", ".usdz"]
+
+
+def _model_ext(url):
+    """从 model_url 的 URL 后缀推断扩展名（忽略查询串）；无法推断回退 .glb。"""
+    path = (url or "").split("?")[0].strip().lower()
+    for ext in _MODEL_EXTS:
+        if path.endswith(ext):
+            return ext
+    return ".glb"
+
+
 def _download_model(cfg, url, task_id):
-    local = os.path.join(_tripo_outdir(), task_id + ".glb")
+    ext = _model_ext(url)
+    local = os.path.join(_tripo_outdir(), task_id + ext)
     r = requests.get(url, timeout=max(int(cfg.get("request_timeout") or 60), 120))
     r.raise_for_status()
     with open(local, "wb") as f:
         f.write(r.content)
-    return local
+    return local, ext
 
 
 def _upload_image(cfg, tensor):
@@ -304,11 +320,12 @@ class TTTripoFetch:
         model_url = out.get("model_url") or ""
         image_url = out.get("rendered_image_url") or ""
         local_path = ""
+        ext = ""
         try:
             if model_url:
-                local_path = _download_model(cfg, model_url, task_id)
+                local_path, ext = _download_model(cfg, model_url, task_id)
         except Exception as e:
-            status = "GLB 下载失败：{0}".format(e)
+            status = "模型下载失败：{0}".format(e)
             return finish("", blank, status, status)
         image = blank
         preview_path = ""
@@ -316,13 +333,13 @@ class TTTripoFetch:
             if image_url:
                 image, preview_path = _download_image(cfg, image_url, task_id)
         except Exception as e:
-            status = "success（模型已下载）；预览图下载失败：{0}".format(e)
-            _write_meta(task_id, status, local_path, "", str(e))
+            status = "success（模型已下载{0}）；预览图下载失败：{1}".format(ext, e)
+            _write_meta(task_id, status, local_path, "", str(e), ext)
             return {"ui": {"text": [status]}, "result": (local_path, blank, status)}
         status = "success：模型 {0}；预览图 {1}；credits_consumed={2}".format(
             local_path or model_url, preview_path or ("已下载" if image_url else "未提供"), d.get("credits_consumed")
         )
-        _write_meta(task_id, status, local_path, preview_path, "")
+        _write_meta(task_id, status, local_path, preview_path, "", ext)
         return {"ui": {"text": [status]}, "result": (local_path, image, status)}
 
 
@@ -474,10 +491,79 @@ class TTTripoMultiviewTo3D:
         return (task_id, info)
 
 
+class TTTripoConvert:
+    """格式转换：POST /models/convert 把已有生成任务转为 FBX/OBJ/GLTF/USDZ/STL/3MF（异步，返回新 task_id）。
+    quad=true 会强制输出 FBX；OBJ 无动画、STL/3MF 仅几何。转换任务用 TTTripoFetch 轮询取回。"""
+
+    CATEGORY = "TT"
+    RETURN_TYPES = ("STRING", "STRING")
+    RETURN_NAMES = ("task_id", "调用信息")
+    FUNCTION = "run"
+    OUTPUT_NODE = False
+    FORMAT_OPTIONS = ["FBX", "OBJ", "GLTF", "USDZ", "STL", "3MF"]
+
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "task_id": ("STRING", {"default": "", "tooltip": "粘贴已成功生成任务的 ID；也可在 UI 把本 widget 转输入槽，连线 Submit/ImageTo3D/MultiviewTo3D 的 task_id 输出"}),
+                "enable_api": ("BOOLEAN", {"default": False}),
+                "format": (cls.FORMAT_OPTIONS, {"default": "FBX"}),
+                "quad": ("BOOLEAN", {"default": False}),
+                "face_limit": ("INT", {"default": 0, "min": 0, "max": 10000000, "tooltip": "0=不传；quad=true 且未设置时平台默认 1 万面"}),
+                "texture_size": ("INT", {"default": 4096, "min": 0, "max": 8192}),
+            }
+        }
+
+    def run(self, task_id, enable_api, format, quad, face_limit, texture_size):
+        cfg = _load_config()
+        src = (task_id or "").strip()
+        if not enable_api:
+            return ("ERROR:enable_api 未开启：未发起任何网络请求。确认参数与预算后打开 enable_api。",
+                    "enable_api 未开启：未发起任何网络请求。确认参数与预算后打开 enable_api。")
+        if not src:
+            err = "task_id 为空：粘贴已有生成任务的 ID，或从 Submit/ImageTo3D/MultiviewTo3D 的 task_id 连线。"
+            return ("ERROR:" + err, err)
+        if not cfg["api_key"]:
+            return ("ERROR:" + _no_key_msg(), _no_key_msg())
+        fmt = str(format or "FBX").upper()
+        if fmt not in self.FORMAT_OPTIONS:
+            err = "format 值无效：{0}（可选 {1}）。".format(format, "/".join(self.FORMAT_OPTIONS))
+            return ("ERROR:" + err, err)
+        quad = bool(quad)
+        fl = int(face_limit or 0)
+        ts = int(texture_size or 4096)
+        payload = {"input": src, "format": fmt, "quad": quad, "texture_size": ts}
+        if fl > 0:
+            payload["face_limit"] = fl
+        try:
+            data = _request_json(cfg, "POST", "/models/convert", payload)
+        except Exception as e:
+            err = "转换提交失败（网络/配置）：{0}".format(e)
+            return ("ERROR:" + err, err)
+        if not isinstance(data, dict) or data.get("code") != 0:
+            if isinstance(data, dict):
+                code = data.get("code")
+                msg = data.get("message") or data.get("msg") or ""
+            else:
+                code, msg = None, ""
+            err = "转换提交失败：code={0} msg={1}".format(code, msg)
+            return ("ERROR:" + err, err)
+        cid = ((data.get("data") or {}).get("task_id") or "").strip()
+        if not cid:
+            return ("ERROR:转换提交失败：响应缺少 task_id。", "转换提交失败：响应缺少 task_id。")
+        note = "；quad=true 将强制输出 FBX" if quad else ""
+        info = "转换已提交：源任务={0}；convert_task_id={1}；format={2}；quad={3}；face_limit={4}（0=未传）；texture_size={5}{6}".format(
+            src, cid, fmt, quad, fl, ts, note
+        )
+        return (cid, info)
+
+
 NODE_CLASS_MAPPINGS = {
     "TTTripoSubmit": TTTripoSubmit,
     "TTTripoImageTo3D": TTTripoImageTo3D,
     "TTTripoMultiviewTo3D": TTTripoMultiviewTo3D,
+    "TTTripoConvert": TTTripoConvert,
     "TTTripoFetch": TTTripoFetch,
 }
 
@@ -485,5 +571,6 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "TTTripoSubmit": "TT-Tripo 提交（文生3D）",
     "TTTripoImageTo3D": "TT-Tripo 提交（图生3D）",
     "TTTripoMultiviewTo3D": "TT-Tripo 提交（多视图生3D）",
+    "TTTripoConvert": "TT-Tripo 格式转换",
     "TTTripoFetch": "TT-Tripo 任务取回",
 }

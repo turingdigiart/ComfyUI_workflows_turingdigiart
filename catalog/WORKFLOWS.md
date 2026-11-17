@@ -1,9 +1,9 @@
 # 工作流台账
 
 > 由 `scripts/catalog.mjs` 生成，**不要手改**。改工作流后重跑脚本。
-> 生成时间：2026-11-17T07:48:14.024Z
+> 生成时间：2026-11-17T08:24:11.235Z
 > 来源目录：`E:\Private\AIDev\TECH-COMFY-001_comfyui-workflows\workflows`
-> 共 45 条｜缺模型 13 条｜缺说明 0 条
+> 共 46 条｜缺模型 13 条｜缺说明 0 条
 
 ## 分类分布
 
@@ -12,7 +12,7 @@
 | audio | 1 |
 | identity | 16 |
 | image | 16 |
-| model3d | 4 |
+| model3d | 5 |
 | video | 8 |
 
 ## audio
@@ -71,6 +71,7 @@
 | `model3d/tripo/26_Tripo_文生3D.json` | Key 在本机插件目录 tt-tripo/tripo.local.json（或环境变量 TRIPO_API_KEY），不入画布/同步盘（DEC-ORG-094）。付费调用属 P1：每次生成消耗 Tripo 额度，先确认预算。enable_a | — | 0 | ✅ |
 | `model3d/tripo/27_Tripo_图生3D.json` | Key 在本机插件目录 tt-tripo/tripo.local.json（或环境变量 TRIPO_API_KEY），不入画布/同步盘（DEC-ORG-094）。付费调用属 P1：每次生成消耗 Tripo 额度，先确认预算。enable_a | — | 0 | ✅ |
 | `model3d/tripo/28_Tripo_多视图生3D.json` | 多视图生 3D：batch 顺序 = front/left/back/right（正面必填、至少 2 张、最多 4 张），多图必须经 ImageBatch 串联成单链再入 images（4 张=3 个 ImageBatch），直接多路连线会 | — | 0 | ✅ |
+| `model3d/tripo/29_Tripo_格式转换.json` | 格式转换：把已成功生成的 Tripo 任务转为 FBX/OBJ/GLTF/USDZ/STL/3MF。用法：在「TT-Tripo 格式转换」的 task_id 粘贴旧任务 ID（或把该 widget 转输入槽连线 Submit/ImageTo | — | 0 | ✅ |
 
 ## video
 

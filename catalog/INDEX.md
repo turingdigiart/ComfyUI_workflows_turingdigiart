@@ -205,7 +205,7 @@
 - 模型：ae.safetensors、qwen_3_4b.safetensors、z_image_turbo_bf16.safetensors
 - 说明：8步快速出图；默认1024×1024。修改提示词后运行。支持中文与英文提示词。原生节点，无需额外插件。
 
-### model3d（4）
+### model3d（5）
 
 **13_Hunyuan3D21_图片生成3D模型**  ⚠️ 缺模型
 - 路径：`model3d/hunyuan/13_Hunyuan3D21_图片生成3D模型.json`
@@ -227,6 +227,11 @@
 - 路径：`model3d/tripo/28_Tripo_多视图生3D.json`
 - 参数：—
 - 说明：多视图生 3D：batch 顺序 = front/left/back/right（正面必填、至少 2 张、最多 4 张），多图必须经 ImageBatch 串联成单链再入 images（4 张=3 个 ImageBatch），直接多路连线会
+
+**29_Tripo_格式转换**
+- 路径：`model3d/tripo/29_Tripo_格式转换.json`
+- 参数：—
+- 说明：格式转换：把已成功生成的 Tripo 任务转为 FBX/OBJ/GLTF/USDZ/STL/3MF。用法：在「TT-Tripo 格式转换」的 task_id 粘贴旧任务 ID（或把该 widget 转输入槽连线 Submit/ImageTo
 
 ### video（8）
 

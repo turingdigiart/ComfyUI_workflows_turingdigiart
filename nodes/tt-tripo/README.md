@@ -1,9 +1,10 @@
-# tt-tripo｜机构自研 Tripo 文生/图生/多视图生 3D 调用节点（v0.2.2）
+# tt-tripo｜机构自研 Tripo 文生/图生/多视图生/格式转换 3D 调用节点（v0.3.0）
 
-在 ComfyUI 里提交 Tripo API 文生/图生/多视图生 3D 任务并取回结果（GLB + 渲染预览图）。
+在 ComfyUI 里提交 Tripo API 文生/图生/多视图生 3D 任务、做格式转换并取回结果（GLB/FBX/OBJ… + 渲染预览图）。
 
 ## 版本
 
+- **v0.3.0（2026-11-17）**：新增「格式转换」节点（负责人指示「返回 obj 或 fbx 模型，这很重要」）。现象：生成接口固定输出 GLB，交付 FBX/OBJ 需手工转换；根因：插件未覆盖 `POST /models/convert`；修法：新增 `TTTripoConvert`（task_id 可粘贴/连线，format=FBX/OBJ/GLTF/USDZ/STL/3MF，quad、face_limit(0=不传)、texture_size，异步返回新 task_id 交给 `TTTripoFetch` 轮询），`TTTripoFetch` 下载扩展名从 `output.model_url` URL 后缀推断（.fbx/.obj/.glb/.gltf/.stl/.3mf/.usdz，无法推断回退 .glb），meta.json 新增 `ext/format` 字段；边界：OBJ 无动画、STL/3MF 仅几何、quad=true 强制输出 FBX（且未设 face_limit 时平台默认 1 万面）；Key 存储与付费 P1 口径不变；示例工作流 29。
 - **v0.2.2（2026-11-17）**：紧急回退 T20 的列表输入方案——现象：`INPUT_IS_LIST=True` 使 ComfyUI 0.43 前端把 `TTTripoMultiviewTo3D` 全部控件（enable_api/model/…）渲染成不可交互输入槽，用户无法勾选 enable_api；根因：`INPUT_IS_LIST` 是整节点列表化语义，且本构建 `/prompt` 列表链接校验对所有节点失败；修法：删除 `INPUT_IS_LIST`，`images` 恢复**单 IMAGE 输入承载图像批次**（`(B,H,W,C)` 按 batch 维拆分，batch 顺序=front/left/back/right），多图用 ComfyUI 自带 `ImageBatch` 串联成单链输入（4 张 = 3 个 ImageBatch），API/UI 两条路径可用；边界：多图必须经 ImageBatch 单链入 `images`，直接多路连线仍会被校验拒绝；Key 存储与付费 P1 口径不变。
 - **v0.2.1（2026-11-17）**：修复 T19 暴露的列表输入缺陷（`INPUT_IS_LIST=True` 方案）——已被 v0.2.2 回退，仅作历史记录。
 - **v0.2.0（2026-11-17）**：新增「图生 3D」与「多视图生 3D」（负责人指示）。现象（需求）：只有文生 3D 一个入口，图生与多视图能力缺失；根因：节点未覆盖 `POST /generation/image-to-model` 与 `/generation/multiview-to-model` 及前置 `/files` 上传；修法：新增共享 `_upload_image`（IMAGE→临时 PNG→multipart 上传→file_token，上传后清理）与节点 `TTTripoImageTo3D`（input=file_token；texture_alignment=original_image|geometry、orientation=default|align_image、enable_image_autofix）、`TTTripoMultiviewTo3D`（2–4 张视图，**连接顺序=front/left/back/right、第一张视为 front、front 必填**，inputs 用 view-key 格式 `[{"front":token},…]`），失败均把 `ERROR:<原因>` 写入 task_id 输出；边界：`TTTripoFetch` 通用不改、enable_api 默认关、不自动重试提交、Key 存储与付费 P1 口径不变；示例工作流 27/28。
@@ -16,8 +17,9 @@
 |---|---|---|---|
 | `TTTripoSubmit` | 提交 `POST /generation/text-to-model` | enable_api（默认关）、prompt、model、negative_prompt、face_limit、texture、pbr、seed（0=不传 model_seed） | `task_id`(STRING)、`调用信息`(STRING) |
 | `TTTripoImageTo3D` | 上传 `/files` 并提交 `POST /generation/image-to-model` | image（IMAGE 必连）、enable_api（默认关）、model、face_limit、texture、pbr、texture_alignment（original_image/geometry）、orientation（default/align_image）、enable_image_autofix | `task_id`(STRING)、`调用信息`(STRING) |
-| `TTTripoMultiviewTo3D` | 2–4 张视图逐张上传并提交 `POST /generation/multiview-to-model`（view-key 格式） | images（IMAGE 列表 2–4，**连接顺序=front/left/back/right，第一张视为 front**）、enable_api（默认关）、model、face_limit、texture、pbr、orientation | `task_id`(STRING)、`调用信息`(STRING) |
-| `TTTripoFetch` | 轮询 `GET /tasks/{task_id}` 并取回 | task_id（可连线/手工粘贴）、wait_seconds(600)、poll_interval(5)、refresh_id | `模型路径`(STRING，GLB 存 `output/Tripo/`)、`预览图`(IMAGE)、`状态`(STRING) |
+| `TTTripoMultiviewTo3D` | 2–4 张视图逐张上传并提交 `POST /generation/multiview-to-model`（view-key 格式） | images（IMAGE 单输入承载 batch 2–4，**batch 顺序=front/left/back/right，第一张视为 front**，多图用 ImageBatch 串联）、enable_api（默认关）、model、face_limit、texture、pbr、orientation | `task_id`(STRING)、`调用信息`(STRING) |
+| `TTTripoConvert` | 提交 `POST /models/convert` 把已有生成任务转为 FBX/OBJ/GLTF/USDZ/STL/3MF（异步） | task_id（粘贴或连线）、enable_api（默认关）、format（默认 FBX）、quad（true 强制 FBX）、face_limit（0=不传）、texture_size（默认 4096） | `task_id`(STRING，转换任务 ID，交 Fetch 轮询)、`调用信息`(STRING) |
+| `TTTripoFetch` | 轮询 `GET /tasks/{task_id}` 并取回 | task_id（可连线/手工粘贴）、wait_seconds(600)、poll_interval(5)、refresh_id | `模型路径`(STRING，存 `output/Tripo/`，扩展名按 URL 后缀推断 .fbx/.obj/.glb/.gltf/.stl/.3mf/.usdz)、`预览图`(IMAGE)、`状态`(STRING) |
 
 ## Key 管理（DEC-ORG-094「本机配置 + 中控只验证约束」）
 
@@ -40,4 +42,5 @@
 
 - `workflows/model3d/tripo/26_Tripo_文生3D.json`（MarkdownNote 使用说明 → TTTripoSubmit → TTTripoFetch → PreviewImage/PreviewAny）。
 - `workflows/model3d/tripo/27_Tripo_图生3D.json`（LoadImage 参考图 → TTTripoImageTo3D → TTTripoFetch → PreviewImage/PreviewAny×2）。
-- `workflows/model3d/tripo/28_Tripo_多视图生3D.json`（4×LoadImage 正面/左/背/右 → TTTripoMultiviewTo3D → TTTripoFetch → 同上三输出；连接顺序=front/left/back/right）。
+- `workflows/model3d/tripo/28_Tripo_多视图生3D.json`（4×LoadImage 正面/左/背/右 → TTTripoMultiviewTo3D → TTTripoFetch → 同上三输出；batch 顺序=front/left/back/right）。
+- `workflows/model3d/tripo/29_Tripo_格式转换.json`（TTTripoConvert → TTTripoFetch → PreviewAny 模型路径/状态；粘贴生成任务 ID 或连线）。

@@ -1,8 +1,8 @@
 {
   "schema": 2,
-  "generated_at": "2026-11-17T07:48:14.024Z",
+  "generated_at": "2026-11-17T08:24:11.235Z",
   "source": "E:\\Private\\AIDev\\TECH-COMFY-001_comfyui-workflows\\workflows",
-  "count": 45,
+  "count": 46,
   "missing_model_count": 13,
   "undocumented_count": 0,
   "workflows": [
@@ -1528,6 +1528,39 @@
         "TTTripoMultiviewTo3D",
         "TTTripoFetch",
         "PreviewImage",
+        "PreviewAny"
+      ],
+      "models": [],
+      "missing_models": [],
+      "params": {
+        "model": null,
+        "resolution": null,
+        "steps": null,
+        "sampler": null,
+        "frames": null,
+        "fps": null
+      },
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "model3d-tripo-29_tripo_格式转换",
+      "path": "model3d/tripo/29_Tripo_格式转换.json",
+      "category": "model3d",
+      "subcategory": "tripo",
+      "name": "29_Tripo_格式转换",
+      "format": "ui",
+      "title": "格式转换：把已成功生成的 Tripo 任务转为 FBX/OBJ/GLTF/USDZ/STL/3MF。用法：在「TT-Tripo 格式转换」的 task_id 粘贴旧任务 ID（或把该 widget 转输入槽连线 Submit/ImageTo",
+      "description": "格式转换：把已成功生成的 Tripo 任务转为 FBX/OBJ/GLTF/USDZ/STL/3MF。用法：在「TT-Tripo 格式转换」的 task_id 粘贴旧任务 ID（或把该 widget 转输入槽连线 Submit/ImageTo3D/MultiviewTo3D 的 task_id 输出）；选 format 后打开 enable_api 执行。注意：quad=true 会强制输出 FBX；OBJ 无动画；STL/3MF 仅几何。转换任务由「TT-Tripo 任务取回」轮询下载（扩展名按 URL 后缀推断）。Key 在本机插件目录 tt-tripo/tripo.local.json（DEC-ORG-094），付费调用属 P1：先确认预算。",
+      "has_description": true,
+      "version": null,
+      "sha256": "a6c7e41b525c54debf0a98060af615b82697a4e4179d105050eb31a206414da6",
+      "bytes": 3513,
+      "node_count": 5,
+      "node_types": [
+        "MarkdownNote",
+        "TTTripoConvert",
+        "TTTripoFetch",
         "PreviewAny"
       ],
       "models": [],
