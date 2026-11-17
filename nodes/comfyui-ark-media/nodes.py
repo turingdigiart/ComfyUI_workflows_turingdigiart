@@ -29,6 +29,12 @@ def client():
 def references(images, video=False):
     if images is None:
         return []
+    # 单 IMAGE 输入承载图像批次：batch 张量 (B,H,W,C) 按 batch 维拆分为逐张 (H,W,C)；
+    # 3D 单张包装成列表；多图经 ImageBatch 串联后以 batch 形式到达。
+    if isinstance(images, torch.Tensor):
+        images = [images] if images.ndim == 3 else list(images)
+    if not isinstance(images, (list, tuple)):
+        raise ArkError("参考图类型不支持。")
     if len(images) > 10:
         raise ArkError("参考图片过多，最多10张。")
     result = []
@@ -52,14 +58,7 @@ def info(kind, model, **extra):
     return json.dumps({"provider": "Volcengine Ark", "kind": kind, "model": model, **extra}, ensure_ascii=False)
 
 
-def first(value):
-    """INPUT_IS_LIST 节点所有输入都以列表到达；单值解包第一个元素。"""
-    return value[0] if isinstance(value, (list, tuple)) else value
-
-
 class ArkSeedream:
-    INPUT_IS_LIST = True
-
     @classmethod
     def INPUT_TYPES(cls):
         return {"required": {
@@ -78,12 +77,6 @@ class ArkSeedream:
     def IS_CHANGED(cls, **kwargs):
         return config_fingerprint()
     def run(self, enable_api, prompt, model, size, watermark, refresh_id, reference_images=None, unique_id="default"):
-        enable_api = first(enable_api); prompt = first(prompt); model = first(model)
-        size = first(size); watermark = first(watermark); refresh_id = first(refresh_id)
-        if reference_images is None:
-            reference_images = []
-        elif not isinstance(reference_images, (list, tuple)):
-            reference_images = [reference_images]
         enabled(enable_api); c = client(); check()
         model = model.strip() or c.config.get("seedream_model", "")
         body = image_body(model, prompt, size, watermark, references(reference_images))

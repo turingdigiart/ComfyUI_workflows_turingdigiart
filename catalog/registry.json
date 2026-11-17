@@ -1,9 +1,9 @@
 {
   "schema": 2,
-  "generated_at": "2026-11-17T04:06:18.890Z",
+  "generated_at": "2026-11-17T07:48:14.024Z",
   "source": "E:\\Private\\AIDev\\TECH-COMFY-001_comfyui-workflows\\workflows",
   "count": 45,
-  "missing_model_count": 16,
+  "missing_model_count": 13,
   "undocumented_count": 0,
   "workflows": [
     {
@@ -829,15 +829,16 @@
       "subcategory": "ark",
       "name": "25_方舟Seedream_写实IP三视图_表情_细节",
       "format": "ui",
-      "title": "三视图/表情集/细节均为方向探索与角度占位，按 REALISTIC_IP_BRIEF_v002 逐张核对身份后再晋级，多视图生成不构成身份一致性保证；参考图上传方舟，仅限本人授权素材；enable_api 确认参数后再开；换新结果才增大 r",
-      "description": "三视图/表情集/细节均为方向探索与角度占位，按 REALISTIC_IP_BRIEF_v002 逐张核对身份后再晋级，多视图生成不构成身份一致性保证；参考图上传方舟，仅限本人授权素材；enable_api 确认参数后再开；换新结果才增大 refresh_id。",
+      "title": "多参考图必须经 ImageBatch 串联成单链再入 reference_images（3 张=2 个 ImageBatch；表情/细节链=正面+三视图输出 1 个 ImageBatch），直接多路连线会被 ComfyUI 校验拒绝。三视图",
+      "description": "多参考图必须经 ImageBatch 串联成单链再入 reference_images（3 张=2 个 ImageBatch；表情/细节链=正面+三视图输出 1 个 ImageBatch），直接多路连线会被 ComfyUI 校验拒绝。三视图/表情集/细节均为方向探索与角度占位，按 REALISTIC_IP_BRIEF_v002 逐张核对身份后再晋级，多视图生成不构成身份一致性保证；参考图上传方舟，仅限本人授权素材；enable_api 确认参数后再开；换新结果才增大 refresh_id。",
       "has_description": true,
       "version": null,
-      "sha256": "d991225b08489cec8dbc4019d830db1cbcf21a98c0fbf91249bd5caa98a4e967",
-      "bytes": 12248,
-      "node_count": 12,
+      "sha256": "04e5f7ae156b836913e2c2fb394307be684714af228e34b2d2e3509077c37e99",
+      "bytes": 10487,
+      "node_count": 15,
       "node_types": [
         "LoadImage",
+        "ImageBatch",
         "ArkSeedream",
         "SaveImage",
         "MarkdownNote"
@@ -1038,10 +1039,7 @@
         "qwen_image_2.1_turbo_int8_convrot.safetensors",
         "qwen_image_2.1_vae_bf16.safetensors"
       ],
-      "missing_models": [
-        "qwen_image_2.1_turbo_int8_convrot.safetensors",
-        "qwen3vl_8b_int8_convrot.safetensors"
-      ],
+      "missing_models": [],
       "params": {
         "model": "qwen_image_2.1_turbo_int8_convrot.safetensors",
         "resolution": null,
@@ -1088,10 +1086,7 @@
         "qwen_image_2.1_turbo_int8_convrot.safetensors",
         "qwen_image_2.1_vae_bf16.safetensors"
       ],
-      "missing_models": [
-        "qwen_image_2.1_turbo_int8_convrot.safetensors",
-        "qwen3vl_8b_int8_convrot.safetensors"
-      ],
+      "missing_models": [],
       "params": {
         "model": "qwen_image_2.1_turbo_int8_convrot.safetensors",
         "resolution": null,
@@ -1133,10 +1128,7 @@
         "qwen_image_2.1_int8_convrot.safetensors",
         "qwen_image_2.1_vae_bf16.safetensors"
       ],
-      "missing_models": [
-        "qwen_image_2.1_int8_convrot.safetensors",
-        "qwen3vl_8b_int8_convrot.safetensors"
-      ],
+      "missing_models": [],
       "params": {
         "model": "qwen_image_2.1_int8_convrot.safetensors",
         "resolution": null,
@@ -1522,16 +1514,17 @@
       "subcategory": "tripo",
       "name": "28_Tripo_多视图生3D",
       "format": "ui",
-      "title": "多视图生 3D：连接顺序 = front/left/back/right（正面必填、至少 2 张、最多 4 张），第一张连接视为 front。Key 在本机插件目录 tt-tripo/tripo.local.json（或环境变量 TRIPO",
-      "description": "多视图生 3D：连接顺序 = front/left/back/right（正面必填、至少 2 张、最多 4 张），第一张连接视为 front。Key 在本机插件目录 tt-tripo/tripo.local.json（或环境变量 TRIPO_API_KEY），不入画布/同步盘（DEC-ORG-094）。付费调用属 P1：每次生成消耗 Tripo 额度，先确认预算。enable_api 确认参数后再打开；任务超时用同一 task_id 再次取回，不重复提交。",
+      "title": "多视图生 3D：batch 顺序 = front/left/back/right（正面必填、至少 2 张、最多 4 张），多图必须经 ImageBatch 串联成单链再入 images（4 张=3 个 ImageBatch），直接多路连线会",
+      "description": "多视图生 3D：batch 顺序 = front/left/back/right（正面必填、至少 2 张、最多 4 张），多图必须经 ImageBatch 串联成单链再入 images（4 张=3 个 ImageBatch），直接多路连线会被 ComfyUI 校验拒绝。Key 在本机插件目录 tt-tripo/tripo.local.json（或环境变量 TRIPO_API_KEY），不入画布/同步盘（DEC-ORG-094）。付费调用属 P1：每次生成消耗 Tripo 额度，先确认预算。enable_api 确认参数后再打开；任务超时用同一 task_id 再次取回，不重复提交。",
       "has_description": true,
       "version": null,
-      "sha256": "ef7af18b2820a32013ca8a92d825bf961f8cf096c84ed8ebab3f33cfa7ecabfc",
-      "bytes": 6408,
-      "node_count": 10,
+      "sha256": "a55e3fc602d38fa3bd9b38c67c35484630350f970a38843809c16c5bcc8406f0",
+      "bytes": 8081,
+      "node_count": 13,
       "node_types": [
         "MarkdownNote",
         "LoadImage",
+        "ImageBatch",
         "TTTripoMultiviewTo3D",
         "TTTripoFetch",
         "PreviewImage",

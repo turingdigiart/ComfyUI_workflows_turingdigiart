@@ -397,16 +397,15 @@ class TTTripoImageTo3D:
 
 
 class TTTripoMultiviewTo3D:
-    """多视图生 3D：images 2–4 张（连接顺序 = front/left/back/right，第一张视为 front）
+    """多视图生 3D：images 单 IMAGE 输入承载图像批次（2–4 张，batch 顺序 = front/left/back/right，第一张视为 front）
     → 逐张上传 /files → POST /generation/multiview-to-model（inputs 为 view-key 格式）。
-    INPUT_IS_LIST=True：images 为列表输入（前端多路连接）；其余控件以单元素列表到达，run 内解包，单图连接兼容。"""
+    多图用 ComfyUI 自带 ImageBatch 串联成单链输入（4 张 = 3 个 ImageBatch）。"""
 
     CATEGORY = "TT"
     RETURN_TYPES = ("STRING", "STRING")
     RETURN_NAMES = ("task_id", "调用信息")
     FUNCTION = "run"
     OUTPUT_NODE = False
-    INPUT_IS_LIST = True
     VIEW_KEYS = ["front", "left", "back", "right"]
 
     @classmethod
@@ -424,24 +423,16 @@ class TTTripoMultiviewTo3D:
         }
 
     def run(self, images, enable_api, model, face_limit, texture, pbr, orientation):
-        def _first(v):
-            return v[0] if isinstance(v, (list, tuple)) else v
-
         cfg = _load_config()
-        enable_api = _first(enable_api)
-        model = _first(model)
-        face_limit = _first(face_limit)
-        texture = _first(texture)
-        pbr = _first(pbr)
-        orientation = _first(orientation)
+        # 单 IMAGE 输入承载批次：batch 张量 (B,H,W,C) 按 batch 维拆分；3D 单张包装成列表。
         if not isinstance(images, (list, tuple)):
-            images = [images]
+            images = [images] if images.ndim == 3 else [images[i] for i in range(images.shape[0])]
         count = len(images)
         if not enable_api:
             return ("ERROR:enable_api 未开启：未发起任何网络请求。确认参数与预算后打开 enable_api。",
                     "enable_api 未开启：未发起任何网络请求。确认参数与预算后打开 enable_api。")
         if count < 2 or count > 4:
-            err = "视图数量 {0} 张：需要 2–4 张（连接顺序=front/left/back/right，第一张为 front，front 必填）。".format(count)
+            err = "视图数量 {0} 张：需要 2–4 张（batch 顺序=front/left/back/right，第一张视为 front，front 必填；多图请用 ImageBatch 串联成单链输入）。".format(count)
             return ("ERROR:" + err, err)
         if not cfg["api_key"]:
             return ("ERROR:" + _no_key_msg(), _no_key_msg())

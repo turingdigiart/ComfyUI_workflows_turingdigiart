@@ -34,3 +34,10 @@
 - 修法：`ArkSeedream` 增加 `INPUT_IS_LIST = True`（`/object_info` 暴露 `is_input_list: true`，前端允许多路连接）；`run()` 对各输入做单值解包（向后兼容：单图连接与 18–21 号工作流不受影响），`reference_images` 统一归一为张量列表后交给既有 `references()`。
 - 边界：已知本机 ComfyUI 0.43 构建级缺陷——`/prompt` 的列表链接 `[["1",0],["2",0]]` 校验在旧式与新式节点（含核心 `ImageMergeTileList`）一律失败（详见仓库 `docs/DEV_EXPERIENCE.md`），因此本修复的 API 图路径仍受该缺陷阻塞，UI 手工多路连接为当前可用路径；此为本构建问题，非插件缺陷。不改变 Key 存储与付费 P1 口径。
 - 部署：机器 B 若为 `manage.py install` 安装副本，需重新执行 `python manage.py install` 后生效；本机 junction 指向仓库母版，即时生效。
+
+## 1.0.3 — 2026-11-17｜紧急回退 INPUT_IS_LIST，改单输入承载图像批次（T21）
+
+- 现象：T20 加的 `INPUT_IS_LIST = True` 在 ComfyUI 0.43 前端把 `ArkSeedream` 的全部控件（enable_api/prompt/model/size…）渲染成不可交互的输入槽，用户在 UI 勾不上 enable_api，节点无法使用。
+- 根因：`INPUT_IS_LIST` 是「整节点列表化」语义——前端据此把所有输入（含控件）按列表输入处理，与本插件「仅参考图为多图」的意图不符；且 T20 已证实本构建 `/prompt` 列表链接校验对所有节点失败。
+- 修法：删除 `INPUT_IS_LIST` 与 run() 内解包，恢复原始单输入签名；`references()` 增加 batch 张量拆分（`(B,H,W,C)` 按 batch 维拆为逐张，3D 单张包装），**多参考图改为 ComfyUI 自带 `ImageBatch` 节点串联成单链输入**（3 张参考 = 2 个 ImageBatch），API/UI 两条路径均可用，并绕开 `/prompt` 列表链接校验缺陷。
+- 边界：多图连接必须经 ImageBatch（或其它输出 batch 张量的节点）；直接多路连线仍会被校验拒绝。单图连接行为不变，18–21 号工作流不受影响。版本 1.0.3。

@@ -131,7 +131,7 @@
 **25_方舟Seedream_写实IP三视图_表情_细节**
 - 路径：`image/ark/25_方舟Seedream_写实IP三视图_表情_细节.json`
 - 参数：—
-- 说明：三视图/表情集/细节均为方向探索与角度占位，按 REALISTIC_IP_BRIEF_v002 逐张核对身份后再晋级，多视图生成不构成身份一致性保证；参考图上传方舟，仅限本人授权素材；enable_api 确认参数后再开；换新结果才增大 r
+- 说明：多参考图必须经 ImageBatch 串联成单链再入 reference_images（3 张=2 个 ImageBatch；表情/细节链=正面+三视图输出 1 个 ImageBatch），直接多路连线会被 ComfyUI 校验拒绝。三视图
 
 **09_Flux2Klein_快速文生图**  ⚠️ 缺模型
 - 路径：`image/flux/09_Flux2Klein_快速文生图.json`
@@ -151,19 +151,19 @@
 - 模型：RealVisXL_V5.0_fp16.safetensors
 - 说明：POSTER_LAYERED_v001｜分层生成 + 单工作流合成
 
-**06_Qwen21_Turbo_文生图**  ⚠️ 缺模型
+**06_Qwen21_Turbo_文生图**
 - 路径：`image/qwen/06_Qwen21_Turbo_文生图.json`
 - 参数：qwen_image_2.1_turbo_int8_convrot
 - 模型：qwen3vl_8b_int8_convrot.safetensors、qwen_image_2.1_turbo_int8_convrot.safetensors、qwen_image_2.1_vae_bf16.safetensors
 - 说明：Qwen Image 2.1：默认1024像素；Turbo使用官方8步时间表，标准版使用40步。图生图上传参考图后，用文字描述要修改的内容。标准版与Turbo共享编码器和VAE。提示词增强器未启用，无需额外语言模型。
 
-**07_Qwen21_Turbo_指令改图**  ⚠️ 缺模型
+**07_Qwen21_Turbo_指令改图**
 - 路径：`image/qwen/07_Qwen21_Turbo_指令改图.json`
 - 参数：qwen_image_2.1_turbo_int8_convrot
 - 模型：qwen3vl_8b_int8_convrot.safetensors、qwen_image_2.1_turbo_int8_convrot.safetensors、qwen_image_2.1_vae_bf16.safetensors
 - 说明：Qwen Image 2.1：默认1024像素；Turbo使用官方8步时间表，标准版使用40步。图生图上传参考图后，用文字描述要修改的内容。标准版与Turbo共享编码器和VAE。提示词增强器未启用，无需额外语言模型。
 
-**08_Qwen21_标准版_文生图**  ⚠️ 缺模型
+**08_Qwen21_标准版_文生图**
 - 路径：`image/qwen/08_Qwen21_标准版_文生图.json`
 - 参数：qwen_image_2.1_int8_convrot · 40 步 · euler
 - 模型：qwen3vl_8b_int8_convrot.safetensors、qwen_image_2.1_int8_convrot.safetensors、qwen_image_2.1_vae_bf16.safetensors
@@ -226,7 +226,7 @@
 **28_Tripo_多视图生3D**
 - 路径：`model3d/tripo/28_Tripo_多视图生3D.json`
 - 参数：—
-- 说明：多视图生 3D：连接顺序 = front/left/back/right（正面必填、至少 2 张、最多 4 张），第一张连接视为 front。Key 在本机插件目录 tt-tripo/tripo.local.json（或环境变量 TRIPO
+- 说明：多视图生 3D：batch 顺序 = front/left/back/right（正面必填、至少 2 张、最多 4 张），多图必须经 ImageBatch 串联成单链再入 images（4 张=3 个 ImageBatch），直接多路连线会
 
 ### video（8）
 
@@ -282,9 +282,6 @@
 | `image/api/15_通用API提示词_ZImage文生图.json` | z_image_turbo_bf16.safetensors、qwen_3_4b.safetensors、ae.safetensors |
 | `image/flux/09_Flux2Klein_快速文生图.json` | flux-2-klein-4b-fp8.safetensors、qwen_3_4b.safetensors、flux2-vae.safetensors |
 | `image/flux/10_Flux2Klein_指令改图.json` | flux-2-klein-4b-fp8.safetensors、qwen_3_4b.safetensors、flux2-vae.safetensors |
-| `image/qwen/06_Qwen21_Turbo_文生图.json` | qwen_image_2.1_turbo_int8_convrot.safetensors、qwen3vl_8b_int8_convrot.safetensors |
-| `image/qwen/07_Qwen21_Turbo_指令改图.json` | qwen_image_2.1_turbo_int8_convrot.safetensors、qwen3vl_8b_int8_convrot.safetensors |
-| `image/qwen/08_Qwen21_标准版_文生图.json` | qwen_image_2.1_int8_convrot.safetensors、qwen3vl_8b_int8_convrot.safetensors |
 | `image/sdxl/01_SDXL_文生图.json` | sd_xl_base_1.0.safetensors |
 | `image/sdxl/02_SDXL_图生图.json` | sd_xl_base_1.0.safetensors |
 | `image/sdxl/16_SDXL_我的人物形象_参考照片.json` | sd_xl_base_1.0.safetensors |
