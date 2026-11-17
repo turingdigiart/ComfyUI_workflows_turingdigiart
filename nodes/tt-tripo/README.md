@@ -1,9 +1,10 @@
-# tt-tripo｜机构自研 Tripo 文生/图生/多视图生/重拓扑/SmartUV/格式转换 3D 调用节点（v0.4.0）
+# tt-tripo｜机构自研 Tripo 文生/图生/多视图生/重拓扑/SmartUV/分件/补洞/格式转换 3D 调用节点（v0.5.0）
 
-在 ComfyUI 里提交 Tripo API 文生/图生/多视图生 3D 任务、做重拓扑（带 UV）/SmartUV/格式转换并取回结果（GLB/FBX/OBJ… + 渲染预览图）。
+在 ComfyUI 里提交 Tripo API 文生/图生/多视图生 3D 任务、做重拓扑（带 UV）/SmartUV/平台分件/分件补洞/格式转换并取回结果（GLB/FBX/OBJ… + 渲染预览图）。
 
 ## 版本
 
+- **v0.5.0（2026-11-17）**：新增「分件」与「分件补洞」开关节点（负责人确认走**方案 A 平台分件**；分件开关只进优化/分件管线，粗生成 26/27/28 不动；面数控制=现有 face_limit）。现象：无分件入口，多部件资产不能拆件/补洞；根因：插件未覆盖 `POST /v3/mesh/segment` 与 `/v3/mesh/complete`；修法：新增 `TTTripoSegment`（model v1.0-20250506 几何分件默认 / v2.0-20260430 Beta 语义；v2 可选 granularity/split_by_connectivity/ref_image，v1 时忽略并提示；约 40 credits/次；输出 GLB 节点名 `tripo_part_0/1/…`）与 `TTTripoMeshComplete`（input=分件/mesh 任务 ID；part_names 逗号分隔空=全部；completion_mode=ai_completion/quick_cap；费用以平台为准）；两节点沿用**阶段开关语义**（关闭=透传跳过不报错）；新增共享 `_source` 输入源三选一校验（生成任务 UUID / file_token / http(s) URL）并应用到 Retopo/SmartUV/Convert/Segment/Complete；`TTTripoFetch` 下载 GLB 后解析 `tripo_part_*` 节点名记录 `parts` 到 meta 与状态；示例工作流 32。边界：**retopo/uv/convert 的 task_id 只接受生成任务，分件任务 ID 需经 file_token 或 URL 桥接**（本版本只做文档说明与节点注释，不实现上传节点）；分件不改变面数；26–31 模板不动。
 - **v0.4.0（2026-11-17）**：成本可控的「生成→拓扑/UV→转换→取回」管线与「已有模型优化」管线（负责人三点要求：保留 26/27/28/29 粗糙管线不动；新管线从生成到拓扑 UV，可选重拓扑/转换/SmartUV 控制消耗；已有模型可单独跑重拓扑(带UV)/转换/SmartUV）。现象：生成接口不含拓扑/UV 优化，重拓扑/SmartUV/转换均独立计费，成本叠加不可控；根因：插件缺少 Retopo/SmartUV 节点且 Convert 的 enable_api=false 会报错、无法串成可跳过的阶段链；修法：新增 `TTTripoRetopo`（`POST /v3/mesh/decimate`：model v3.0/v2.0/v1.0、face_limit>0 才传、quad、smart_uv 仅 v3.0 有效（v1/v2+true 客户端拦截）、bake v1.0 不传）与 `TTTripoSmartUV`（`POST /v3/mesh/uv`：bake、export_orientation 非默认才传、compress=geometry 才传；输入 ≤8 万等效三角面）；**阶段开关语义**：Retopo/SmartUV/Convert 的 enable_api=false 时**不联网、原样透传 task_id、不报错**（调用信息注明「已跳过」），true 才提交付费任务；Fetch 不变（沿用 v0.3.1 重试 + v0.3.2 扩展名/zip 逻辑）；示例工作流 30/31。边界：26/27/28/29 模板与既有节点行为不变；成本口径写进节点调用信息与模板说明卡（生成 30；重拓扑 v3.0 35 / quad 40；SmartUV 20；转换 5 credits）。
 - **v0.3.2（2026-11-17）**：修复 T24 暴露的两个缺陷——现象：①28t 多视图经 ImageBatch 后 `_upload_image` 收到 3D 切片（H,W,C）仍按 4D 取 `tensor[0]`，PIL 报 `Invalid mode for data type`、任务零扣费失败；②OBJ 转换产物实为 ZIP（obj+mtl+贴图），URL 后缀不在已知列表→按 .glb 落盘、meta format 记录错误；③ERROR 透传的 meta 文件名含 ASCII 冒号被写入 NTFS 备用流（0 字节 ERROR 文件）。根因：上传函数假设 4D；扩展名推断无内容嗅探；取证文件名未清洗。修法：`_upload_image` 兼容 3D/4D 输入；下载后 URL 后缀未知时**嗅探文件头**（`PK\x03\x04`→存 `.zip` 并解包到 `<task_id>_<format>/`，meta 记 `archive=true`、`format`（优先任务回显的 input.format）、`files` 清单、解包目录）；meta 文件名非法字符清洗为 `_`。边界：非 zip 仍按既有扩展名逻辑；提交接口不重试口径不变。
 - **v0.3.1（2026-11-17）**：轮询与下载的网络抖动韧性修复——现象：负责人 16:19 的生成任务已在 Tripo 侧 success，但 Fetch 轮询遇本机系统代理瞬时断连（ProxyError/RemoteDisconnected）直接报错，已成功任务被当成失败丢弃；根因：查询与下载均无重试、无断点续传；修法：`TTTripoFetch` 查询任务状态对**网络类异常**（连接错误/超时/代理故障/流中断）做有界重试（最多 3 次、指数退避 2/4/8 秒、期间可中断），任务终态与业务错误不重试；GLB/预览下载同样有界重试并支持 **HTTP Range 断点续传**（从 .part 已下载字节继续，校验最终大小与 Content-Length 一致，不一致重试）；meta.json 新增 `retries`/`recovered` 字段（现有字段兼容）；边界：**提交接口绝不重试**（提交仍单次，防重复计费），HTTP 状态错误与业务错误不重试。
@@ -23,6 +24,8 @@
 | `TTTripoMultiviewTo3D` | 2–4 张视图逐张上传并提交 `POST /generation/multiview-to-model`（view-key 格式） | images（IMAGE 单输入承载 batch 2–4，**batch 顺序=front/left/back/right，第一张视为 front**，多图用 ImageBatch 串联）、enable_api（默认关）、model、face_limit、texture、pbr、orientation | `task_id`(STRING)、`调用信息`(STRING) |
 | `TTTripoRetopo` | 重拓扑（可带 UV）：`POST /v3/mesh/decimate`（**阶段开关**：enable_api=false 时透传跳过不报错） | task_id（粘贴/连线）、enable_api（默认关）、model（v3.0/v2.0/v1.0）、face_limit（默认 10000，0=不传）、quad（true 约 40 credits）、smart_uv（仅 v3.0 有效）、bake（v1.0 不传） | `task_id`(STRING，新任务 ID；跳过时=透传)、`调用信息`(STRING) |
 | `TTTripoSmartUV` | SmartUV：`POST /v3/mesh/uv`（**阶段开关**；输入 ≤8 万等效三角面） | task_id、enable_api（默认关）、bake(true)、export_orientation（默认(不传)/+x/-x/+y/-y）、compress（无/geometry） | `task_id`(STRING，新任务 ID；跳过时=透传)、`调用信息`(STRING) |
+| `TTTripoSegment` | 平台分件：`POST /v3/mesh/segment`（**阶段开关**；约 40 credits/次） | task_id（生成任务 UUID / file_token / URL）、enable_api（默认关）、model（v1.0-20250506 默认 / v2.0-20260430 Beta）、granularity（仅 v2）、split_by_connectivity（仅 v2）、ref_image（仅 v2） | `task_id`(STRING，分件任务 ID；跳过时=透传)、`调用信息`(STRING)；产物 GLB 节点名 `tripo_part_0/1/…`（Fetch 记入 meta.parts） |
+| `TTTripoMeshComplete` | 分件补洞：`POST /v3/mesh/complete`（**阶段开关**；费用以平台为准） | task_id（分件/mesh 任务 ID 或 file_token/URL）、enable_api（默认关）、part_names（逗号分隔，空=全部）、completion_mode（ai_completion/quick_cap） | `task_id`(STRING，补洞任务 ID；跳过时=透传)、`调用信息`(STRING) |
 | `TTTripoConvert` | 提交 `POST /models/convert` 把已有生成任务转为 FBX/OBJ/GLTF/USDZ/STL/3MF（异步；**阶段开关**：enable_api=false 时透传跳过不报错） | task_id（粘贴或连线）、enable_api（默认关）、format（默认 FBX）、quad（true 强制 FBX）、face_limit（0=不传）、texture_size（默认 4096） | `task_id`(STRING，转换任务 ID，交 Fetch 轮询；跳过时=透传)、`调用信息`(STRING) |
 | `TTTripoFetch` | 轮询 `GET /tasks/{task_id}` 并取回 | task_id（可连线/手工粘贴）、wait_seconds(600)、poll_interval(5)、refresh_id | `模型路径`(STRING，存 `output/Tripo/`，扩展名按 URL 后缀推断 .fbx/.obj/.glb/.gltf/.stl/.3mf/.usdz)、`预览图`(IMAGE)、`状态`(STRING) |
 
@@ -51,3 +54,4 @@
 - `workflows/model3d/tripo/29_Tripo_格式转换.json`（TTTripoConvert → TTTripoFetch → PreviewAny 模型路径/状态；粘贴生成任务 ID 或连线）。
 - `workflows/model3d/tripo/30_Tripo_生成到拓扑UV优化.json`（LoadImage → ImageTo3D → Retopo → SmartUV → Convert → Fetch；每阶段 enable_api=付费开关默认关，推荐组合与成本表见说明卡）。
 - `workflows/model3d/tripo/31_Tripo_已有模型优化.json`（Retopo → SmartUV → Convert → Fetch；task_id 粘贴生成任务 ID，本地模型需先上传平台取得 file_token/URL）。
+- `workflows/model3d/tripo/32_Tripo_分件与补洞.json`（Segment → MeshComplete → Fetch → PreviewAny；分件后继续优化需 file_token/URL 桥接）。

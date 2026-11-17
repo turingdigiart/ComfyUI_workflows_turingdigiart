@@ -1,0 +1,143 @@
+{
+  "id": "a3c4d5e6-7b8c-4d9e-0f1a-2b3c4d5e6f7a",
+  "revision": 0,
+  "last_node_id": 6,
+  "last_link_id": 4,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "MarkdownNote",
+      "title": "使用说明",
+      "pos": [0, -340],
+      "size": [1000, 300],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "properties": {},
+      "widgets_values": [
+        "平台分件（方案 A）与补洞：分件约 40 credits/次；补洞费用以平台计费为准。产物 GLB 节点名=tripo_part_0/1/…。分件后继续做重拓扑/UV/转换：task_id 只接受生成任务，需用 file_token 或 URL 桥接（本版本未实现上传节点，先手工桥接）。face_limit 面数控制在生成节点（26/27/28）或 30/31 的重拓扑节点上设置，分件本身不改变面数。若跳过补洞，把 Fetch 的 task_id 改接 Segment 输出。"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "TTTripoSegment",
+      "title": "TT-Tripo 分件",
+      "pos": [0, 0],
+      "size": [450, 480],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        { "name": "task_id", "type": "STRING", "links": [1], "slot_index": 0 },
+        { "name": "调用信息", "type": "STRING", "links": [], "slot_index": 1 }
+      ],
+      "properties": { "Node name for S&R": "TTTripoSegment" },
+      "widgets_values": [
+        "",
+        false,
+        "v1.0-20250506",
+        "balanced",
+        true,
+        ""
+      ]
+    },
+    {
+      "id": 3,
+      "type": "TTTripoMeshComplete",
+      "title": "TT-Tripo 分件补洞",
+      "pos": [560, 0],
+      "size": [450, 360],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        { "name": "task_id", "type": "STRING", "link": 1 }
+      ],
+      "outputs": [
+        { "name": "task_id", "type": "STRING", "links": [2], "slot_index": 0 },
+        { "name": "调用信息", "type": "STRING", "links": [], "slot_index": 1 }
+      ],
+      "properties": { "Node name for S&R": "TTTripoMeshComplete" },
+      "widgets_values": [
+        "",
+        false,
+        "",
+        "ai_completion"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "TTTripoFetch",
+      "title": "TT-Tripo 任务取回",
+      "pos": [1120, 0],
+      "size": [450, 460],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        { "name": "task_id", "type": "STRING", "link": 2 }
+      ],
+      "outputs": [
+        { "name": "模型路径", "type": "STRING", "links": [3], "slot_index": 0 },
+        { "name": "预览图", "type": "IMAGE", "links": [], "slot_index": 1 },
+        { "name": "状态", "type": "STRING", "links": [4], "slot_index": 2 }
+      ],
+      "properties": { "Node name for S&R": "TTTripoFetch" },
+      "widgets_values": [
+        "",
+        600,
+        5,
+        0
+      ]
+    },
+    {
+      "id": 5,
+      "type": "PreviewAny",
+      "title": "模型路径",
+      "pos": [1680, 0],
+      "size": [300, 300],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        { "name": "source", "type": "*", "link": 3 }
+      ],
+      "outputs": [
+        { "name": "STRING", "type": "STRING", "links": [], "slot_index": 0 }
+      ],
+      "properties": { "Node name for S&R": "PreviewAny" },
+      "widgets_values": []
+    },
+    {
+      "id": 6,
+      "type": "PreviewAny",
+      "title": "状态",
+      "pos": [1680, 340],
+      "size": [300, 300],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        { "name": "source", "type": "*", "link": 4 }
+      ],
+      "outputs": [
+        { "name": "STRING", "type": "STRING", "links": [], "slot_index": 0 }
+      ],
+      "properties": { "Node name for S&R": "PreviewAny" },
+      "widgets_values": []
+    }
+  ],
+  "links": [
+    [1, 2, 0, 3, 0, "STRING"],
+    [2, 3, 0, 4, 0, "STRING"],
+    [3, 4, 0, 5, 0, "STRING"],
+    [4, 4, 2, 6, 0, "STRING"]
+  ],
+  "groups": [
+    { "title": "Tripo 分件与补洞", "bounding": [-40, -380, 2050, 760], "color": "#8a3b6d", "font_size": 24, "flags": {} }
+  ],
+  "config": {},
+  "extra": { "ds": { "scale": 0.6, "offset": [30, 460] } },
+  "version": 0.4
+}

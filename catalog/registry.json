@@ -1,8 +1,8 @@
 {
   "schema": 2,
-  "generated_at": "2026-11-17T09:59:49.263Z",
+  "generated_at": "2026-11-17T11:30:43.677Z",
   "source": "E:\\Private\\AIDev\\TECH-COMFY-001_comfyui-workflows\\workflows",
-  "count": 48,
+  "count": 49,
   "missing_model_count": 13,
   "undocumented_count": 0,
   "workflows": [
@@ -1632,6 +1632,40 @@
         "TTTripoRetopo",
         "TTTripoSmartUV",
         "TTTripoConvert",
+        "TTTripoFetch",
+        "PreviewAny"
+      ],
+      "models": [],
+      "missing_models": [],
+      "params": {
+        "model": null,
+        "resolution": null,
+        "steps": null,
+        "sampler": null,
+        "frames": null,
+        "fps": null
+      },
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "model3d-tripo-32_tripo_分件与补洞",
+      "path": "model3d/tripo/32_Tripo_分件与补洞.json",
+      "category": "model3d",
+      "subcategory": "tripo",
+      "name": "32_Tripo_分件与补洞",
+      "format": "ui",
+      "title": "平台分件（方案 A）与补洞：分件约 40 credits/次；补洞费用以平台计费为准。产物 GLB 节点名=tripo_part_0/1/…。分件后继续做重拓扑/UV/转换：task_id 只接受生成任务，需用 file_token 或 U",
+      "description": "平台分件（方案 A）与补洞：分件约 40 credits/次；补洞费用以平台计费为准。产物 GLB 节点名=tripo_part_0/1/…。分件后继续做重拓扑/UV/转换：task_id 只接受生成任务，需用 file_token 或 URL 桥接（本版本未实现上传节点，先手工桥接）。face_limit 面数控制在生成节点（26/27/28）或 30/31 的重拓扑节点上设置，分件本身不改变面数。若跳过补洞，把 Fetch 的 task_id 改接 Segment 输出。",
+      "has_description": true,
+      "version": null,
+      "sha256": "f5a8d7faa70737e3d8de696009216056635aa1c3fdcb38388dc31acd48056f3e",
+      "bytes": 4131,
+      "node_count": 6,
+      "node_types": [
+        "MarkdownNote",
+        "TTTripoSegment",
+        "TTTripoMeshComplete",
         "TTTripoFetch",
         "PreviewAny"
       ],

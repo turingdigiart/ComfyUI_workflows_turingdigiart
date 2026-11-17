@@ -17,6 +17,7 @@ import io
 import json
 import os
 import re
+import struct
 import tempfile
 import time
 import zipfile
@@ -73,6 +74,52 @@ def _no_key_msg():
         "未找到 API Key：请在本机插件目录 tt-tripo/tripo.local.json 填 api_key，"
         "或设置环境变量 TRIPO_API_KEY（DEC-ORG-094 本机配置模式，不经过聊天与同步盘）。"
     )
+
+
+def _source(value):
+    """输入源三选一校验：生成任务 UUID / file_* token / http(s):// URL。
+    返回 (normalized, kind)；不合法或为空返回 (None, None)。kind ∈ task_id|file_token|url。"""
+    s = (value or "").strip()
+    if not s:
+        return None, None
+    if re.match(r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", s):
+        return s, "task_id"
+    if re.match(r"^file_[A-Za-z0-9_-]+$", s):
+        return s, "file_token"
+    if re.match(r"^https?://\S+$", s):
+        return s, "url"
+    return None, None
+
+
+def _glb_part_names(path):
+    """GLB 最小解析：读取 JSON chunk，收集 tripo_part_* 节点名（meshes/nodes）。失败或不存在返回 []。"""
+    try:
+        with open(path, "rb") as f:
+            magic, _, _ = struct.unpack("<4sII", f.read(12))
+            if magic != b"glTF":
+                return []
+            while True:
+                header = f.read(8)
+                if len(header) < 8:
+                    break
+                clen, ctype = struct.unpack("<II", header)
+                if ctype == 0x4E4F534A:  # 'JSON'
+                    data = json.loads(f.read(clen).decode("utf-8", "replace"))
+                    names = []
+                    for m in data.get("meshes", []):
+                        n = (m.get("name") or "")
+                        if n.startswith("tripo_part_"):
+                            names.append(n)
+                    if not names:
+                        for nd in data.get("nodes", []):
+                            n = (nd.get("name") or "")
+                            if n.startswith("tripo_part_"):
+                                names.append(n)
+                    return sorted(set(names))
+                f.seek(clen, 1)
+    except Exception:
+        pass
+    return []
 
 
 def _tripo_outdir():
@@ -482,6 +529,12 @@ class TTTripoFetch:
                                 {"archive": True, "unzip_dir": unzip_dir, "files": files, "format_override": fmt_hint or "ZIP"})
                     return {"ui": {"text": [status]}, "result": (local_path, blank, status)}
                 meta_extra = {"archive": True, "unzip_dir": unzip_dir, "files": files, "format_override": fmt_hint or "ZIP"}
+        parts_note = ""
+        if ext == ".glb" and local_path and os.path.isfile(local_path):
+            parts = _glb_part_names(local_path)
+            if parts:
+                meta_extra["parts"] = parts
+                parts_note = "；分件节点 {0} 个（{1}）".format(len(parts), ",".join(parts))
         image = blank
         preview_path = ""
         try:
@@ -496,8 +549,8 @@ class TTTripoFetch:
         unpack_note = ""
         if meta_extra.get("archive"):
             unpack_note = "（解包 {0} 个文件至 {1}）".format(len(meta_extra.get("files") or []), meta_extra.get("unzip_dir"))
-        status = "success：模型 {0}{1}；预览图 {2}；credits_consumed={3}".format(
-            local_path or model_url, unpack_note, preview_path or ("已下载" if image_url else "未提供"), d.get("credits_consumed")
+        status = "success：模型 {0}{1}；预览图 {2}；credits_consumed={3}{4}".format(
+            local_path or model_url, unpack_note, preview_path or ("已下载" if image_url else "未提供"), d.get("credits_consumed"), parts_note
         )
         _write_meta(task_id, status, local_path, preview_path, "", ext, total_retries, recovered, meta_extra)
         return {"ui": {"text": [status]}, "result": (local_path, image, status)}
@@ -682,8 +735,9 @@ class TTTripoConvert:
             # 阶段开关语义：false = 本阶段跳过，不联网、原样透传 task_id、不报错
             return (task_id,
                     "已跳过（未启用）转换：task_id 原样透传，未发起任何网络请求。打开 enable_api 后本阶段才提交转换任务（约 5 credits）。")
+        src, _kind = _source(task_id)
         if not src:
-            err = "task_id 为空：粘贴已有生成任务的 ID，或从 Submit/ImageTo3D/MultiviewTo3D 的 task_id 连线。"
+            err = "输入源无效或为空：支持生成任务 UUID / file_token / http(s) URL 三选一（分件任务 ID 需经 file_token 或 URL 桥接）。"
             return ("ERROR:" + err, err)
         if not cfg["api_key"]:
             return ("ERROR:" + _no_key_msg(), _no_key_msg())
@@ -752,8 +806,9 @@ class TTTripoRetopo:
         if not enable_api:
             return (task_id,
                     "已跳过（未启用）重拓扑：task_id 原样透传，未发起任何网络请求。打开 enable_api 后本阶段才提交重拓扑任务（v3.0 约 35 credits，quad=true 约 40 credits）。")
+        src, _kind = _source(task_id)
         if not src:
-            err = "task_id 为空：粘贴已有任务 ID，或从上一阶段节点连线。"
+            err = "输入源无效或为空：支持生成任务 UUID / file_token / http(s) URL 三选一（分件任务 ID 需经 file_token 或 URL 桥接）。"
             return ("ERROR:" + err, err)
         if not cfg["api_key"]:
             return ("ERROR:" + _no_key_msg(), _no_key_msg())
@@ -828,8 +883,9 @@ class TTTripoSmartUV:
         if not enable_api:
             return (task_id,
                     "已跳过（未启用）SmartUV：task_id 原样透传，未发起任何网络请求。打开 enable_api 后本阶段才提交 SmartUV 任务（约 20 credits）。")
+        src, _kind = _source(task_id)
         if not src:
-            err = "task_id 为空：粘贴已有任务 ID，或从上一阶段节点连线。"
+            err = "输入源无效或为空：支持生成任务 UUID / file_token / http(s) URL 三选一（分件任务 ID 需经 file_token 或 URL 桥接）。"
             return ("ERROR:" + err, err)
         if not cfg["api_key"]:
             return ("ERROR:" + _no_key_msg(), _no_key_msg())
@@ -862,12 +918,161 @@ class TTTripoSmartUV:
         return (cid, info)
 
 
+class TTTripoSegment:
+    """平台分件（方案 A）：POST /v3/mesh/segment（异步，返回新 task_id）。约 40 credits/次。
+    输出 GLB 节点名 = tripo_part_0/1/…（Fetch 会解析并写入 meta.parts）。
+    enable_api=false 时本阶段跳过：不联网、原样透传 task_id、不报错。
+    v2.0 为 Beta（语义分件）：granularity/split_by_connectivity/ref_image 仅 v2 有效，v1 时忽略并提示。"""
+
+    CATEGORY = "TT"
+    RETURN_TYPES = ("STRING", "STRING")
+    RETURN_NAMES = ("task_id", "调用信息")
+    FUNCTION = "run"
+    OUTPUT_NODE = False
+    SEGMENT_MODELS = ["v1.0-20250506", "v2.0-20260430"]
+    GRANULARITIES = ["balanced", "simple", "detailed"]
+
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "task_id": ("STRING", {"default": "", "tooltip": "输入源三选一：生成任务 UUID / file_token / http(s) URL（分件任务 ID 需经 file_token/URL 桥接才能继续下游优化）"}),
+                "enable_api": ("BOOLEAN", {"default": False}),
+                "model": (cls.SEGMENT_MODELS, {"default": "v1.0-20250506", "tooltip": "v1.0=几何分件（默认）；v2.0=Beta 语义分件"}),
+                "granularity": (cls.GRANULARITIES, {"default": "balanced", "tooltip": "仅 v2.0 有效（simple/balanced/detailed）"}),
+                "split_by_connectivity": ("BOOLEAN", {"default": True, "tooltip": "仅 v2.0 有效；按连通性拆分"}),
+                "ref_image": ("STRING", {"default": "", "tooltip": "仅 v2.0 有效；file_token 或 URL，提供后忽略 granularity/split_by_connectivity"}),
+            }
+        }
+
+    def run(self, task_id, enable_api, model, granularity, split_by_connectivity, ref_image):
+        cfg = _load_config()
+        if not enable_api:
+            return (task_id,
+                    "已跳过（未启用）分件：task_id 原样透传，未发起任何网络请求。打开 enable_api 后本阶段才提交分件任务（约 40 credits/次）。")
+        src, _kind = _source(task_id)
+        if not src:
+            err = "输入源无效或为空：支持生成任务 UUID / file_token / http(s) URL 三选一。"
+            return ("ERROR:" + err, err)
+        if not cfg["api_key"]:
+            return ("ERROR:" + _no_key_msg(), _no_key_msg())
+        model = str(model or "v1.0-20250506")
+        if model not in self.SEGMENT_MODELS:
+            err = "model 值无效：{0}（可选 {1}）。".format(model, "/".join(self.SEGMENT_MODELS))
+            return ("ERROR:" + err, err)
+        granularity = str(granularity or "balanced")
+        payload = {"input": src, "model": model}
+        ignore_note = ""
+        if model == "v2.0-20260430":
+            ref = (ref_image or "").strip()
+            if ref:
+                payload["ref_image"] = ref
+            else:
+                payload["segmentation_granularity"] = granularity
+                payload["split_by_connectivity"] = bool(split_by_connectivity)
+        else:
+            ignored = []
+            if granularity != "balanced":
+                ignored.append("granularity")
+            if not split_by_connectivity:
+                ignored.append("split_by_connectivity")
+            if (ref_image or "").strip():
+                ignored.append("ref_image")
+            if ignored:
+                ignore_note = "；v1 已忽略 v2 独有参数（{0}）".format(",".join(ignored))
+        try:
+            data = _request_json(cfg, "POST", "/mesh/segment", payload)
+        except Exception as e:
+            err = "分件提交失败（网络/配置）：{0}".format(e)
+            return ("ERROR:" + err, err)
+        if not isinstance(data, dict) or data.get("code") != 0:
+            if isinstance(data, dict):
+                code = data.get("code")
+                msg = data.get("message") or data.get("msg") or ""
+            else:
+                code, msg = None, ""
+            err = "分件提交失败：code={0} msg={1}".format(code, msg)
+            return ("ERROR:" + err, err)
+        cid = ((data.get("data") or {}).get("task_id") or "").strip()
+        if not cid:
+            return ("ERROR:分件提交失败：响应缺少 task_id。", "分件提交失败：响应缺少 task_id。")
+        info = "分件已提交：源={0}；segment_task_id={1}；model={2}；granularity={3}；split_by_connectivity={4}；ref_image={5}；预计约 40 credits{6}".format(
+            src, cid, model, granularity, bool(split_by_connectivity), (ref_image or "").strip() or "未提供", ignore_note
+        )
+        return (cid, info)
+
+
+class TTTripoMeshComplete:
+    """分件补洞：POST /v3/mesh/complete（异步）。input=分件/mesh 任务 ID（或 file_token/URL）。
+    费用文档未标，以平台实际计费为准。enable_api=false 时透传跳过不报错。"""
+
+    CATEGORY = "TT"
+    RETURN_TYPES = ("STRING", "STRING")
+    RETURN_NAMES = ("task_id", "调用信息")
+    FUNCTION = "run"
+    OUTPUT_NODE = False
+    COMPLETION_MODES = ["ai_completion", "quick_cap"]
+
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "task_id": ("STRING", {"default": "", "tooltip": "分件/mesh 任务 ID（或 file_token/URL）"}),
+                "enable_api": ("BOOLEAN", {"default": False}),
+                "part_names": ("STRING", {"default": "", "tooltip": "逗号分隔节点名（如 tripo_part_0,tripo_part_1）；空=全部"}),
+                "completion_mode": (cls.COMPLETION_MODES, {"default": "ai_completion", "tooltip": "ai_completion=AI 补全（默认）；quick_cap=快速封盖"}),
+            }
+        }
+
+    def run(self, task_id, enable_api, part_names, completion_mode):
+        cfg = _load_config()
+        if not enable_api:
+            return (task_id,
+                    "已跳过（未启用）补洞：task_id 原样透传，未发起任何网络请求。打开 enable_api 后本阶段才提交补洞任务（费用以平台计费为准）。")
+        src, _kind = _source(task_id)
+        if not src:
+            err = "输入源无效或为空：支持分件任务 UUID / file_token / http(s) URL 三选一。"
+            return ("ERROR:" + err, err)
+        if not cfg["api_key"]:
+            return ("ERROR:" + _no_key_msg(), _no_key_msg())
+        mode = str(completion_mode or "ai_completion")
+        if mode not in self.COMPLETION_MODES:
+            err = "completion_mode 值无效：{0}（可选 {1}）。".format(completion_mode, "/".join(self.COMPLETION_MODES))
+            return ("ERROR:" + err, err)
+        parts = [p.strip() for p in (part_names or "").split(",") if p.strip()]
+        payload = {"input": src, "model": "v1.0", "completion_mode": mode}
+        if parts:
+            payload["part_names"] = parts
+        try:
+            data = _request_json(cfg, "POST", "/mesh/complete", payload)
+        except Exception as e:
+            err = "补洞提交失败（网络/配置）：{0}".format(e)
+            return ("ERROR:" + err, err)
+        if not isinstance(data, dict) or data.get("code") != 0:
+            if isinstance(data, dict):
+                code = data.get("code")
+                msg = data.get("message") or data.get("msg") or ""
+            else:
+                code, msg = None, ""
+            err = "补洞提交失败：code={0} msg={1}".format(code, msg)
+            return ("ERROR:" + err, err)
+        cid = ((data.get("data") or {}).get("task_id") or "").strip()
+        if not cid:
+            return ("ERROR:补洞提交失败：响应缺少 task_id。", "补洞提交失败：响应缺少 task_id。")
+        info = "补洞已提交：源={0}；complete_task_id={1}；part_names={2}（空=全部）；completion_mode={3}；费用以平台计费为准".format(
+            src, cid, ",".join(parts) if parts else "全部", mode
+        )
+        return (cid, info)
+
+
 NODE_CLASS_MAPPINGS = {
     "TTTripoSubmit": TTTripoSubmit,
     "TTTripoImageTo3D": TTTripoImageTo3D,
     "TTTripoMultiviewTo3D": TTTripoMultiviewTo3D,
     "TTTripoRetopo": TTTripoRetopo,
     "TTTripoSmartUV": TTTripoSmartUV,
+    "TTTripoSegment": TTTripoSegment,
+    "TTTripoMeshComplete": TTTripoMeshComplete,
     "TTTripoConvert": TTTripoConvert,
     "TTTripoFetch": TTTripoFetch,
 }
@@ -878,6 +1083,8 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "TTTripoMultiviewTo3D": "TT-Tripo 提交（多视图生3D）",
     "TTTripoRetopo": "TT-Tripo 重拓扑",
     "TTTripoSmartUV": "TT-Tripo SmartUV",
+    "TTTripoSegment": "TT-Tripo 分件",
+    "TTTripoMeshComplete": "TT-Tripo 分件补洞",
     "TTTripoConvert": "TT-Tripo 格式转换",
     "TTTripoFetch": "TT-Tripo 任务取回",
 }

@@ -205,7 +205,7 @@
 - 模型：ae.safetensors、qwen_3_4b.safetensors、z_image_turbo_bf16.safetensors
 - 说明：8步快速出图；默认1024×1024。修改提示词后运行。支持中文与英文提示词。原生节点，无需额外插件。
 
-### model3d（7）
+### model3d（8）
 
 **13_Hunyuan3D21_图片生成3D模型**  ⚠️ 缺模型
 - 路径：`model3d/hunyuan/13_Hunyuan3D21_图片生成3D模型.json`
@@ -242,6 +242,11 @@
 - 路径：`model3d/tripo/31_Tripo_已有模型优化.json`
 - 参数：—
 - 说明：已有模型优化管线：对既有 Tripo 任务单独跑重拓扑(可带UV)/SmartUV/格式转换。task_id 来源：文生/图生/多视图任务 ID（粘贴或连线）；本地模型需先上传平台取得 file_token 或公网 URL 后才能作为输入（
+
+**32_Tripo_分件与补洞**
+- 路径：`model3d/tripo/32_Tripo_分件与补洞.json`
+- 参数：—
+- 说明：平台分件（方案 A）与补洞：分件约 40 credits/次；补洞费用以平台计费为准。产物 GLB 节点名=tripo_part_0/1/…。分件后继续做重拓扑/UV/转换：task_id 只接受生成任务，需用 file_token 或 U
 
 ### video（8）
 

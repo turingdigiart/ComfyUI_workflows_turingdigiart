@@ -1,9 +1,9 @@
 # 工作流台账
 
 > 由 `scripts/catalog.mjs` 生成，**不要手改**。改工作流后重跑脚本。
-> 生成时间：2026-11-17T09:59:49.263Z
+> 生成时间：2026-11-17T11:30:43.677Z
 > 来源目录：`E:\Private\AIDev\TECH-COMFY-001_comfyui-workflows\workflows`
-> 共 48 条｜缺模型 13 条｜缺说明 0 条
+> 共 49 条｜缺模型 13 条｜缺说明 0 条
 
 ## 分类分布
 
@@ -12,7 +12,7 @@
 | audio | 1 |
 | identity | 16 |
 | image | 16 |
-| model3d | 7 |
+| model3d | 8 |
 | video | 8 |
 
 ## audio
@@ -74,6 +74,7 @@
 | `model3d/tripo/29_Tripo_格式转换.json` | 格式转换：把已成功生成的 Tripo 任务转为 FBX/OBJ/GLTF/USDZ/STL/3MF。用法：在「TT-Tripo 格式转换」的 task_id 粘贴旧任务 ID（或把该 widget 转输入槽连线 Submit/ImageTo | — | 0 | ✅ |
 | `model3d/tripo/30_Tripo_生成到拓扑UV优化.json` | 成本可控管线：生成 → 重拓扑(可带UV) → SmartUV → 格式转换 → 取回。每个阶段的 enable_api 都是该阶段的付费开关（默认全关=全链透传跳过、零费用）；按需只打开要执行的阶段。推荐组合：只要干净布线=Retopo( | — | 0 | ✅ |
 | `model3d/tripo/31_Tripo_已有模型优化.json` | 已有模型优化管线：对既有 Tripo 任务单独跑重拓扑(可带UV)/SmartUV/格式转换。task_id 来源：文生/图生/多视图任务 ID（粘贴或连线）；本地模型需先上传平台取得 file_token 或公网 URL 后才能作为输入（ | — | 0 | ✅ |
+| `model3d/tripo/32_Tripo_分件与补洞.json` | 平台分件（方案 A）与补洞：分件约 40 credits/次；补洞费用以平台计费为准。产物 GLB 节点名=tripo_part_0/1/…。分件后继续做重拓扑/UV/转换：task_id 只接受生成任务，需用 file_token 或 U | — | 0 | ✅ |
 
 ## video
 
