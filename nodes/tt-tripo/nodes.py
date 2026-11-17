@@ -679,8 +679,9 @@ class TTTripoConvert:
         cfg = _load_config()
         src = (task_id or "").strip()
         if not enable_api:
-            return ("ERROR:enable_api 未开启：未发起任何网络请求。确认参数与预算后打开 enable_api。",
-                    "enable_api 未开启：未发起任何网络请求。确认参数与预算后打开 enable_api。")
+            # 阶段开关语义：false = 本阶段跳过，不联网、原样透传 task_id、不报错
+            return (task_id,
+                    "已跳过（未启用）转换：task_id 原样透传，未发起任何网络请求。打开 enable_api 后本阶段才提交转换任务（约 5 credits）。")
         if not src:
             err = "task_id 为空：粘贴已有生成任务的 ID，或从 Submit/ImageTo3D/MultiviewTo3D 的 task_id 连线。"
             return ("ERROR:" + err, err)
@@ -713,8 +714,150 @@ class TTTripoConvert:
         if not cid:
             return ("ERROR:转换提交失败：响应缺少 task_id。", "转换提交失败：响应缺少 task_id。")
         note = "；quad=true 将强制输出 FBX" if quad else ""
-        info = "转换已提交：源任务={0}；convert_task_id={1}；format={2}；quad={3}；face_limit={4}（0=未传）；texture_size={5}{6}".format(
+        info = "转换已提交：源任务={0}；convert_task_id={1}；format={2}；quad={3}；face_limit={4}（0=未传）；texture_size={5}{6}；预计约 5 credits".format(
             src, cid, fmt, quad, fl, ts, note
+        )
+        return (cid, info)
+
+
+class TTTripoRetopo:
+    """重拓扑（可带 UV）：POST /v3/mesh/decimate（异步，返回新 task_id）。
+    enable_api=false 时本阶段跳过：不联网、原样透传 task_id、不报错。smart_uv 仅 v3.0 有效。
+    成本口径：v3.0 约 35 credits、quad=true 约 40 credits（写进调用信息与模板说明卡）。"""
+
+    CATEGORY = "TT"
+    RETURN_TYPES = ("STRING", "STRING")
+    RETURN_NAMES = ("task_id", "调用信息")
+    FUNCTION = "run"
+    OUTPUT_NODE = False
+    RETOPO_MODELS = ["v3.0", "v2.0", "v1.0"]
+
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "task_id": ("STRING", {"default": "", "tooltip": "粘贴已有任务的 ID，或从上一阶段（生成/重拓扑/SmartUV）的 task_id 连线"}),
+                "enable_api": ("BOOLEAN", {"default": False}),
+                "model": (cls.RETOPO_MODELS, {"default": "v3.0", "tooltip": "重拓扑模型版本；smart_uv 仅 v3.0 有效"}),
+                "face_limit": ("INT", {"default": 10000, "min": 0, "max": 10000000, "tooltip": "0=不传（用平台默认）；重拓扑目标面数"}),
+                "quad": ("BOOLEAN", {"default": False, "tooltip": "true=四边形重拓扑（约 40 credits，默认三角约 35 credits）"}),
+                "smart_uv": ("BOOLEAN", {"default": False, "tooltip": "自动展开 UV（仅 v3.0 有效；v1.0/v2.0 与 true 组合会在客户端拦截）"}),
+                "bake": ("BOOLEAN", {"default": True, "tooltip": "烘焙贴图；v1.0 不传此参数"}),
+            }
+        }
+
+    def run(self, task_id, enable_api, model, face_limit, quad, smart_uv, bake):
+        cfg = _load_config()
+        src = (task_id or "").strip()
+        if not enable_api:
+            return (task_id,
+                    "已跳过（未启用）重拓扑：task_id 原样透传，未发起任何网络请求。打开 enable_api 后本阶段才提交重拓扑任务（v3.0 约 35 credits，quad=true 约 40 credits）。")
+        if not src:
+            err = "task_id 为空：粘贴已有任务 ID，或从上一阶段节点连线。"
+            return ("ERROR:" + err, err)
+        if not cfg["api_key"]:
+            return ("ERROR:" + _no_key_msg(), _no_key_msg())
+        model = str(model or "v3.0")
+        if model not in self.RETOPO_MODELS:
+            err = "model 值无效：{0}（可选 {1}）。".format(model, "/".join(self.RETOPO_MODELS))
+            return ("ERROR:" + err, err)
+        quad = bool(quad)
+        smart_uv = bool(smart_uv)
+        if smart_uv and model in ("v1.0", "v2.0"):
+            err = "smart_uv 仅 v3.0 有效：当前 model={0} 与 smart_uv=true 冲突，请改用 v3.0 或关闭 smart_uv（未发起请求）。".format(model)
+            return ("ERROR:" + err, err)
+        fl = int(face_limit or 0)
+        payload = {"input": src, "model": model, "quad": quad}
+        if fl > 0:
+            payload["face_limit"] = fl
+        if smart_uv:
+            payload["smart_uv"] = True
+        if model != "v1.0":
+            payload["bake"] = bool(bake)
+        try:
+            data = _request_json(cfg, "POST", "/mesh/decimate", payload)
+        except Exception as e:
+            err = "重拓扑提交失败（网络/配置）：{0}".format(e)
+            return ("ERROR:" + err, err)
+        if not isinstance(data, dict) or data.get("code") != 0:
+            if isinstance(data, dict):
+                code = data.get("code")
+                msg = data.get("message") or data.get("msg") or ""
+            else:
+                code, msg = None, ""
+            err = "重拓扑提交失败：code={0} msg={1}".format(code, msg)
+            return ("ERROR:" + err, err)
+        cid = ((data.get("data") or {}).get("task_id") or "").strip()
+        if not cid:
+            return ("ERROR:重拓扑提交失败：响应缺少 task_id。", "重拓扑提交失败：响应缺少 task_id。")
+        cost = "约 40 credits（quad）" if quad else "约 35 credits"
+        info = "重拓扑已提交：源任务={0}；retopo_task_id={1}；model={2}；face_limit={3}（0=未传）；quad={4}；smart_uv={5}；bake={6}（v1.0 不传）；预计 {7}".format(
+            src, cid, model, fl, quad, smart_uv, bool(bake), cost
+        )
+        return (cid, info)
+
+
+class TTTripoSmartUV:
+    """SmartUV：POST /v3/mesh/uv（异步，返回新 task_id）。
+    enable_api=false 时本阶段跳过：不联网、原样透传 task_id、不报错。约 20 credits。
+    平台限制：输入 ≤8 万等效三角面（超出需先重拓扑减面）。"""
+
+    CATEGORY = "TT"
+    RETURN_TYPES = ("STRING", "STRING")
+    RETURN_NAMES = ("task_id", "调用信息")
+    FUNCTION = "run"
+    OUTPUT_NODE = False
+    EXPORT_ORIENTATIONS = ["默认(不传)", "+x", "-x", "+y", "-y"]
+    COMPRESS_OPTIONS = ["无", "geometry"]
+
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "task_id": ("STRING", {"default": "", "tooltip": "粘贴已有任务的 ID，或从上一阶段节点连线；输入 ≤8 万等效三角面"}),
+                "enable_api": ("BOOLEAN", {"default": False}),
+                "bake": ("BOOLEAN", {"default": True}),
+                "export_orientation": (cls.EXPORT_ORIENTATIONS, {"default": "默认(不传)", "tooltip": "默认不传；可选 +x/-x/+y/-y 导出朝向"}),
+                "compress": (cls.COMPRESS_OPTIONS, {"default": "无", "tooltip": "geometry=几何压缩；默认不传"}),
+            }
+        }
+
+    def run(self, task_id, enable_api, bake, export_orientation, compress):
+        cfg = _load_config()
+        src = (task_id or "").strip()
+        if not enable_api:
+            return (task_id,
+                    "已跳过（未启用）SmartUV：task_id 原样透传，未发起任何网络请求。打开 enable_api 后本阶段才提交 SmartUV 任务（约 20 credits）。")
+        if not src:
+            err = "task_id 为空：粘贴已有任务 ID，或从上一阶段节点连线。"
+            return ("ERROR:" + err, err)
+        if not cfg["api_key"]:
+            return ("ERROR:" + _no_key_msg(), _no_key_msg())
+        exp = str(export_orientation or "")
+        comp = str(compress or "")
+        payload = {"input": src, "bake": bool(bake)}
+        if exp and exp != "默认(不传)":
+            payload["export_orientation"] = exp
+        if comp == "geometry":
+            payload["compress"] = comp
+        try:
+            data = _request_json(cfg, "POST", "/mesh/uv", payload)
+        except Exception as e:
+            err = "SmartUV 提交失败（网络/配置）：{0}".format(e)
+            return ("ERROR:" + err, err)
+        if not isinstance(data, dict) or data.get("code") != 0:
+            if isinstance(data, dict):
+                code = data.get("code")
+                msg = data.get("message") or data.get("msg") or ""
+            else:
+                code, msg = None, ""
+            err = "SmartUV 提交失败：code={0} msg={1}".format(code, msg)
+            return ("ERROR:" + err, err)
+        cid = ((data.get("data") or {}).get("task_id") or "").strip()
+        if not cid:
+            return ("ERROR:SmartUV 提交失败：响应缺少 task_id。", "SmartUV 提交失败：响应缺少 task_id。")
+        info = "SmartUV 已提交：源任务={0}；smartuv_task_id={1}；bake={2}；export_orientation={3}（默认未传）；compress={4}；预计约 20 credits".format(
+            src, cid, bool(bake), exp, comp
         )
         return (cid, info)
 
@@ -723,6 +866,8 @@ NODE_CLASS_MAPPINGS = {
     "TTTripoSubmit": TTTripoSubmit,
     "TTTripoImageTo3D": TTTripoImageTo3D,
     "TTTripoMultiviewTo3D": TTTripoMultiviewTo3D,
+    "TTTripoRetopo": TTTripoRetopo,
+    "TTTripoSmartUV": TTTripoSmartUV,
     "TTTripoConvert": TTTripoConvert,
     "TTTripoFetch": TTTripoFetch,
 }
@@ -731,6 +876,8 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "TTTripoSubmit": "TT-Tripo 提交（文生3D）",
     "TTTripoImageTo3D": "TT-Tripo 提交（图生3D）",
     "TTTripoMultiviewTo3D": "TT-Tripo 提交（多视图生3D）",
+    "TTTripoRetopo": "TT-Tripo 重拓扑",
+    "TTTripoSmartUV": "TT-Tripo SmartUV",
     "TTTripoConvert": "TT-Tripo 格式转换",
     "TTTripoFetch": "TT-Tripo 任务取回",
 }

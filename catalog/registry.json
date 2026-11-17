@@ -1,8 +1,8 @@
 {
   "schema": 2,
-  "generated_at": "2026-11-17T08:24:11.235Z",
+  "generated_at": "2026-11-17T09:59:49.263Z",
   "source": "E:\\Private\\AIDev\\TECH-COMFY-001_comfyui-workflows\\workflows",
-  "count": 46,
+  "count": 48,
   "missing_model_count": 13,
   "undocumented_count": 0,
   "workflows": [
@@ -1559,6 +1559,78 @@
       "node_count": 5,
       "node_types": [
         "MarkdownNote",
+        "TTTripoConvert",
+        "TTTripoFetch",
+        "PreviewAny"
+      ],
+      "models": [],
+      "missing_models": [],
+      "params": {
+        "model": null,
+        "resolution": null,
+        "steps": null,
+        "sampler": null,
+        "frames": null,
+        "fps": null
+      },
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "model3d-tripo-30_tripo_生成到拓扑uv优化",
+      "path": "model3d/tripo/30_Tripo_生成到拓扑UV优化.json",
+      "category": "model3d",
+      "subcategory": "tripo",
+      "name": "30_Tripo_生成到拓扑UV优化",
+      "format": "ui",
+      "title": "成本可控管线：生成 → 重拓扑(可带UV) → SmartUV → 格式转换 → 取回。每个阶段的 enable_api 都是该阶段的付费开关（默认全关=全链透传跳过、零费用）；按需只打开要执行的阶段。推荐组合：只要干净布线=Retopo(",
+      "description": "成本可控管线：生成 → 重拓扑(可带UV) → SmartUV → 格式转换 → 取回。每个阶段的 enable_api 都是该阶段的付费开关（默认全关=全链透传跳过、零费用）；按需只打开要执行的阶段。推荐组合：只要干净布线=Retopo(model v3.0+smart_uv)；进引擎=Retopo+Convert；要 UV atlas=Retopo(不带 smart_uv)+SmartUV。成本表（credits）：生成 30；重拓扑 v3.0 35 / quad 40；SmartUV 20；转换 5。SmartUV 输入 ≤8 万等效三角面；smart_uv 仅 Retopo v3.0 有效。",
+      "has_description": true,
+      "version": null,
+      "sha256": "289d7a587a2d73fc13b5e0ff7bbdae7bb988eb8bc7f1a9f1ffbe12183e4fd268",
+      "bytes": 6252,
+      "node_count": 9,
+      "node_types": [
+        "MarkdownNote",
+        "LoadImage",
+        "TTTripoImageTo3D",
+        "TTTripoRetopo",
+        "TTTripoSmartUV",
+        "TTTripoConvert",
+        "TTTripoFetch",
+        "PreviewAny"
+      ],
+      "models": [],
+      "missing_models": [],
+      "params": {
+        "model": null,
+        "resolution": null,
+        "steps": null,
+        "sampler": null,
+        "frames": null,
+        "fps": null
+      },
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "model3d-tripo-31_tripo_已有模型优化",
+      "path": "model3d/tripo/31_Tripo_已有模型优化.json",
+      "category": "model3d",
+      "subcategory": "tripo",
+      "name": "31_Tripo_已有模型优化",
+      "format": "ui",
+      "title": "已有模型优化管线：对既有 Tripo 任务单独跑重拓扑(可带UV)/SmartUV/格式转换。task_id 来源：文生/图生/多视图任务 ID（粘贴或连线）；本地模型需先上传平台取得 file_token 或公网 URL 后才能作为输入（",
+      "description": "已有模型优化管线：对既有 Tripo 任务单独跑重拓扑(可带UV)/SmartUV/格式转换。task_id 来源：文生/图生/多视图任务 ID（粘贴或连线）；本地模型需先上传平台取得 file_token 或公网 URL 后才能作为输入（上传节点后续可加）。每个阶段 enable_api=该阶段付费开关（默认关=透传跳过、零费用）。成本表（credits）：重拓扑 v3.0 35 / quad 40；SmartUV 20；转换 5。SmartUV 输入 ≤8 万等效三角面；smart_uv 仅 Retopo v3.0 有效。",
+      "has_description": true,
+      "version": null,
+      "sha256": "0d054e71d74a01872da3ff9d4613ef9dacd9386759f25c2317c127643ee566ad",
+      "bytes": 4861,
+      "node_count": 7,
+      "node_types": [
+        "MarkdownNote",
+        "TTTripoRetopo",
+        "TTTripoSmartUV",
         "TTTripoConvert",
         "TTTripoFetch",
         "PreviewAny"

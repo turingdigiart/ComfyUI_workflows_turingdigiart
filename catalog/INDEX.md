@@ -205,7 +205,7 @@
 - 模型：ae.safetensors、qwen_3_4b.safetensors、z_image_turbo_bf16.safetensors
 - 说明：8步快速出图；默认1024×1024。修改提示词后运行。支持中文与英文提示词。原生节点，无需额外插件。
 
-### model3d（5）
+### model3d（7）
 
 **13_Hunyuan3D21_图片生成3D模型**  ⚠️ 缺模型
 - 路径：`model3d/hunyuan/13_Hunyuan3D21_图片生成3D模型.json`
@@ -232,6 +232,16 @@
 - 路径：`model3d/tripo/29_Tripo_格式转换.json`
 - 参数：—
 - 说明：格式转换：把已成功生成的 Tripo 任务转为 FBX/OBJ/GLTF/USDZ/STL/3MF。用法：在「TT-Tripo 格式转换」的 task_id 粘贴旧任务 ID（或把该 widget 转输入槽连线 Submit/ImageTo
+
+**30_Tripo_生成到拓扑UV优化**
+- 路径：`model3d/tripo/30_Tripo_生成到拓扑UV优化.json`
+- 参数：—
+- 说明：成本可控管线：生成 → 重拓扑(可带UV) → SmartUV → 格式转换 → 取回。每个阶段的 enable_api 都是该阶段的付费开关（默认全关=全链透传跳过、零费用）；按需只打开要执行的阶段。推荐组合：只要干净布线=Retopo(
+
+**31_Tripo_已有模型优化**
+- 路径：`model3d/tripo/31_Tripo_已有模型优化.json`
+- 参数：—
+- 说明：已有模型优化管线：对既有 Tripo 任务单独跑重拓扑(可带UV)/SmartUV/格式转换。task_id 来源：文生/图生/多视图任务 ID（粘贴或连线）；本地模型需先上传平台取得 file_token 或公网 URL 后才能作为输入（
 
 ### video（8）
 

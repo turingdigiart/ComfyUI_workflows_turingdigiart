@@ -1,0 +1,172 @@
+{
+  "id": "f2c3d4e5-6a7b-4c8d-9e0f-1a2b3c4d5e6f",
+  "revision": 0,
+  "last_node_id": 7,
+  "last_link_id": 5,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "MarkdownNote",
+      "title": "使用说明",
+      "pos": [0, -340],
+      "size": [1000, 300],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "properties": {},
+      "widgets_values": [
+        "已有模型优化管线：对既有 Tripo 任务单独跑重拓扑(可带UV)/SmartUV/格式转换。task_id 来源：文生/图生/多视图任务 ID（粘贴或连线）；本地模型需先上传平台取得 file_token 或公网 URL 后才能作为输入（上传节点后续可加）。每个阶段 enable_api=该阶段付费开关（默认关=透传跳过、零费用）。成本表（credits）：重拓扑 v3.0 35 / quad 40；SmartUV 20；转换 5。SmartUV 输入 ≤8 万等效三角面；smart_uv 仅 Retopo v3.0 有效。"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "TTTripoRetopo",
+      "title": "重拓扑（可带 UV）",
+      "pos": [0, 0],
+      "size": [450, 560],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        { "name": "task_id", "type": "STRING", "links": [1], "slot_index": 0 },
+        { "name": "调用信息", "type": "STRING", "links": [], "slot_index": 1 }
+      ],
+      "properties": { "Node name for S&R": "TTTripoRetopo" },
+      "widgets_values": [
+        "",
+        false,
+        "v3.0",
+        20000,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "id": 3,
+      "type": "TTTripoSmartUV",
+      "title": "SmartUV",
+      "pos": [560, 0],
+      "size": [450, 420],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        { "name": "task_id", "type": "STRING", "link": 1 }
+      ],
+      "outputs": [
+        { "name": "task_id", "type": "STRING", "links": [2], "slot_index": 0 },
+        { "name": "调用信息", "type": "STRING", "links": [], "slot_index": 1 }
+      ],
+      "properties": { "Node name for S&R": "TTTripoSmartUV" },
+      "widgets_values": [
+        "",
+        false,
+        true,
+        "默认(不传)",
+        "无"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "TTTripoConvert",
+      "title": "格式转换",
+      "pos": [1120, 0],
+      "size": [450, 420],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        { "name": "task_id", "type": "STRING", "link": 2 }
+      ],
+      "outputs": [
+        { "name": "task_id", "type": "STRING", "links": [3], "slot_index": 0 },
+        { "name": "调用信息", "type": "STRING", "links": [], "slot_index": 1 }
+      ],
+      "properties": { "Node name for S&R": "TTTripoConvert" },
+      "widgets_values": [
+        "",
+        false,
+        "FBX",
+        false,
+        0,
+        4096
+      ]
+    },
+    {
+      "id": 5,
+      "type": "TTTripoFetch",
+      "title": "TT-Tripo 任务取回",
+      "pos": [1680, 0],
+      "size": [450, 460],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        { "name": "task_id", "type": "STRING", "link": 3 }
+      ],
+      "outputs": [
+        { "name": "模型路径", "type": "STRING", "links": [4], "slot_index": 0 },
+        { "name": "预览图", "type": "IMAGE", "links": [], "slot_index": 1 },
+        { "name": "状态", "type": "STRING", "links": [5], "slot_index": 2 }
+      ],
+      "properties": { "Node name for S&R": "TTTripoFetch" },
+      "widgets_values": [
+        "",
+        600,
+        5,
+        0
+      ]
+    },
+    {
+      "id": 6,
+      "type": "PreviewAny",
+      "title": "模型路径",
+      "pos": [2240, 0],
+      "size": [300, 300],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        { "name": "source", "type": "*", "link": 4 }
+      ],
+      "outputs": [
+        { "name": "STRING", "type": "STRING", "links": [], "slot_index": 0 }
+      ],
+      "properties": { "Node name for S&R": "PreviewAny" },
+      "widgets_values": []
+    },
+    {
+      "id": 7,
+      "type": "PreviewAny",
+      "title": "状态",
+      "pos": [2240, 340],
+      "size": [300, 300],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        { "name": "source", "type": "*", "link": 5 }
+      ],
+      "outputs": [
+        { "name": "STRING", "type": "STRING", "links": [], "slot_index": 0 }
+      ],
+      "properties": { "Node name for S&R": "PreviewAny" },
+      "widgets_values": []
+    }
+  ],
+  "links": [
+    [1, 2, 0, 3, 0, "STRING"],
+    [2, 3, 0, 4, 0, "STRING"],
+    [3, 4, 0, 5, 0, "STRING"],
+    [4, 5, 0, 6, 0, "STRING"],
+    [5, 5, 2, 7, 0, "STRING"]
+  ],
+  "groups": [
+    { "title": "Tripo 已有模型优化", "bounding": [-40, -380, 2610, 760], "color": "#6d8a3b", "font_size": 24, "flags": {} }
+  ],
+  "config": {},
+  "extra": { "ds": { "scale": 0.6, "offset": [30, 460] } },
+  "version": 0.4
+}
