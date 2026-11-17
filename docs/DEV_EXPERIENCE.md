@@ -106,3 +106,10 @@
 - **根因**：①生成网格含非流形结构（开放边界链、内部非流形顶点），QuadriFlow 要求严格闭合流形；跑通需先体素重网格化（voxel remesh），会破坏 UV/细节，与「保留贴图对比」目标冲突。Blender 4.3.2 的 quadriflow_remesh 签名已变：无 `use_preserve_paint_mask`，新增 `preserve_attributes`（理论可保 UV，但本次因流形拒绝未验证）。②平台拒绝 quad+50000 组合（具体参数限制未知，错误体为空）。
 - **修法**：①QF 路线对非流形生成网格不可直接用——当前可用路线仍是已交付的 tri 重拓扑（5000/20000）+ dissolve_limit 自适应减面；②Tripo quad 可改试更小 face_limit（如 20000），需另获授权，本次按「失败不重试」未再提交。两线失败均原样记录；本任务刚生成的两个「未重网格」导出（astro_quadriflow_20k.glb/.fbx）已删除（属本次误产物）。
 - **边界**：QF 对严格流形 CAD/雕刻模型仍适用；quad 布线质量对比实验待 Lead 决定参数后重开。
+
+## 2026-11-17 · Tripo quad 重拓扑 400 排查结论：quad=true 与 v3.0 组合不可用（T35）
+
+- **现象**：两次提交 `POST /v3/mesh/decimate`（model=v3.0、quad=true）均被 **HTTP 400** 拒绝且错误体为空——T34 为 face_limit=50000+smart_uv=true，T35 排除变量后为 face_limit=20000+smart_uv=false，仍 400；对照组 tri（quad=false）同接口 5000/20000 面均成功（T30/T31）。零扣费。
+- **根因**：**quad=true 与 v3.0 组合被平台拒绝**（错误体空、文档未标）；face_limit 大小与 smart_uv 开/关均非诱因（两变量已排除）。
+- **修法**：本机构建下 quad 布线路线不可用，终点记录；**可用路线=tri 重拓扑（5000/20000，smart_uv 正常）+ dissolve_limit 自适应减面（T33）**。若后续需要 quad，候选路径：换 model 版本（v2.0/v1.0）或向 Tripo 官方确认 quad 支持范围——需另获授权。
+- **边界**：两次失败均未重试（防重复扣费）、零计费；脱敏 payload 已入 OPERATION_LOG 取证。
