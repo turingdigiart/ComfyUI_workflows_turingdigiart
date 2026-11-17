@@ -78,3 +78,10 @@
 - **根因**：Tripo 各阶段接口的 input 语义不同——生成/分件接受任务 ID，而 retopo/uv/convert 的 task_id 输入限定为生成任务，分件产物需以文件形式（file_token 或公网 URL）重新入参。
 - **修法**（tt-tripo v0.5.0，commit `aa6ff88`）：插件侧加共享 `_source` 输入源三选一校验（生成任务 UUID / file_* token / http(s) URL）并应用到 Retopo/SmartUV/Convert/Segment/Complete；文档与节点 tooltip 明示「分件任务 ID 需经 file_token 或 URL 桥接」；当前不实现上传节点，桥接手工完成（本地模型同理需先上传平台）。分件产物 GLB 的 `tripo_part_*` 节点名由 Fetch 最小解析写入 meta.parts，供补洞 part_names 复用。
 - **边界**：分件不改变面数（面数控制在生成/重拓扑 face_limit）；分件 v1 忽略 v2 独有参数（granularity/connectivity/ref_image）并提示；补洞费用文档未标、以平台计费为准。
+
+## 2026-11-17 · 重拓扑/平滑/预览三条工具经验（Blender 4.x 属性、F3D 输出路径、decimate 面数近似）
+
+- **现象**：①T30 的 Blender 无头平滑脚本首跑 `AttributeError: 'Mesh' object has no attribute 'use_auto_smooth'`；②f3d-console 渲染 exit 0 但目标 PNG 不落盘；③face_limit=5000 与 20000 的重拓扑实测面数分别为 5335 与 19899，均非精确值。
+- **根因**：①Blender 4.1+ 移除了 `use_auto_smooth`（自动平滑改为 Smooth by Angle 修改器），旧 API 直接报错；②f3d-console 的 `--output` 值含反斜杠 Windows 路径时被静默丢弃（exit 0 无任何提示，也不写默认位置）；③Tripo decimate 的 face_limit 是**目标近似值**，平台按网格结构取接近值。
+- **修法**：①平滑着色只按面设置 `poly.use_smooth = True`（无头脚本无需 auto smooth）；②`--output` 一律用**正斜杠**绝对路径（`D:/tmp/.../x.png`）；③报告与断言用 Blender/GLB 解析实测面数，不以 face_limit 输入值当实际值。
+- **边界**：f3d 该坑只在反斜杠路径触发，正斜杠/默认输出均正常；面数近似幅度随模型拓扑变化，不存在固定换算系数。T30/T31 均按此经验执行成功。
