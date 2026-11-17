@@ -57,3 +57,10 @@
 - **根因**：本构建 `execution.py` 的 `validate_inputs` 只实现了「单链接」分支（`isinstance(val, list)` → `len!=2` 即拒绝），没有「列表链接」分支；`is_input_list` 仅在 server.py 暴露给前端、未被校验逻辑消费。校验先于执行，因此**零扣费**。
 - **修法（插件侧已做）**：节点照常加 `INPUT_IS_LIST = True` 并在 `run()` 内解包单值（向后兼容单图连接）；这是正确的 schema 声明，UI 手工多路连接可用。API 图路径需等 ComfyUI 上游修复校验（或升级到修复版本）后解锁，勿自行 patch 校验层绕过。
 - **边界**：判断「列表输入是否真生效」不能只看 `/object_info` 的 `is_input_list: true`，必须以一次 `/prompt` 提交实测为准；失败属构建级阻塞时如实记录、不重试付费调用（防重复扣费），并把核心节点 `ImageMergeTileList` 的同样失败作为「非插件缺陷」证据保留。
+
+## 2026-11-17 · 3D 资产链路 v001 实测汇总（Tripo 五节点 + 方舟三视图 + F3D 预览）
+
+- **现象**：负责人要求「全部跑一遍给我看结果」与「保存现在的工作流」——需要一份覆盖文生/图生/多视图/格式转换/预览全链路的实测结论作为推荐工作流方法的证据。
+- **根因**：链路长、坑分散（上传维度、ZIP 交付、代理抖动、多路连线校验缺陷、F3D 参数），单点结论不足以支撑方法沉淀。
+- **修法**：以 TECH-COMFY-001 母版工作流逐一 E2E——26 文生（T16，credits 20）、27 图生（T19/T24，credits 30）、28 多视图（T25，credits 30，两视图同图仅链路验证）、29 格式转换（T22 FBX credits 5；T25 OBJ→zip 自动解包 obj+mtl+贴图）、25 方舟三视图（T24，doubao-seedream-5-0-flash 2K 出图 1.7MB）；F3D 4.0.1 恢复安装后 `preview.ps1` 五模型（GLB×3/FBX/OBJ，1400×1000 house style）全 exit 0。方法沉淀为技术域 Skill `tt-3d-asset-pipeline`（S-TECH-002，母版 `../TuringTechLab/.agents/skills/tt-3d-asset-pipeline/SKILL.md`，本仓库只存工作流/插件/经验，不复制 Skill 正文）。
+- **边界**：实测参数（face_limit/texture/pbr/orientation 等）为最小验证口径，非效果承诺；成本口径为实测值（文生 20–50、图生 30、多视图 30、转换 5），随平台计价变化；测试副本（25t/26t/27t/28t API 图）不入库，仓库只保留 25–29 母版模板。
