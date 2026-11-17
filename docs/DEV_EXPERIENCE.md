@@ -85,3 +85,10 @@
 - **根因**：①Blender 4.1+ 移除了 `use_auto_smooth`（自动平滑改为 Smooth by Angle 修改器），旧 API 直接报错；②f3d-console 的 `--output` 值含反斜杠 Windows 路径时被静默丢弃（exit 0 无任何提示，也不写默认位置）；③Tripo decimate 的 face_limit 是**目标近似值**，平台按网格结构取接近值。
 - **修法**：①平滑着色只按面设置 `poly.use_smooth = True`（无头脚本无需 auto smooth）；②`--output` 一律用**正斜杠**绝对路径（`D:/tmp/.../x.png`）；③报告与断言用 Blender/GLB 解析实测面数，不以 face_limit 输入值当实际值。
 - **边界**：f3d 该坑只在反斜杠路径触发，正斜杠/默认输出均正常；面数近似幅度随模型拓扑变化，不存在固定换算系数。T30/T31 均按此经验执行成功。
+
+## 2026-11-17 · 平滑前必须先焊接顶点：直接 smooth_vert 会沿 UV 接缝把模型推开（T32）
+
+- **现象**：T30/T31 的 Blender 平滑（shade_smooth + bmesh smooth_vert×2）在 F3D 预览里模型沿 UV 接缝**裂开/分块**——负责人复查发现 seam 处重复顶点各自移动、裂缝张开。
+- **根因**：Tripo 导出的 GLB 在 UV 接缝/法线断开处**顶点重复**（5000 面版实测 4,005 顶点、**2,419 条边界边**）；直接对全部顶点做拉普拉斯平滑时，同一几何点的各份顶点被分别位移，接缝张开。
+- **修法**：平滑前先 `bmesh.ops.remove_doubles(dist=1e-5)` 焊接 → `recalc_face_normals` → shade_smooth → smooth_vert×2（同参数）。实测 5000 面版：顶点 4,005→**2,663**、边界边 2,419→**6**、面数 5,335 不变（UV 由 loop 数据保留）；导出 `astro_p5000_smooth2.glb/.fbx`。20000 面版同法（Lead 实测 12,875→9,964、边界 5,529→88）。
+- **边界**：焊接阈值 1e-5 只合并接缝重复点，真实开放边界（如底部开口）保留；必须先焊接再平滑，禁止对 split geometry 直接 smoothing。旧流程产物（retopo5000_smooth.glb、retopo20000_smooth.glb、astro_p20000_smooth.fbx）为错误流程产物，已被 `_smooth2` 系列取代（文件保留、仅标注）。
