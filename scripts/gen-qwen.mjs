@@ -5,8 +5,10 @@
 //
 // Usage:
 //   node scripts/gen-qwen.mjs --list
-//   node scripts/gen-qwen.mjs --recipe recipes/image/qwen/06_turbo_t2i_3x4.api.json --prompt "..." --out-dir out
-//   node scripts/gen-qwen.mjs --recipe ... --prompt "..." --width 1152 --height 1536 --seed 123 --dry-run
+//   node scripts/gen-qwen.mjs --preset turbo-3x4 --prompt "..." --out-dir out
+//   node scripts/gen-qwen.mjs --preset original-3x4 --prompt "..." --out-dir out
+//   node scripts/gen-qwen.mjs --commercial --prompt "..." --out-dir out   # auto-selects Apache-2.0 path
+//   node scripts/gen-qwen.mjs --recipe recipes/image/qwen/06_turbo_t2i_3x4.api.json --prompt "..." --seed 123 --dry-run
 //
 // No dependencies: Node >= 18 (global fetch).
 import fs from 'node:fs';
@@ -14,6 +16,16 @@ import path from 'node:path';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1')), '..');
 const RECIPE_DIR = path.join(ROOT, 'recipes', 'image', 'qwen');
+const PRESETS = {
+  turbo: '06_turbo_t2i',
+  'turbo-3x4': '06_turbo_t2i_3x4',
+  edit: '07_turbo_edit',
+  standard: '08_standard_t2i',
+  'standard-3x4': '08_standard_t2i_3x4',
+  original: '09_original_t2i',
+  'original-3x4': '09_original_t2i_3x4'
+};
+const COMMERCIAL_PRESET = 'original-3x4';
 const args = process.argv.slice(2);
 const has = k => args.includes(k);
 const val = (k, d) => { const i = args.indexOf(k); return i >= 0 && args[i + 1] ? args[i + 1] : d; };
@@ -21,8 +33,11 @@ const BASE = (val('--base') || process.env.COMFYUI_BASE || 'http://127.0.0.1:818
 
 function listRecipes() {
   if (!fs.existsSync(RECIPE_DIR)) throw new Error('recipe dir not found: ' + RECIPE_DIR);
+  console.log('presets:');
+  for (const [k, v] of Object.entries(PRESETS)) console.log('  ' + k.padEnd(14) + ' -> recipes/image/qwen/' + v + '.api.json');
+  console.log('recipes:');
   for (const f of fs.readdirSync(RECIPE_DIR).filter(x => x.endsWith('.api.json')).sort()) {
-    console.log('recipes/image/qwen/' + f);
+    console.log('  recipes/image/qwen/' + f);
   }
 }
 
@@ -67,8 +82,18 @@ function patch(prompt, rc) {
 
 async function main() {
   if (has('--list')) { listRecipes(); return; }
-  const recipePath = val('--recipe');
-  if (!recipePath) throw new Error('missing --recipe <path> (use --list)');
+  const preset = val('--preset');
+  let recipePath = val('--recipe');
+  if (has('--commercial') && preset && !preset.startsWith('original')) {
+    throw new Error('--commercial requires the original Qwen (Apache-2.0) path; use --preset original-3x4 or omit --preset');
+  }
+  if (!recipePath && has('--commercial')) recipePath = path.join(RECIPE_DIR, PRESETS[COMMERCIAL_PRESET] + '.api.json');
+  if (!recipePath && preset) {
+    const name = PRESETS[preset];
+    if (!name) throw new Error('unknown --preset "' + preset + '"; use --list');
+    recipePath = path.join(RECIPE_DIR, name + '.api.json');
+  }
+  if (!recipePath) throw new Error('missing --recipe or --preset (use --list)');
   const abs = path.resolve(recipePath);
   let raw = JSON.parse(fs.readFileSync(abs, 'utf8').replace(/^\uFEFF/, ''));
   let prompt = raw.prompt || raw;
@@ -98,7 +123,7 @@ async function main() {
     }
   }
   if (problems.length) throw new Error('validation failed:\n' + problems.join('\n'));
-  console.log(JSON.stringify({ recipe: path.relative(ROOT, abs), nodes: Object.keys(prompt).length, ...meta }, null, 2));
+  console.log(JSON.stringify({ recipe: path.relative(ROOT, abs), preset: preset || null, commercial: has('--commercial'), nodes: Object.keys(prompt).length, ...meta }, null, 2));
   if (has('--dry-run')) { console.log('--dry-run: not queued'); return; }
   const started = Date.now();
   const queued = await (await fetch(BASE + '/prompt', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ prompt, client_id: 'gen-qwen' }) })).json();

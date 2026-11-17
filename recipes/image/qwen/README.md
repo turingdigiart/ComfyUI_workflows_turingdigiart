@@ -18,6 +18,14 @@ UI 格式母版仍在 `workflows/image/qwen/`（06/07/08）；这里的配方用
 
 共享文件：`qwen3vl_8b_int8_convrot`（2.1 编码器）/ `qwen_2.5_vl_7b_fp8_scaled`（原始 Qwen 编码器）/ 各自 VAE。
 
+## 预设（自动选路）
+
+```powershell
+node scripts/gen-qwen.mjs --list
+node scripts/gen-qwen.mjs --preset turbo-3x4 --prompt "..." --out-dir out
+node scripts/gen-qwen.mjs --commercial --prompt "..." --out-dir out   # 自动选原始 Qwen Apache-2.0
+```
+
 ## 用法
 
 ```powershell

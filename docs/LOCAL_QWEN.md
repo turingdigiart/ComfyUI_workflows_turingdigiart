@@ -59,7 +59,26 @@ node scripts/gen-qwen.mjs --recipe recipes/image/qwen/07_turbo_edit.api.json `
 
 `--dry-run` 只校验和打印补丁结果，不排队。
 
-## 3. 本机性能实测（RTX 5060 8GB，ComfyUI 0.43，int8/fp8 + offload）
+## 3. 自动选路（preset）
+
+`gen-qwen.mjs` 内置 preset，按意图直接选工作流；**对外商用自动走 Apache-2.0 路径**：
+
+| 意图 | 命令 |
+|---|---|
+| 内部快打样 3:4 | `--preset turbo-3x4` |
+| 内部精修 3:4 | `--preset standard-3x4` |
+| 改图 | `--preset edit` |
+| 对外商业底图 | `--commercial`（自动选 `original-3x4`，2.1 会被拒绝） |
+| 指定原始 Qwen | `--preset original-3x4` |
+
+```powershell
+node scripts/gen-qwen.mjs --preset turbo-3x4 --prompt "..." --out-dir out/qwen
+node scripts/gen-qwen.mjs --commercial --prompt "..." --out-dir out/qwen-commercial
+```
+
+`--list` 会同时列出 presets 与 recipes。跨能力选路：本地 Qwen 生图 → `local-qwen-image`；版式/文字层 → `article-headline-forge`；云端 Seedream/Seedance → `volcano-ark-media`。
+
+## 4. 本机性能实测（RTX 5060 8GB，ComfyUI 0.43，int8/fp8 + offload）
 
 | 配方 | 步数 | 冷/暖 | 耗时 | 画布 |
 |---|---|---|---|---|
@@ -72,7 +91,7 @@ node scripts/gen-qwen.mjs --recipe recipes/image/qwen/07_turbo_edit.api.json `
 - 模型列表变化后需重启 ComfyUI（`/object_info` 才会出现新文件名）。
 - 3:4 一律用 32 的倍数：1152×1536；**不要**用 1080×1440 直接生成（非 32 倍数），交给 `article-headline-forge` 缩放/裁切。
 
-## 4. 提示词增强（本机 Qwen）
+## 5. 提示词增强（本机 Qwen）
 
 **首选：Ollama `qwen35-9b-flash:latest`（已安装，已实测）**
 
@@ -88,7 +107,7 @@ node scripts/enhance-prompt-ollama.mjs --brief "竖版 3:4 纸感背景，墨绿
 
 > 深色主题（guochao/midnight）配现有深色 Logo 对比不足；本机 5 封面 demo 在底图右上角合成了浅色 Logo 安全牌。长期方案：补白色版 2026 Logo 资产并登记 `MAT-EXAM-LOGO-2026-*`，不要把历史 2023 白 Logo 当 Current。
 
-## 5. 迭代与衍生
+## 6. 迭代与衍生
 
 ### 换提示词 / 种子 / 尺寸
 
@@ -123,7 +142,7 @@ node scripts/enhance-prompt-ollama.mjs --brief "竖版 3:4 纸感背景，墨绿
 | 改图 404 | 参考图不在 `ComfyUI/input/` | 先复制或用 `--image` 传 input 目录内文件名 |
 | 生成有字/水印 | 提示词未约束，或 Qwen 2.1 自行补字/竖排字 | 提示词加 `no text, no letters, no logo, no watermark`；再用 `--negative "text, letters, Chinese characters, calligraphy, handwriting, symbols, logo, watermark"` 并换 seed；仍出现则降低画面元素、改用纯纹理提示词 |
 
-## 6. 相关记录
+## 7. 相关记录
 
 - `models.manifest.json`（7 件 Qwen 均 verified）
 - `OP-20261117-QWEN-LOCAL-001/002`、`SESSION_HANDOFF` 2026-11-17
