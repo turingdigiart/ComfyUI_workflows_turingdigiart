@@ -1,6 +1,11 @@
-# tt-tripo｜机构自研 Tripo 文生 3D 调用节点
+# tt-tripo｜机构自研 Tripo 文生 3D 调用节点（v0.1.1）
 
 在 ComfyUI 里提交 Tripo API 文生 3D 任务并取回结果（GLB + 渲染预览图）。
+
+## 版本
+
+- **v0.1.1（2026-11-17）**：修复 E2E 测试暴露的缺陷——现象：`/prompt` 直接使用两节点图报 `prompt_no_outputs`，且节点输出不进 `/history`，任务失败后无法取证；根因：两节点均非 `OUTPUT_NODE`、task_id 未持久化；修法：`TTTripoFetch` 设 `OUTPUT_NODE=True`（图以它收尾、输出进 `/history`），每次执行写 `output/Tripo/<task_id>.meta.json`（task_id/status/model_path/preview_path/error/ts），Submit 失败把 `ERROR:<原因>` 写入 task_id 输出供 Fetch 透传取证，预览图同步落盘 `output/Tripo/<task_id>_preview.png`；边界：兜底空白图逻辑保留、不自动重试提交、不改变 Key 存储与付费 P1 口径。
+- **v0.1.0（2026-11-16）**：初版（T14a/T14b）。
 
 ## 节点
 
