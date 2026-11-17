@@ -99,3 +99,10 @@
 - **根因**：Blender 4.3 的 Decimate COLLAPSE 对本机构建基本不采纳 vertex_group（factor/invert 影响可忽略）；API 侧 Tripo 也无权重面数控制参数。
 - **修法**：改用 `bmesh.ops.dissolve_limit(angle_limit=radians(5), use_dissolve_boundaries=False, delimit={"NORMAL","UV"})`——二面角阈值即逐边曲率加权等价物：只溶解 ≤5° 的平整边（19,899→**11,979 面**，目标 12,000 的 0.2% 内），曲率 >5° 的边 100% 保留；delimit NORMAL+UV 保护法线接缝与 UV 岛；先 remove_doubles(1e-5) 再溶解，最后 recalc normals + shade_smooth + smooth_vert×2；顶点仅 9,964→9,320（dissolve 不并点，弧面更平滑）。导出 GLB 2,678,112 B / FBX 1,061,292 B，TEXCOORD_0 校验在。
 - **边界**：角阈值是全局单参数（如需区域分级可用多网格/多次溶解组合）；目标面数可配置；弧面观感仍需 F3D 目检（33_curvweighted.png / GUI）。
+
+## 2026-11-17 · QuadriFlow vs Tripo quad 对比实验：两条线均失败，如实记录（T34）
+
+- **现象**：①本地 QuadriFlow（Blender 4.3.2）在 Tripo 原始生成网格（96,492 面，54,773 顶点，12,618 边界边）上每次 0 秒拒绝：`QuadriFlow: The mesh needs to be manifold and have face normals that point in a consistent direction`；做了 remove_doubles(1e-5)（边界 12,618→78）+ holes_fill（创建 0 面，边界链非闭合洞）后仍拒绝。②Tripo quad 重拓扑（face_limit=50000, quad=true, smart_uv=true, bake=true）提交被 **HTTP 400** 拒绝（错误体为空），零扣费。
+- **根因**：①生成网格含非流形结构（开放边界链、内部非流形顶点），QuadriFlow 要求严格闭合流形；跑通需先体素重网格化（voxel remesh），会破坏 UV/细节，与「保留贴图对比」目标冲突。Blender 4.3.2 的 quadriflow_remesh 签名已变：无 `use_preserve_paint_mask`，新增 `preserve_attributes`（理论可保 UV，但本次因流形拒绝未验证）。②平台拒绝 quad+50000 组合（具体参数限制未知，错误体为空）。
+- **修法**：①QF 路线对非流形生成网格不可直接用——当前可用路线仍是已交付的 tri 重拓扑（5000/20000）+ dissolve_limit 自适应减面；②Tripo quad 可改试更小 face_limit（如 20000），需另获授权，本次按「失败不重试」未再提交。两线失败均原样记录；本任务刚生成的两个「未重网格」导出（astro_quadriflow_20k.glb/.fbx）已删除（属本次误产物）。
+- **边界**：QF 对严格流形 CAD/雕刻模型仍适用；quad 布线质量对比实验待 Lead 决定参数后重开。
