@@ -64,3 +64,10 @@
 - **根因**：链路长、坑分散（上传维度、ZIP 交付、代理抖动、多路连线校验缺陷、F3D 参数），单点结论不足以支撑方法沉淀。
 - **修法**：以 TECH-COMFY-001 母版工作流逐一 E2E——26 文生（T16，credits 20）、27 图生（T19/T24，credits 30）、28 多视图（T25，credits 30，两视图同图仅链路验证）、29 格式转换（T22 FBX credits 5；T25 OBJ→zip 自动解包 obj+mtl+贴图）、25 方舟三视图（T24，doubao-seedream-5-0-flash 2K 出图 1.7MB）；F3D 4.0.1 恢复安装后 `preview.ps1` 五模型（GLB×3/FBX/OBJ，1400×1000 house style）全 exit 0。方法沉淀为技术域 Skill `tt-3d-asset-pipeline`（S-TECH-002，母版 `../TuringTechLab/.agents/skills/tt-3d-asset-pipeline/SKILL.md`，本仓库只存工作流/插件/经验，不复制 Skill 正文）。
 - **边界**：实测参数（face_limit/texture/pbr/orientation 等）为最小验证口径，非效果承诺；成本口径为实测值（文生 20–50、图生 30、多视图 30、转换 5），随平台计价变化；测试副本（25t/26t/27t/28t API 图）不入库，仓库只保留 25–29 母版模板。
+
+## 2026-11-17 · Tripo 布线/UV 全流程成本叠加，需阶段开关式成本可控管线
+
+- **现象**：生成接口只给「原始 GLB」，布线/UV 优化与格式转换都要在生成之后另起任务，逐项独立计费；若不控制，一次「生成+重拓扑+SmartUV+转 FBX」成本无声叠加（30+35+20+5≈90 credits），且转换节点 enable_api=false 会报错，无法把多阶段串成一条可跳过的链。
+- **根因**：Tripo 将生成（text/image/multiview）、重拓扑（mesh/decimate）、SmartUV（mesh/uv）、转换（models/convert）拆为独立异步任务，各自计费；旧版 Convert 的开关语义与生成节点一致（false=报错），不适合作「可跳过阶段」。
+- **修法**（tt-tripo v0.4.0，commit `3ee654e`）：新增 `TTTripoRetopo` 与 `TTTripoSmartUV`，并把 Retopo/SmartUV/Convert 统一为**阶段开关语义**——enable_api=false 时不联网、原样透传 task_id、不报错（调用信息注明「已跳过」+预计成本），true 才提交；模板 30（生成→Retopo→SmartUV→Convert→Fetch）与 31（已有模型优化）按阶段裁剪；smart_uv 仅 Retopo v3.0（v1/v2+true 客户端拦截），SmartUV 输入 ≤8 万等效三角面。离线 mock 5 场景 + /object_info 7 节点 + catalog 48 条验证，零付费。
+- **边界**：26/27/28/29 粗糙管线与既有节点行为保持不变；成本为实测口径，随平台计价变化；阶段链的每个新 task_id 都要由 Fetch 依次取回，中间任务产物同样落 output/Tripo 三件套。
