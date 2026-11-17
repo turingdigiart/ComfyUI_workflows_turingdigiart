@@ -72,7 +72,23 @@ node scripts/gen-qwen.mjs --recipe recipes/image/qwen/07_turbo_edit.api.json `
 - 模型列表变化后需重启 ComfyUI（`/object_info` 才会出现新文件名）。
 - 3:4 一律用 32 的倍数：1152×1536；**不要**用 1080×1440 直接生成（非 32 倍数），交给 `article-headline-forge` 缩放/裁切。
 
-## 4. 迭代与衍生
+## 4. 提示词增强（本机 Qwen）
+
+**首选：Ollama `qwen35-9b-flash:latest`（已安装，已实测）**
+
+```powershell
+node scripts/enhance-prompt-ollama.mjs --brief "竖版 3:4 纸感背景，墨绿左下，右上留白" --out out/enhanced.txt
+```
+
+- 输出 100–150 词英文提示词，含材质/色调/光向/负空间，并强制 no text/logo/people。
+- 本机实测 7–30s/条；脚本会检测未闭合 `<think>` 并自动加倍 token 重试。
+- 注意：Ollama 与 ComfyUI 共用 8GB 显存；**先改写、后出图**（脚本会 `keep_alive:0` 卸载）。
+
+**可选：官方 Qwen-Image 2.1 PE（`10_prompt_enhancer.api.json`）**：Qwen3.5-9B `pe_t2i.int8` 权重（8.82GB）尚未装完（`text_encoders/*.part` 暂停在 ~3.5GB），配方与 `scripts/enhance-qwen-prompt.mjs` 已备好，未启用；恢复下载后可用 `TextGenerate` 路径。
+
+> 深色主题（guochao/midnight）配现有深色 Logo 对比不足；本机 5 封面 demo 在底图右上角合成了浅色 Logo 安全牌。长期方案：补白色版 2026 Logo 资产并登记 `MAT-EXAM-LOGO-2026-*`，不要把历史 2023 白 Logo 当 Current。
+
+## 5. 迭代与衍生
 
 ### 换提示词 / 种子 / 尺寸
 
