@@ -1,8 +1,8 @@
 {
   "schema": 2,
-  "generated_at": "2026-11-18T09:33:45.009Z",
+  "generated_at": "2026-11-18T14:51:00.234Z",
   "source": "E:\\Private\\AIDev\\TECH-COMFY-001_comfyui-workflows\\workflows",
-  "count": 50,
+  "count": 52,
   "missing_model_count": 13,
   "undocumented_count": 0,
   "workflows": [
@@ -747,6 +747,93 @@
         "resolution": null,
         "steps": null,
         "sampler": null,
+        "frames": null,
+        "fps": null
+      },
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "identity-tt-ip-写实版-12_写实版_遮罩换发型_sdxl_ipadapter_v001",
+      "path": "identity/tt-ip-写实版/12_写实版_遮罩换发型_SDXL_IPAdapter_v001.json",
+      "category": "identity",
+      "subcategory": "tt-ip-写实版",
+      "name": "12_写实版_遮罩换发型_SDXL_IPAdapter_v001",
+      "format": "api",
+      "title": "12_写实版_遮罩换发型_SDXL_IPAdapter_v001｜SDXL + IPAdapter 遮罩换发型（保脸）",
+      "description": "12_写实版_遮罩换发型_SDXL_IPAdapter_v001｜SDXL + IPAdapter 遮罩换发型（保脸）",
+      "has_description": true,
+      "version": "v001",
+      "sha256": "bab2b7f927e83392f6629f5e10b7045cab54fa9189611ad4a02dccb402225442",
+      "bytes": 3971,
+      "node_count": 13,
+      "node_types": [
+        "CheckpointLoaderSimple",
+        "LoadImage",
+        "VAEEncodeForInpaint",
+        "CLIPTextEncode",
+        "CLIPVisionLoader",
+        "IPAdapterModelLoader",
+        "IPAdapterAdvanced",
+        "KSampler",
+        "VAEDecode",
+        "SaveImage"
+      ],
+      "models": [
+        "CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors",
+        "RealVisXL_V5.0_fp16.safetensors",
+        "ip-adapter-plus_sdxl_vit-h.safetensors"
+      ],
+      "missing_models": [],
+      "params": {
+        "model": "RealVisXL_V5.0_fp16.safetensors",
+        "resolution": null,
+        "steps": 30,
+        "sampler": "dpmpp_2m",
+        "frames": null,
+        "fps": null
+      },
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "identity-tt-ip-写实版-12_写实版_遮罩换发型_sdxl_ipadapter_v001_ui",
+      "path": "identity/tt-ip-写实版/12_写实版_遮罩换发型_SDXL_IPAdapter_v001_UI.json",
+      "category": "identity",
+      "subcategory": "tt-ip-写实版",
+      "name": "12_写实版_遮罩换发型_SDXL_IPAdapter_v001_UI",
+      "format": "ui",
+      "title": "12_写实版_遮罩换发型_SDXL_IPAdapter_v001",
+      "description": "# 12_写实版_遮罩换发型_SDXL_IPAdapter_v001\n\n- 归类：identity / tt-ip-写实版（UI 母版；同名 `.json` 是本工作流的 API 执行版）\n- 参数：RealVisXL_V5.0_fp16 · IPAdapter plus SDXL（weight 0.75 / linear / concat / V only）· VAEEncodeForInpaint grow_mask_by 16 · 30 步 · cfg 6.0 · dpmpp_2m / karras · denoise 1.0\n- 用途：身份已确定、只换发型且必须保脸时用。遮罩外不重采样，脸保持底图；头发质感上限低于 Qwen/Seedream，只作保底。\n- 输入：底图 + 头发遮罩 + 发型参考。三个 LoadImage 默认指向本机 ComfyUI input 的运行副本 `TT_IP_20261030/04_w2_base.png`、`04_w2_hair_mask.png`、`03_hair_approved_v005.jpg`；换图时改这里。\n- 1280 宽底图建议把 grow_mask_by 改成 20。\n- 证据与方法：`写实版/工作流/IP管线_v001/docs/IDENTITY_FACE_METHOD_v001.md` §3.4、§五。\n- 工作流仓库",
+      "has_description": true,
+      "version": "v001",
+      "sha256": "ef8073c7249fb0225995aa2b7fcb8633f343e5d506ae466caaca5fad81a671ca",
+      "bytes": 14051,
+      "node_count": 14,
+      "node_types": [
+        "CheckpointLoaderSimple",
+        "LoadImage",
+        "VAEEncodeForInpaint",
+        "CLIPTextEncode",
+        "CLIPVisionLoader",
+        "IPAdapterModelLoader",
+        "IPAdapterAdvanced",
+        "KSampler",
+        "VAEDecode",
+        "SaveImage",
+        "MarkdownNote"
+      ],
+      "models": [
+        "CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors",
+        "RealVisXL_V5.0_fp16.safetensors",
+        "ip-adapter-plus_sdxl_vit-h.safetensors"
+      ],
+      "missing_models": [],
+      "params": {
+        "model": "RealVisXL_V5.0_fp16.safetensors",
+        "resolution": null,
+        "steps": 30,
+        "sampler": "dpmpp_2m",
         "frames": null,
         "fps": null
       },

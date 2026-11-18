@@ -1,0 +1,196 @@
+{
+  "1": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "RealVisXL_V5.0_fp16.safetensors"
+    },
+    "_meta": {
+      "title": "写实底模 RealVisXL V5.0"
+    }
+  },
+  "2": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "TT_IP_20261030/04_w2_base.png"
+    },
+    "_meta": {
+      "title": "底图（要保脸的确认图，换图时改这里）"
+    }
+  },
+  "3": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "TT_IP_20261030/04_w2_hair_mask.png"
+    },
+    "_meta": {
+      "title": "遮罩（白色=头发区，只重绘这里）"
+    }
+  },
+  "4": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "TT_IP_20261030/03_hair_approved_v005.jpg"
+    },
+    "_meta": {
+      "title": "发型参考（v005 已确认发型）"
+    }
+  },
+  "5": {
+    "class_type": "VAEEncodeForInpaint",
+    "inputs": {
+      "pixels": [
+        "2",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ],
+      "mask": [
+        "3",
+        1
+      ],
+      "grow_mask_by": 16
+    },
+    "_meta": {
+      "title": "底图 + 遮罩编码（grow_mask_by 16；1280 宽底图用 20）"
+    }
+  },
+  "6": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "short voluminous textured haircut, layered clumped strands, airy slightly messy, side-swept wispy uneven fringe falling over the brow, sides trimmed short, natural black hair, matte finish, photorealistic individual hair strands, matching studio lighting",
+      "clip": [
+        "1",
+        1
+      ]
+    },
+    "_meta": {
+      "title": "正向：只写发型结构"
+    }
+  },
+  "7": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "long hair, curly hair, wet look, bald, helmet hair, bowl cut, flat hair, cartoon, plastic, blurry, text, watermark, hat, headband, changed face",
+      "clip": [
+        "1",
+        1
+      ]
+    },
+    "_meta": {
+      "title": "负向：禁止换脸与旧发型"
+    }
+  },
+  "8": {
+    "class_type": "CLIPVisionLoader",
+    "inputs": {
+      "clip_name": "CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors"
+    },
+    "_meta": {
+      "title": "IPAdapter 视觉编码器"
+    }
+  },
+  "9": {
+    "class_type": "IPAdapterModelLoader",
+    "inputs": {
+      "ipadapter_file": "ip-adapter-plus_sdxl_vit-h.safetensors"
+    },
+    "_meta": {
+      "title": "IPAdapter plus SDXL"
+    }
+  },
+  "10": {
+    "class_type": "IPAdapterAdvanced",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "ipadapter": [
+        "9",
+        0
+      ],
+      "image": [
+        "4",
+        0
+      ],
+      "weight": 0.75,
+      "weight_type": "linear",
+      "combine_embeds": "concat",
+      "start_at": 0.0,
+      "end_at": 1.0,
+      "embeds_scaling": "V only",
+      "attn_mask": [
+        "3",
+        1
+      ],
+      "clip_vision": [
+        "8",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "IPAdapter 只作用在头发遮罩区（attn_mask）"
+    }
+  },
+  "11": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "10",
+        0
+      ],
+      "seed": 31001,
+      "steps": 30,
+      "cfg": 6.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "positive": [
+        "6",
+        0
+      ],
+      "negative": [
+        "7",
+        0
+      ],
+      "latent_image": [
+        "5",
+        0
+      ],
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "采样 30 步 / cfg 6.0 / dpmpp_2m / karras / denoise 1.0"
+    }
+  },
+  "12": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "11",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "解码"
+    }
+  },
+  "13": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "12",
+        0
+      ],
+      "filename_prefix": "IP_hairmask_ipadapter_v001"
+    },
+    "_meta": {
+      "title": "保存（output/IP_hairmask_ipadapter_v001_*.png）"
+    }
+  }
+}

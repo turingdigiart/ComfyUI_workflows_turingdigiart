@@ -12,7 +12,7 @@
 - 模型：ace_step_v1_3.5b.safetensors
 - 说明：ACE-Step 1.0 · 10 秒纯音乐
 
-### identity（17）
+### identity（19）
 
 **01_写实版_基准脸_v001**
 - 路径：`identity/tt-ip-写实版/01_写实版_基准脸_v001.json`
@@ -115,6 +115,18 @@
 - 参数：qwen_image_2.1_turbo_int8_convrot
 - 模型：qwen3vl_8b_int8_convrot.safetensors、qwen_image_2.1_turbo_int8_convrot.safetensors、qwen_image_2.1_vae_bf16.safetensors
 - 说明：图灵老师 · 写实人物设定 v001
+
+**12_写实版_遮罩换发型_SDXL_IPAdapter_v001_UI**
+- 路径：`identity/tt-ip-写实版/12_写实版_遮罩换发型_SDXL_IPAdapter_v001_UI.json`
+- 参数：RealVisXL_V5.0_fp16 · 30 步 · dpmpp_2m
+- 模型：CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors、RealVisXL_V5.0_fp16.safetensors、ip-adapter-plus_sdxl_vit-h.safetensors
+- 说明：12_写实版_遮罩换发型_SDXL_IPAdapter_v001
+
+**12_写实版_遮罩换发型_SDXL_IPAdapter_v001**
+- 路径：`identity/tt-ip-写实版/12_写实版_遮罩换发型_SDXL_IPAdapter_v001.json`
+- 参数：RealVisXL_V5.0_fp16 · 30 步 · dpmpp_2m
+- 模型：CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors、RealVisXL_V5.0_fp16.safetensors、ip-adapter-plus_sdxl_vit-h.safetensors
+- 说明：12_写实版_遮罩换发型_SDXL_IPAdapter_v001｜SDXL + IPAdapter 遮罩换发型（保脸）
 
 ### image（16）
 

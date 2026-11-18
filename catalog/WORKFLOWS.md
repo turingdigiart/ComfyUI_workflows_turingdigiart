@@ -1,16 +1,16 @@
 # 工作流台账
 
 > 由 `scripts/catalog.mjs` 生成，**不要手改**。改工作流后重跑脚本。
-> 生成时间：2026-11-18T09:33:45.009Z
+> 生成时间：2026-11-18T14:51:00.234Z
 > 来源目录：`E:\Private\AIDev\TECH-COMFY-001_comfyui-workflows\workflows`
-> 共 50 条｜缺模型 13 条｜缺说明 0 条
+> 共 52 条｜缺模型 13 条｜缺说明 0 条
 
 ## 分类分布
 
 | 类别 | 数量 |
 |---|---:|
 | audio | 1 |
-| identity | 17 |
+| identity | 19 |
 | image | 16 |
 | model3d | 8 |
 | video | 8 |
@@ -42,6 +42,8 @@
 | `identity/tt-ip-写实版/09_SDXL_四套_锁脸锁姿势.json` | 09_SDXL_四套_锁脸锁姿势 | RealVisXL_V5.0_fp16 · 832x1216 · 30 步 · dpmpp_2m_sde | 4 | ✅ |
 | `identity/tt-ip-写实版/10_SDXL_LoRA_四套.json` | 10_SDXL_LoRA_四套 | RealVisXL_V5.0_fp16 · 832x1216 · 26 步 · dpmpp_2m_sde | 3 | ✅ |
 | `identity/tt-ip-写实版/11_写实版_Qwen无框_Seedream五套_v001.json` | 图灵老师 · 写实人物设定 v001 | qwen_image_2.1_turbo_int8_convrot | 3 | ✅ |
+| `identity/tt-ip-写实版/12_写实版_遮罩换发型_SDXL_IPAdapter_v001_UI.json` | 12_写实版_遮罩换发型_SDXL_IPAdapter_v001 | RealVisXL_V5.0_fp16 · 30 步 · dpmpp_2m | 3 | ✅ |
+| `identity/tt-ip-写实版/12_写实版_遮罩换发型_SDXL_IPAdapter_v001.json` | 12_写实版_遮罩换发型_SDXL_IPAdapter_v001｜SDXL + IPAdapter 遮罩换发型（保脸） | RealVisXL_V5.0_fp16 · 30 步 · dpmpp_2m | 3 | ✅ |
 
 ## image
 
