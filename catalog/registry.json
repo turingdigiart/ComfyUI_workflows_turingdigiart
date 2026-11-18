@@ -1,8 +1,8 @@
 {
   "schema": 2,
-  "generated_at": "2026-11-17T11:30:43.677Z",
+  "generated_at": "2026-11-18T09:33:45.009Z",
   "source": "E:\\Private\\AIDev\\TECH-COMFY-001_comfyui-workflows\\workflows",
-  "count": 49,
+  "count": 50,
   "missing_model_count": 13,
   "undocumented_count": 0,
   "workflows": [
@@ -700,6 +700,53 @@
         "resolution": "832x1216",
         "steps": 26,
         "sampler": "dpmpp_2m_sde",
+        "frames": null,
+        "fps": null
+      },
+      "parse_error": null,
+      "status": "Candidate"
+    },
+    {
+      "workflow_id": "identity-tt-ip-写实版-11_写实版_qwen无框_seedream五套_v001",
+      "path": "identity/tt-ip-写实版/11_写实版_Qwen无框_Seedream五套_v001.json",
+      "category": "identity",
+      "subcategory": "tt-ip-写实版",
+      "name": "11_写实版_Qwen无框_Seedream五套_v001",
+      "format": "ui",
+      "title": "图灵老师 · 写实人物设定 v001",
+      "description": "# 图灵老师 · 写实人物设定 v001\n已绑定本人本轮提供的正面 + 两侧近期照片，只在本机 ComfyUI 处理。\n1. 默认先生成一张正面半身身份候选；无边框眼镜是本人要求的设计变化。\n2. 右侧与原图核对五官、发际线、眼镜、体态。本人确认后再做角度、服装、表情与场景。\n3. 每次只改一个变量；阶段B/C任务段在下方，替换STAGE A段，保留IDENTITY段。\n4. 默认8步、CFG 1、固定种子42；resolution=1024表示约1MP，并保留第一张参考比例。\n结果只写本机ComfyUI temp；要保留请及时保存到指定待审核候选位置。不会自动成为身份定稿或发布素材。\n不含FaceID/人物LoRA/数字人驱动，不保证同脸。工程使用说明含模型条款事实与本轮适用范围。",
+      "has_description": true,
+      "version": "v001",
+      "sha256": "8d9d58814c68152f73e14ca98c1a27b973411a193c1f3e76cabff9fc92d5c707",
+      "bytes": 22145,
+      "node_count": 20,
+      "node_types": [
+        "UNETLoader",
+        "CLIPLoader",
+        "VAELoader",
+        "LoadImage",
+        "TextEncodeQwenImage21",
+        "QwenImage21Cache",
+        "ManualSigmas",
+        "RandomNoise",
+        "KSamplerSelect",
+        "CFGGuider",
+        "SamplerCustomAdvanced",
+        "VAEDecode",
+        "PreviewImage",
+        "MarkdownNote"
+      ],
+      "models": [
+        "qwen3vl_8b_int8_convrot.safetensors",
+        "qwen_image_2.1_turbo_int8_convrot.safetensors",
+        "qwen_image_2.1_vae_bf16.safetensors"
+      ],
+      "missing_models": [],
+      "params": {
+        "model": "qwen_image_2.1_turbo_int8_convrot.safetensors",
+        "resolution": null,
+        "steps": null,
+        "sampler": null,
         "frames": null,
         "fps": null
       },

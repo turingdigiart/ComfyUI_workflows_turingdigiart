@@ -1,16 +1,16 @@
 # 工作流台账
 
 > 由 `scripts/catalog.mjs` 生成，**不要手改**。改工作流后重跑脚本。
-> 生成时间：2026-11-17T11:30:43.677Z
+> 生成时间：2026-11-18T09:33:45.009Z
 > 来源目录：`E:\Private\AIDev\TECH-COMFY-001_comfyui-workflows\workflows`
-> 共 49 条｜缺模型 13 条｜缺说明 0 条
+> 共 50 条｜缺模型 13 条｜缺说明 0 条
 
 ## 分类分布
 
 | 类别 | 数量 |
 |---|---:|
 | audio | 1 |
-| identity | 16 |
+| identity | 17 |
 | image | 16 |
 | model3d | 8 |
 | video | 8 |
@@ -41,6 +41,7 @@
 | `identity/tt-ip-写实版/08_Flux_四套_锁姿势.json` | 08_Flux_四套_锁姿势 | flux1-dev-fp8 · 832x1216 · 24 步 · euler | 2 | ✅ |
 | `identity/tt-ip-写实版/09_SDXL_四套_锁脸锁姿势.json` | 09_SDXL_四套_锁脸锁姿势 | RealVisXL_V5.0_fp16 · 832x1216 · 30 步 · dpmpp_2m_sde | 4 | ✅ |
 | `identity/tt-ip-写实版/10_SDXL_LoRA_四套.json` | 10_SDXL_LoRA_四套 | RealVisXL_V5.0_fp16 · 832x1216 · 26 步 · dpmpp_2m_sde | 3 | ✅ |
+| `identity/tt-ip-写实版/11_写实版_Qwen无框_Seedream五套_v001.json` | 图灵老师 · 写实人物设定 v001 | qwen_image_2.1_turbo_int8_convrot | 3 | ✅ |
 
 ## image
 

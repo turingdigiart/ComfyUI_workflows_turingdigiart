@@ -12,7 +12,7 @@
 - 模型：ace_step_v1_3.5b.safetensors
 - 说明：ACE-Step 1.0 · 10 秒纯音乐
 
-### identity（16）
+### identity（17）
 
 **01_写实版_基准脸_v001**
 - 路径：`identity/tt-ip-写实版/01_写实版_基准脸_v001.json`
@@ -109,6 +109,12 @@
 - 参数：RealVisXL_V5.0_fp16 · 832x1216 · 26 步 · dpmpp_2m_sde
 - 模型：RealVisXL_V5.0_fp16.safetensors、controlnet-openpose-sdxl-1.0.safetensors、turingteacher_v002_quick.safetensors
 - 说明：10_SDXL_LoRA_四套
+
+**11_写实版_Qwen无框_Seedream五套_v001**
+- 路径：`identity/tt-ip-写实版/11_写实版_Qwen无框_Seedream五套_v001.json`
+- 参数：qwen_image_2.1_turbo_int8_convrot
+- 模型：qwen3vl_8b_int8_convrot.safetensors、qwen_image_2.1_turbo_int8_convrot.safetensors、qwen_image_2.1_vae_bf16.safetensors
+- 说明：图灵老师 · 写实人物设定 v001
 
 ### image（16）
 

@@ -1,0 +1,984 @@
+{
+  "id": "d51be1a4-4079-4361-9eee-dc8ec4636255",
+  "revision": 0,
+  "last_node_id": 20,
+  "last_link_id": 18,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "UNETLoader",
+      "title": "本地Qwen Image 2.1 Turbo",
+      "pos": [
+        0,
+        1110
+      ],
+      "size": [
+        390,
+        150
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            4
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "UNETLoader"
+      },
+      "widgets_values": [
+        "qwen_image_2.1_turbo_int8_convrot.safetensors",
+        "default"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "CLIPLoader",
+      "title": "本地Qwen3-VL编码器",
+      "pos": [
+        430,
+        1110
+      ],
+      "size": [
+        390,
+        170
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            1
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPLoader"
+      },
+      "widgets_values": [
+        "qwen3vl_8b_int8_convrot.safetensors",
+        "qwen_image",
+        "default"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "VAELoader",
+      "title": "本地Qwen 2.1 VAE",
+      "pos": [
+        0,
+        1310
+      ],
+      "size": [
+        390,
+        130
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            2,
+            14
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAELoader"
+      },
+      "widgets_values": [
+        "qwen_image_2.1_vae_bf16.safetensors"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "LoadImage",
+      "title": "① 本人正面照片 · 主身份参考",
+      "pos": [
+        0,
+        120
+      ],
+      "size": [
+        390,
+        430
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            3,
+            18
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "TT_IP_20261030/01_front_identity.jpg",
+        "image"
+      ],
+      "color": "#233",
+      "bgcolor": "#344"
+    },
+    {
+      "id": 5,
+      "type": "TextEncodeQwenImage21",
+      "title": "② 固定身份规则 + 本轮任务（默认正面半身）",
+      "pos": [
+        900,
+        120
+      ],
+      "size": [
+        760,
+        730
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 1
+        },
+        {
+          "name": "images.image_1",
+          "type": "IMAGE",
+          "link": 3
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 2
+        },
+        {
+          "name": "images.image_2",
+          "type": "IMAGE",
+          "link": 16
+        },
+        {
+          "name": "images.image_3",
+          "type": "IMAGE",
+          "link": 17
+        }
+      ],
+      "outputs": [
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "links": [
+            6
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "links": [
+            7
+          ],
+          "slot_index": 1
+        },
+        {
+          "name": "latent",
+          "type": "LATENT",
+          "links": [
+            12
+          ],
+          "slot_index": 2
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "TextEncodeQwenImage21"
+      },
+      "widgets_values": [
+        "[IDENTITY RULES — keep for every stage]\nAll three reference photos show the SAME real adult man. Use the front photo <image1> as the primary identity reference; <image2> and <image3> only clarify the same face from the sides. Preserve his actual recognizable face, natural facial proportions, eyes, nose, mouth, skin tone, hairline and short haircut. Do not average him into a new generic model. Keep natural skin detail, asymmetry and a realistic adult appearance; no beauty-filter face, no enlarged eyes, no cartoon features. One person, one single photo, no collage, no text, no watermark.\n\n[STAGE A — frontal half-body identity candidate]\nCreate a natural photorealistic frontal half-body instructor portrait of this same 27-year-old man, framed from the head to just below the waist, looking at the camera. A composed, calm face with a very subtle closed-mouth friendly smile. Keep the short haircut and recognizable hairline, simply tidy the loose strands. The only intentional facial accessory change is replacing the existing dark-rimmed glasses with thin rimless prescription glasses, transparent lenses, small subtle metal bridge and temples. Preserve the actual eyes and their size; do not stylize or enlarge them. Simple contemporary black crew-neck T-shirt with a lightweight plain dark overshirt, no logos, natural lightly muscular build, relaxed upright posture. Soft even light, plain warm light-gray studio background, realistic skin texture. Young and composed with understated playful warmth. Keep the real face as the priority over fashion or retouching. This is an identity candidate for owner review, not an already-approved baseline.",
+        "",
+        1024
+      ],
+      "color": "#233",
+      "bgcolor": "#344"
+    },
+    {
+      "id": 6,
+      "type": "QwenImage21Cache",
+      "title": "参考缓存 · 自动",
+      "pos": [
+        1700,
+        120
+      ],
+      "size": [
+        320,
+        150
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 4
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            5
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "QwenImage21Cache"
+      },
+      "widgets_values": [
+        "auto",
+        "default"
+      ]
+    },
+    {
+      "id": 7,
+      "type": "ManualSigmas",
+      "title": "Turbo 8步时间表",
+      "pos": [
+        430,
+        1310
+      ],
+      "size": [
+        390,
+        150
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "SIGMAS",
+          "type": "SIGMAS",
+          "links": [
+            11
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ManualSigmas"
+      },
+      "widgets_values": [
+        "1.0, 0.978453, 0.95418, 0.926626, 0.89508, 0.845148, 0.704534, 0.414568, 0"
+      ]
+    },
+    {
+      "id": 8,
+      "type": "RandomNoise",
+      "title": "固定种子 · 先固定比较",
+      "pos": [
+        900,
+        1320
+      ],
+      "size": [
+        350,
+        110
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "NOISE",
+          "type": "NOISE",
+          "links": [
+            8
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "RandomNoise"
+      },
+      "widgets_values": [
+        42,
+        "fixed"
+      ]
+    },
+    {
+      "id": 9,
+      "type": "KSamplerSelect",
+      "title": "Euler 采样",
+      "pos": [
+        1290,
+        1320
+      ],
+      "size": [
+        350,
+        110
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "SAMPLER",
+          "type": "SAMPLER",
+          "links": [
+            10
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "KSamplerSelect"
+      },
+      "widgets_values": [
+        "euler"
+      ]
+    },
+    {
+      "id": 10,
+      "type": "CFGGuider",
+      "title": "引导强度 CFG 1",
+      "pos": [
+        1700,
+        310
+      ],
+      "size": [
+        320,
+        170
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 5
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 6
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 7
+        }
+      ],
+      "outputs": [
+        {
+          "name": "GUIDER",
+          "type": "GUIDER",
+          "links": [
+            9
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CFGGuider"
+      },
+      "widgets_values": [
+        1
+      ]
+    },
+    {
+      "id": 11,
+      "type": "SamplerCustomAdvanced",
+      "title": "生成单张候选",
+      "pos": [
+        1700,
+        520
+      ],
+      "size": [
+        320,
+        230
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "noise",
+          "type": "NOISE",
+          "link": 8
+        },
+        {
+          "name": "guider",
+          "type": "GUIDER",
+          "link": 9
+        },
+        {
+          "name": "sampler",
+          "type": "SAMPLER",
+          "link": 10
+        },
+        {
+          "name": "sigmas",
+          "type": "SIGMAS",
+          "link": 11
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 12
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "LATENT",
+          "links": [
+            13
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "denoised_output",
+          "type": "LATENT",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SamplerCustomAdvanced"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 12,
+      "type": "VAEDecode",
+      "title": "解码",
+      "pos": [
+        1700,
+        790
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 13
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 14
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            15
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 13,
+      "type": "PreviewImage",
+      "title": "③ 待本人审核 · 本地临时预览",
+      "pos": [
+        2060,
+        120
+      ],
+      "size": [
+        560,
+        730
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 15
+        }
+      ],
+      "outputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "links": [],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      },
+      "widgets_values": [],
+      "color": "#323",
+      "bgcolor": "#535"
+    },
+    {
+      "id": 14,
+      "type": "MarkdownNote",
+      "title": "先读 · 身份优先与逐阶段确认",
+      "pos": [
+        0,
+        -390
+      ],
+      "size": [
+        820,
+        440
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "properties": {},
+      "widgets_values": [
+        "# 图灵老师 · 写实人物设定 v001\n已绑定本人本轮提供的正面 + 两侧近期照片，只在本机 ComfyUI 处理。\n1. 默认先生成一张正面半身身份候选；无边框眼镜是本人要求的设计变化。\n2. 右侧与原图核对五官、发际线、眼镜、体态。本人确认后再做角度、服装、表情与场景。\n3. 每次只改一个变量；阶段B/C任务段在下方，替换STAGE A段，保留IDENTITY段。\n4. 默认8步、CFG 1、固定种子42；resolution=1024表示约1MP，并保留第一张参考比例。\n结果只写本机ComfyUI temp；要保留请及时保存到指定待审核候选位置。不会自动成为身份定稿或发布素材。\n不含FaceID/人物LoRA/数字人驱动，不保证同脸。工程使用说明含模型条款事实与本轮适用范围。"
+      ]
+    },
+    {
+      "id": 15,
+      "type": "LoadImage",
+      "title": "同一人侧面辅助 · 002",
+      "pos": [
+        0,
+        610
+      ],
+      "size": [
+        390,
+        410
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            16
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "TT_IP_20261030/02_side_view_a.jpg",
+        "image"
+      ],
+      "color": "#233",
+      "bgcolor": "#344"
+    },
+    {
+      "id": 16,
+      "type": "LoadImage",
+      "title": "同一人侧面辅助 · 003",
+      "pos": [
+        430,
+        610
+      ],
+      "size": [
+        390,
+        410
+      ],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            17
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "TT_IP_20261030/03_side_view_b.jpg",
+        "image"
+      ],
+      "color": "#233",
+      "bgcolor": "#344"
+    },
+    {
+      "id": 17,
+      "type": "PreviewImage",
+      "title": "原始正面 · 核对是否仍然像本人",
+      "pos": [
+        430,
+        120
+      ],
+      "size": [
+        390,
+        430
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 18
+        }
+      ],
+      "outputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "links": [],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 18,
+      "type": "MarkdownNote",
+      "title": "阶段B · 角度/体态预设",
+      "pos": [
+        900,
+        920
+      ],
+      "size": [
+        760,
+        320
+      ],
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "MarkdownNote"
+      },
+      "widgets_values": [
+        "[STAGE B — one angle or body view after identity approval]\nPreserve the same owner's approved identity and use matching real angle/body references. Produce ONE left three-quarter head-and-shoulders view, neutral expression, short haircut and rimless glasses, plain light-gray background, same clothing. Do not create a collage. Reject identity drift; never use a rejected or altered face as the next identity authority. For full-body output, first supply a real full-body reference; do not infer precise leg lengths from headshots."
+      ]
+    },
+    {
+      "id": 19,
+      "type": "MarkdownNote",
+      "title": "阶段C · 服装/表情/场景预设",
+      "pos": [
+        1690,
+        920
+      ],
+      "size": [
+        760,
+        320
+      ],
+      "flags": {},
+      "order": 18,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "MarkdownNote"
+      },
+      "widgets_values": [
+        "[STAGE C — one outfit, expression or scene change]\nPreserve the approved face, body proportions, short hair and rimless glasses. Change only the outfit to a simple contemporary navy overshirt over a plain white crew-neck T-shirt. Keep the existing pose, facial expression and neutral background. Natural texture, understated styling, no logos. One photo. Do not change the face to a fashion archetype."
+      ]
+    },
+    {
+      "id": 20,
+      "type": "MarkdownNote",
+      "title": "固定设定与照片边界",
+      "pos": [
+        900,
+        -390
+      ],
+      "size": [
+        760,
+        440
+      ],
+      "flags": {},
+      "order": 19,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "MarkdownNote"
+      },
+      "widgets_values": [
+        "以本人真实长相为基础；27岁，182cm，短发、无边框眼镜，简单潮流穿搭可换，年轻沉稳带点闷骚；本人描述“四六比例，有小肌肉”，不将它换算为强制肢体数值。\n\n当前主图SRC-001，侧面SRC-002/003；照片带框，换无边框是明确变更。先不混用棚拍长发造型。更换照片时仍以稳定源照片清单为准。\n\n三张LoadImage均连接时需全部可读；若只用单参考，在编码节点断开image_2和image_3，再相应调整提示词，不用空照片代替。支持动态扩展不代表更多参考必然更像。\n\n四类用途：课程封面、自媒体封面、讲师介绍、数字人视觉输入。静态人物图不等于已完成数字人动画、口型或声音。"
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      2,
+      0,
+      5,
+      0,
+      "CLIP"
+    ],
+    [
+      2,
+      3,
+      0,
+      5,
+      2,
+      "VAE"
+    ],
+    [
+      3,
+      4,
+      0,
+      5,
+      1,
+      "IMAGE"
+    ],
+    [
+      4,
+      1,
+      0,
+      6,
+      0,
+      "MODEL"
+    ],
+    [
+      5,
+      6,
+      0,
+      10,
+      0,
+      "MODEL"
+    ],
+    [
+      6,
+      5,
+      0,
+      10,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      7,
+      5,
+      1,
+      10,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      8,
+      8,
+      0,
+      11,
+      0,
+      "NOISE"
+    ],
+    [
+      9,
+      10,
+      0,
+      11,
+      1,
+      "GUIDER"
+    ],
+    [
+      10,
+      9,
+      0,
+      11,
+      2,
+      "SAMPLER"
+    ],
+    [
+      11,
+      7,
+      0,
+      11,
+      3,
+      "SIGMAS"
+    ],
+    [
+      12,
+      5,
+      2,
+      11,
+      4,
+      "LATENT"
+    ],
+    [
+      13,
+      11,
+      0,
+      12,
+      0,
+      "LATENT"
+    ],
+    [
+      14,
+      3,
+      0,
+      12,
+      1,
+      "VAE"
+    ],
+    [
+      15,
+      12,
+      0,
+      13,
+      0,
+      "IMAGE"
+    ],
+    [
+      16,
+      15,
+      0,
+      5,
+      3,
+      "IMAGE"
+    ],
+    [
+      17,
+      16,
+      0,
+      5,
+      4,
+      "IMAGE"
+    ],
+    [
+      18,
+      4,
+      0,
+      17,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "本人参考照片 · 同一身份",
+      "bounding": [
+        -20,
+        60,
+        860,
+        990
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "身份固定 + 本轮单项任务",
+      "bounding": [
+        880,
+        60,
+        800,
+        820
+      ],
+      "color": "#567a50",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "本地推理 → 待审核候选",
+      "bounding": [
+        1680,
+        60,
+        970,
+        840
+      ],
+      "color": "#815d86",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.46,
+      "offset": [
+        55,
+        440
+      ]
+    },
+    "turing_ip": {
+      "artifact_id": "TT-IP-REALISTIC-WORKFLOW-001",
+      "version": "v001",
+      "identity_basis": "OwnerRealAppearance",
+      "reference_status": "OwnerProvidedLocalVerified",
+      "output_status": "UnapprovedIdentityCandidate",
+      "source_manifest": "../参考资料/20261030_本人照片/SOURCE_MANIFEST_v001.json",
+      "business_brief": "../REALISTIC_IP_BRIEF_v001.md",
+      "source_workflow": "07_Qwen21_Turbo_指令改图.json",
+      "source_sha256": "3A268E967D148DA6276B1B4C0A469182683881E0A4EE04B43DEF4D4F0A1EBC32"
+    }
+  },
+  "version": 0.4
+}
